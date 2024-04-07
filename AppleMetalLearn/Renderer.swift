@@ -76,12 +76,19 @@ class Renderer: NSObject, MTKViewDelegate{
         mtlVertexDescriptor.layouts[BufferIndex.meshPositions.rawValue].stepRate = 1
         mtlVertexDescriptor.layouts[BufferIndex.meshPositions.rawValue].stepFunction = MTLVertexStepFunction.perVertex
         
-        //ув
+        //MESH GENERICS
+        //uv
         offset = 0
         mtlVertexDescriptor.attributes[VertexAttribute.texcoord.rawValue].format = MTLVertexFormat.float2
         mtlVertexDescriptor.attributes[VertexAttribute.texcoord.rawValue].offset = 0
         mtlVertexDescriptor.attributes[VertexAttribute.texcoord.rawValue].bufferIndex = BufferIndex.meshGenerics.rawValue
         offset += MemoryLayout<SIMD2<Float>>.stride
+        
+        //test color float3
+        mtlVertexDescriptor.attributes[VertexAttribute.color.rawValue].format = MTLVertexFormat.float3
+        mtlVertexDescriptor.attributes[VertexAttribute.color.rawValue].offset = offset
+        mtlVertexDescriptor.attributes[VertexAttribute.color.rawValue].bufferIndex = BufferIndex.meshGenerics.rawValue
+        offset += MemoryLayout<SIMD3<Float>>.stride
         //
        
         mtlVertexDescriptor.layouts[BufferIndex.meshGenerics.rawValue].stride = offset

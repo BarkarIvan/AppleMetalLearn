@@ -14,7 +14,8 @@
 		629D84152BC1313F00677998 /* AppleMetalLearn.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 629D84132BC1313F00677998 /* AppleMetalLearn.xcdatamodeld */; };
 		62E2A7B52BC2FEAD00E6C97A /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62E2A7B42BC2FEAD00E6C97A /* GameViewController.swift */; };
 		62E2A7B72BC2FF5700E6C97A /* Renderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62E2A7B62BC2FF5700E6C97A /* Renderer.swift */; };
-		62E2A7BA2BC30D2B00E6C97A /* LinearAlgebra.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62E2A7B92BC30D2B00E6C97A /* LinearAlgebra.swift */; };
+		62EA6E932BC5DC400017991A /* Transform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62EA6E922BC5DC400017991A /* Transform.swift */; };
+		62EA6E952BC5DD370017991A /* MathLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62EA6E942BC5DD370017991A /* MathLibrary.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,8 +27,9 @@
 		629D84142BC1313F00677998 /* AppleMetalLearn.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AppleMetalLearn.xcdatamodel; sourceTree = "<group>"; };
 		62E2A7B42BC2FEAD00E6C97A /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
 		62E2A7B62BC2FF5700E6C97A /* Renderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Renderer.swift; sourceTree = "<group>"; };
-		62E2A7B82BC302D800E6C97A /* Definitions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Definitions.h; sourceTree = "<group>"; };
-		62E2A7B92BC30D2B00E6C97A /* LinearAlgebra.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinearAlgebra.swift; sourceTree = "<group>"; };
+		62E2A7B82BC302D800E6C97A /* ShaderTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShaderTypes.h; sourceTree = "<group>"; };
+		62EA6E922BC5DC400017991A /* Transform.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transform.swift; sourceTree = "<group>"; };
+		62EA6E942BC5DD370017991A /* MathLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MathLibrary.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -44,6 +46,7 @@
 		629D83FC2BC1313E00677998 = {
 			isa = PBXGroup;
 			children = (
+				62EA6E942BC5DD370017991A /* MathLibrary.swift */,
 				629D84072BC1313E00677998 /* AppleMetalLearn */,
 				629D84062BC1313E00677998 /* Products */,
 			);
@@ -60,15 +63,15 @@
 		629D84072BC1313E00677998 /* AppleMetalLearn */ = {
 			isa = PBXGroup;
 			children = (
+				62EA6E8F2BC5DC140017991A /* Model */,
 				62E2A7B62BC2FF5700E6C97A /* Renderer.swift */,
 				62E2A7B42BC2FEAD00E6C97A /* GameViewController.swift */,
-				62E2A7B82BC302D800E6C97A /* Definitions.h */,
+				62E2A7B82BC302D800E6C97A /* ShaderTypes.h */,
 				629D84082BC1313E00677998 /* AppleMetalLearnApp.swift */,
 				629D840C2BC1313F00677998 /* Assets.xcassets */,
 				629D84112BC1313F00677998 /* Persistence.swift */,
 				629D84132BC1313F00677998 /* AppleMetalLearn.xcdatamodeld */,
 				629D840E2BC1313F00677998 /* Preview Content */,
-				62E2A7B92BC30D2B00E6C97A /* LinearAlgebra.swift */,
 			);
 			path = AppleMetalLearn;
 			sourceTree = "<group>";
@@ -79,6 +82,14 @@
 				629D840F2BC1313F00677998 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		62EA6E8F2BC5DC140017991A /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				62EA6E922BC5DC400017991A /* Transform.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -152,8 +163,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				62E2A7B52BC2FEAD00E6C97A /* GameViewController.swift in Sources */,
-				62E2A7BA2BC30D2B00E6C97A /* LinearAlgebra.swift in Sources */,
+				62EA6E952BC5DD370017991A /* MathLibrary.swift in Sources */,
 				629D84122BC1313F00677998 /* Persistence.swift in Sources */,
+				62EA6E932BC5DC400017991A /* Transform.swift in Sources */,
 				629D84092BC1313E00677998 /* AppleMetalLearnApp.swift in Sources */,
 				62E2A7B72BC2FF5700E6C97A /* Renderer.swift in Sources */,
 				629D84152BC1313F00677998 /* AppleMetalLearn.xcdatamodeld in Sources */,
@@ -311,7 +323,7 @@
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = AppleMetalLearn/Definitions.h;
+				SWIFT_OBJC_BRIDGING_HEADER = AppleMetalLearn/ShaderTypes.h;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -346,7 +358,7 @@
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = AppleMetalLearn/Definitions.h;
+				SWIFT_OBJC_BRIDGING_HEADER = AppleMetalLearn/ShaderTypes.h;
 				"SWIFT_OBJC_BRIDGING_HEADER[arch=*]" = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

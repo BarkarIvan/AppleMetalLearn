@@ -9,8 +9,8 @@ import Metal
 import MetalKit
 import simd
 
-// выравнивание в 128 байт
-let alignedUniformsSize = (MemoryLayout<Uniforms>.size + 0xFF) & -0x100
+// выравнивание в 64 байт
+let alignedUniformsSize = (MemoryLayout<Uniforms>.size + 0x3F) & -0x40
 
 let maxBuffersInFlight = 3
 
@@ -96,6 +96,28 @@ class Renderer: NSObject, MTKViewDelegate{
         mtlVertexDescriptor.layouts[BufferIndex.meshGenerics.rawValue].stepFunction = MTLVertexStepFunction.perVertex
         
         return mtlVertexDescriptor
+        
+    }
+    
+    class func buildRenderPipelineWithDevice(device: MTLDevice,
+                                             metalKitView: MTKView,
+                                             mtlVertexDescriptor: MTLVertexDescriptor) throws -> MTLRenderPipelineState{
+        
+        let library = device.makeDefaultLibrary()
+        let vertexFuction = library?.makeFunction(name: "vertexDefaultShader")
+        let fragmentFunctionn = library?.makeFunction(name: "fragmentGBuffer")
+        
+        let pipelineDescriptor = MTLRenderPipelineDescriptor()
+        pipelineDescriptor.label = "RendrPipeline"
+        pipelineDescriptor.vertexFunction = vertexFuction
+        pipelineDescriptor.fragmentFunction = fragmentFunctionn
+        pipelineDescriptor.vertexDescriptor = mtlVertexDescriptor
+        
+        pipelineDescriptor.colorAttachments[0].pixelFormat = metalKitView.colorPixelFormat
+        pipelineDescriptor.depthAttachmentPixelFormat = metalKitView.depthStencilPixelFormat
+        pipelineDescriptor.stencilAttachmentPixelFormat = metalKitView.depthStencilPixelFormat
+        
+        return try device.makeRenderPipelineState(descriptor: pipelineDescriptor)
         
     }
     

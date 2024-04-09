@@ -5,8 +5,8 @@
 //  Created by barkar on 07.04.2024.
 //
 
-#ifndef Definitions_h
-#define Definitions_h
+#ifndef ShaderTypes_h
+#define ShaderTypes_h
 
 
 //использоввание типов и макросов в зависимости где компилится
@@ -33,7 +33,10 @@ typedef NS_ENUM(EnumBackingType, VertexAttribute)
 {
     VertexAttributePosition  = 0,
     VertexAttributeTexcoord  = 1,
-    VertexAttributeColor     = 2,
+    VertexAttributeNormal    = 2,
+    VertexAttributeTangent   = 3,
+    VertexAttributeBitangent = 4,
+    VertexAttributeColor     = 5,
 };
 
 typedef NS_ENUM(EnumBackingType, TextureIndex)
@@ -41,9 +44,28 @@ typedef NS_ENUM(EnumBackingType, TextureIndex)
     TextureIndexColor    = 0,
 };
 
+typedef NS_ENUM(EnumBackingType, RenderTargetIndex){
+    RenderTargetAlbedo = 1,
+    RenderTargetNormal = 2,
+    RenderTargetPosition = 3,
+} ;
+
+//TODO: pack to float4
+typedef struct{
+    uint width;
+    uint height;
+    uint tiling;
+    uint lightCount;
+    vector_float4 cameraPosition;
+    float scaleFactor;
+} Params
+
 typedef struct{
     matrix_float4x4 projectionMatrix;
     matrix_float4x4 modelViewMatrix;
+    matrix_float4x4 normalMatrix;
+    matrix_float4x4 shadowProjectionMatrix;
+    matrix_float4x4 shadowViewMatrix;
 } Uniforms;
 
 #endif /* Definitions_h */

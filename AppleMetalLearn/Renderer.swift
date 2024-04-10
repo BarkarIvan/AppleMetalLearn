@@ -16,8 +16,8 @@ let maxBuffersInFlight = 3
 
 
 class Renderer: NSObject, MTKViewDelegate{
-    public let device: MTLDevice
-    let commandQueue: MTLCommandQueue
+    static var device: MTLDevice!
+    static var commandQueue: MTLCommandQueue!
     var dynamicUniformBuffer: MTLBuffer
     var opaquePipeLineState: MTLRenderPipelineState
     var depthState: MTLDepthStencilState
@@ -37,15 +37,15 @@ class Renderer: NSObject, MTKViewDelegate{
     
     
     init?(metalKitView: MTKView){
-        self.device = metalKitView.device!
+        let device = metalKitView.device
         
-        guard let cmdQueue = self.device.makeCommandQueue() else {return nil}
-        self.commandQueue = cmdQueue
+        guard
+            let commandQueue = device?.makeCommandQueue() else {return nil}
         
         let uniformBufferSize = alignedUniformsSize * maxBuffersInFlight
         
         //Uniforms
-        guard let buffer = self.device.makeBuffer(length: uniformBufferSize, options: [MTLResourceOptions.storageModeShared]) else {return nil}
+        guard let buffer = device?.makeBuffer(length: uniformBufferSize, options: [MTLResourceOptions.storageModeShared]) else {return nil}
         
         dynamicUniformBuffer = buffer
         self.dynamicUniformBuffer.label = "UniformBuffer"

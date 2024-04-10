@@ -68,4 +68,11 @@ typedef struct{
     matrix_float4x4 shadowViewMatrix;
 } Uniforms;
 
+typedef struct {
+    vector_float3 baseColor;
+    float roughness;
+    float metallic;
+    float emission;
+}Material
+
 #endif /* Definitions_h */

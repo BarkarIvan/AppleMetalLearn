@@ -29,6 +29,13 @@ class GameViewController: UIViewController{
         mtkView.device = defaultMTDevice;
         mtkView.backgroundColor = UIColor.black;
         
-        guard let newRenderer = Renderer(
+        guard let newRenderer = Renderer(metalKitView: mtkView)else{
+            print("Renderer not init")
+            return
+        }
+        
+        renderer = newRenderer
+        renderer.mtkView(mtkView, drawableSizeWillChange: mtkView.drawableSize)
+        mtkView.delegate = renderer
     }
 }

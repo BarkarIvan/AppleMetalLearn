@@ -84,6 +84,13 @@ class Renderer: NSObject, MTKViewDelegate{
         mtlVertexDescriptor.attributes[VertexAttribute.texcoord.rawValue].bufferIndex = BufferIndex.meshGenerics.rawValue
         offset += MemoryLayout<SIMD2<Float>>.stride
         
+        //nnormal
+        mtlVertexDescriptor.attributes[VertexAttribute.normal.rawValue].format = MTLVertexFormat.float3
+        mtlVertexDescriptor.attributes[VertexAttribute.normal.rawValue].offset = offset
+        mtlVertexDescriptor.attributes[VertexAttribute.normal.rawValue].bufferIndex = BufferIndex.meshGenerics.rawValue
+        offset += MemoryLayout<SIMD3<Float>>.stride
+
+        
         //test color float3
         mtlVertexDescriptor.attributes[VertexAttribute.color.rawValue].format = MTLVertexFormat.float3
         mtlVertexDescriptor.attributes[VertexAttribute.color.rawValue].offset = offset

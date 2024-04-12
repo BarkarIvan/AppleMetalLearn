@@ -10,7 +10,7 @@ import MetalKit
 struct Submesh{
     
     let indexCount: Int
-    let indexTyoes: MTLIndexType
+    let indexType: MTLIndexType
     let indexBuffer: MTLBuffer
     let indexBufferOffset: Int
     
@@ -25,6 +25,35 @@ struct Submesh{
     var material: Material
 }
 
+extension Submesh{
+    init(mdlSubmesh: MDLSubmesh, mtkSubmesh: MTKSubmesh){
+        indexCount = mtkSubmesh.indexCount
+        indexType = mtkSubmesh.indexType
+        indexBuffer = mtkSubmesh.indexBuffer.buffer
+        indexBufferOffset = mtkSubmesh.indexBuffer.offset
+        textures = Textures(material: mdlSubmesh.material)
+        material = Material(material: mdlSubmesh.material)
+    
+    }
+}
+
+
+
+private extension Submesh.Textures{
+    init(material: MDLMaterial?){
+        baseColor = material?.texture(type: .baseColor)
+        additionalMap = material?.texture(type: .userDefined)
+        diffuseBrushMap = material?.texture(type: .userDefined)
+        emissionMap = material?.texture(type: .emission)
+    }
+}
+
+
+private extension MDLMaterialProperty{
+    var textureName: String{
+        stringValue ?? UUID().uuidString
+    }
+}
 
 private extension MDLMaterial{
     func texture(type semantic: MDLMaterialSemantic) -> MTLTexture?{

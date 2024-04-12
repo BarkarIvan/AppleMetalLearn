@@ -12,6 +12,8 @@
 		629D84102BC1313F00677998 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 629D840F2BC1313F00677998 /* Preview Assets.xcassets */; };
 		629D84122BC1313F00677998 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 629D84112BC1313F00677998 /* Persistence.swift */; };
 		629D84152BC1313F00677998 /* AppleMetalLearn.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 629D84132BC1313F00677998 /* AppleMetalLearn.xcdatamodeld */; };
+		62C631272BC9D8AA00F90378 /* Camera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62C631262BC9D8AA00F90378 /* Camera.swift */; };
+		62C6312A2BC9DE2300F90378 /* Movement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62C631292BC9DE2300F90378 /* Movement.swift */; };
 		62D0EFE62BC728D5004BFD58 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62D0EFE52BC728D5004BFD58 /* Model.swift */; };
 		62D0EFE82BC72925004BFD58 /* Mesh.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62D0EFE72BC72925004BFD58 /* Mesh.swift */; };
 		62D0EFEA2BC729AA004BFD58 /* Submesh.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62D0EFE92BC729AA004BFD58 /* Submesh.swift */; };
@@ -29,6 +31,8 @@
 		629D840F2BC1313F00677998 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		629D84112BC1313F00677998 /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		629D84142BC1313F00677998 /* AppleMetalLearn.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AppleMetalLearn.xcdatamodel; sourceTree = "<group>"; };
+		62C631262BC9D8AA00F90378 /* Camera.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Camera.swift; sourceTree = "<group>"; };
+		62C631292BC9DE2300F90378 /* Movement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Movement.swift; sourceTree = "<group>"; };
 		62D0EFE52BC728D5004BFD58 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		62D0EFE72BC72925004BFD58 /* Mesh.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mesh.swift; sourceTree = "<group>"; };
 		62D0EFE92BC729AA004BFD58 /* Submesh.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Submesh.swift; sourceTree = "<group>"; };
@@ -70,6 +74,8 @@
 		629D84072BC1313E00677998 /* AppleMetalLearn */ = {
 			isa = PBXGroup;
 			children = (
+				62C631282BC9DE0D00F90378 /* Input */,
+				62C631232BC9D84E00F90378 /* Application */,
 				62D0EFEB2BC7320E004BFD58 /* Textures */,
 				62D0EFE22BC72795004BFD58 /* Utils */,
 				62EA6E8F2BC5DC140017991A /* Model */,
@@ -91,6 +97,22 @@
 				629D840F2BC1313F00677998 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		62C631232BC9D84E00F90378 /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				62C631262BC9D8AA00F90378 /* Camera.swift */,
+			);
+			path = Application;
+			sourceTree = "<group>";
+		};
+		62C631282BC9DE0D00F90378 /* Input */ = {
+			isa = PBXGroup;
+			children = (
+				62C631292BC9DE2300F90378 /* Movement.swift */,
+			);
+			path = Input;
 			sourceTree = "<group>";
 		};
 		62D0EFE22BC72795004BFD58 /* Utils */ = {
@@ -193,11 +215,13 @@
 				62E2A7B52BC2FEAD00E6C97A /* GameViewController.swift in Sources */,
 				62EA6E952BC5DD370017991A /* MathLibrary.swift in Sources */,
 				62D0EFED2BC73236004BFD58 /* TextureController.swift in Sources */,
+				62C6312A2BC9DE2300F90378 /* Movement.swift in Sources */,
 				629D84122BC1313F00677998 /* Persistence.swift in Sources */,
 				62EA6E932BC5DC400017991A /* Transform.swift in Sources */,
 				629D84092BC1313E00677998 /* AppleMetalLearnApp.swift in Sources */,
 				62E2A7B72BC2FF5700E6C97A /* Renderer.swift in Sources */,
 				62D0EFE82BC72925004BFD58 /* Mesh.swift in Sources */,
+				62C631272BC9D8AA00F90378 /* Camera.swift in Sources */,
 				62D0EFEA2BC729AA004BFD58 /* Submesh.swift in Sources */,
 				629D84152BC1313F00677998 /* AppleMetalLearn.xcdatamodeld in Sources */,
 				62D0EFE62BC728D5004BFD58 /* Model.swift in Sources */,

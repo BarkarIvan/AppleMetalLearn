@@ -108,8 +108,8 @@ extension float4x4 {
     }
     
     // left-handed LookAt
-    init(eye: simd_float3, center: simd_float3, up: simd_float3) {
-        let z = normalize(center - eye)
+    init(eye: simd_float3, center: simd_float3, up: simd_float3, isLeftHand: Bool = false) {
+        let z = isLeftHand ? normalize(center - eye) : normalize(eye - center)
         let x = normalize(cross(up, z))
         let y = cross(z, x)
         

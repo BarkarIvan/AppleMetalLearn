@@ -42,6 +42,9 @@ typedef NS_ENUM(EnumBackingType, VertexAttribute)
 typedef NS_ENUM(EnumBackingType, TextureIndex)
 {
     TextureIndexColor    = 0,
+    TextureIndexAdditional = 1,
+    TextureIndexEmission = 2,
+    TextureIndexShadow = 3
 };
 
 typedef NS_ENUM(EnumBackingType, RenderTargetIndex){

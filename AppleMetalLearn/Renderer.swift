@@ -62,49 +62,11 @@ class Renderer: NSObject, MTKViewDelegate{
     }
     
     // TODO: to mesh class
-    class func buildMTLVertexDescriptor() -> MTLVertexDescriptor{
+   // class func buildMTLVertexDescriptor() -> MTLVertexDescriptor{
         
-        var offset: Int = 0
-        //позиции (в 0 буфере)
-        let mtlVertexDescriptor = MTLVertexDescriptor()
-        mtlVertexDescriptor.attributes[VertexAttribute.position.rawValue].format = MTLVertexFormat.float3;
-        mtlVertexDescriptor.attributes[VertexAttribute.position.rawValue].offset = 0
-        mtlVertexDescriptor.attributes[VertexAttribute.position.rawValue].bufferIndex = BufferIndex.meshPositions.rawValue
         
-        offset += MemoryLayout<SIMD3<Float>>.stride
-        mtlVertexDescriptor.layouts[BufferIndex.meshPositions.rawValue].stride = offset
-        mtlVertexDescriptor.layouts[BufferIndex.meshPositions.rawValue].stepRate = 1
-        mtlVertexDescriptor.layouts[BufferIndex.meshPositions.rawValue].stepFunction = MTLVertexStepFunction.perVertex
         
-        //MESH GENERICS
-        //uv
-        offset = 0
-        mtlVertexDescriptor.attributes[VertexAttribute.texcoord.rawValue].format = MTLVertexFormat.float2
-        mtlVertexDescriptor.attributes[VertexAttribute.texcoord.rawValue].offset = 0
-        mtlVertexDescriptor.attributes[VertexAttribute.texcoord.rawValue].bufferIndex = BufferIndex.meshGenerics.rawValue
-        offset += MemoryLayout<SIMD2<Float>>.stride
-        
-        //nnormal
-        mtlVertexDescriptor.attributes[VertexAttribute.normal.rawValue].format = MTLVertexFormat.float3
-        mtlVertexDescriptor.attributes[VertexAttribute.normal.rawValue].offset = offset
-        mtlVertexDescriptor.attributes[VertexAttribute.normal.rawValue].bufferIndex = BufferIndex.meshGenerics.rawValue
-        offset += MemoryLayout<SIMD3<Float>>.stride
-
-        
-        //test color float3
-        mtlVertexDescriptor.attributes[VertexAttribute.color.rawValue].format = MTLVertexFormat.float3
-        mtlVertexDescriptor.attributes[VertexAttribute.color.rawValue].offset = offset
-        mtlVertexDescriptor.attributes[VertexAttribute.color.rawValue].bufferIndex = BufferIndex.meshGenerics.rawValue
-        offset += MemoryLayout<SIMD3<Float>>.stride
-        //
-       
-        mtlVertexDescriptor.layouts[BufferIndex.meshGenerics.rawValue].stride = offset
-        mtlVertexDescriptor.layouts[BufferIndex.meshGenerics.rawValue].stepRate = 1
-        mtlVertexDescriptor.layouts[BufferIndex.meshGenerics.rawValue].stepFunction = MTLVertexStepFunction.perVertex
-        
-        return mtlVertexDescriptor
-        
-    }
+    //}
     
     class func buildRenderPipelineWithDevice(device: MTLDevice,
                                              metalKitView: MTKView,

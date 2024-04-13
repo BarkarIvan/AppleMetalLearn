@@ -27,6 +27,29 @@ extension Movement{
     }
     
     
+  
+    func updateInput(deltaTime: Float) -> Transform{
+        var transform = Transform()
+        let rotationAmount = deltaTime * Settings.rotationSpeed
+        let input = InputController.shared
+        
+        var direction: simd_float3 = .zero;
+        var translationAmount: Float = .zero
+        if input.touchPressed{
+            
+            transform.rotation.y = input.pointerDelta.x * Settings.rotationSpeed * deltaTime
+            transform.rotation.x = input.pointerDelta.y * Settings.rotationSpeed * deltaTime
+            
+            translationAmount = deltaTime * Settings.translationSpeed
+        }
+        
+        if(direction != .zero){
+            direction = normalize(direction)
+            transform.position += forwardVector * translationAmount
+        }
+        return transform
+    }
+    
 }
 
 

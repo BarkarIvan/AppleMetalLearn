@@ -94,6 +94,13 @@ extension float4x4 {
     }
     
     
+    var upperLeft: float3x3 {
+      let x = simd_float3(columns.0.x, columns.0.y, columns.0.z)
+      let y = simd_float3(columns.1.x, columns.1.y, columns.1.z)
+      let z = simd_float3(columns.2.x, columns.2.y, columns.2.z)
+      return float3x3(x, y, z)
+    }
+    
     
     init(projectionFov fov: Float, near: Float, far: Float, aspect: Float, isLeftHand: Bool = false) {
         let y = 1 / tan(fov * 0.5)

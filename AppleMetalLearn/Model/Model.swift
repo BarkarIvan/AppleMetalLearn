@@ -48,6 +48,42 @@ extension Model{
             }
         }
     }
+    
+    func render ( encoder: MTLRenderCommandEncoder, uniforms vertex: Uniforms, params fragment: Params){
+        
+        var uniforms = vertex
+        var params = fragment
+        params.tiling = tiling
+        
+        uniforms.modelMatrix = transform.modelMatrix
+        uniforms.normalMatrix = transform.modelMatrix.upperLeft
+        
+        encoder.setVertexBytes(&uniforms, length: MemoryLayout<Uniforms>.stride, index: BufferIndex.uniforms.rawValue)
+        
+        encoder.setFragmentBytes(&params, length: MemoryLayout<Params>.stride , index: BufferIndex.params.rawValue)
+        
+        for mesh in meshes {
+            for(index, vertexBuffer) in mesh.vertexBuffers.enumerated(){
+                encoder.setVertexBuffer(vertexBuffer, offset: 0, index: index)
+            }
+            
+            for submeshe in mesh.submeshes {
+                //frag texture here
+                
+                var material = submeshe.material
+                encoder.setFragmentBytes(&material, length: MemoryLayout<Material>.stride, index: BufferIndex.material.rawValue)
+                
+                encoder.setFragmentTexture(submeshe.textures.baseColor, index: TextureIndex.color.rawValue)
+                
+                encoder.setFragmentTexture(submeshe.textures.additionalMap, index: TextureIndex.additional.rawValue)
+                
+                //TODO: BRUSH TEXTURE
+                //TODO: EEMISSION TEXTURE
+                
+                encoder.drawIndexedPrimitives(type: .triangle, indexCount: submeshe.indexCount, indexType: submeshe.indexType, indexBuffer: submeshe.indexBuffer, indexBufferOffset: submeshe.indexBufferOffset)
+            }
+        }
+    }
 }
 
 

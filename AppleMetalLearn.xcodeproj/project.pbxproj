@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		628AE5B22BCBC2240094CAD7 /* SceneLighting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 628AE5B12BCBC2240094CAD7 /* SceneLighting.swift */; };
+		62986BB92BCC430200B7DF50 /* GBufferRenderPass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62986BB82BCC430200B7DF50 /* GBufferRenderPass.swift */; };
+		62986BBB2BCC432E00B7DF50 /* RenderPass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62986BBA2BCC432E00B7DF50 /* RenderPass.swift */; };
+		62986BBD2BCC4D4600B7DF50 /* PipelineStates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62986BBC2BCC4D4600B7DF50 /* PipelineStates.swift */; };
+		62986BC52BCC5A6500B7DF50 /* RubberToy.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 62986BC42BCC5A6500B7DF50 /* RubberToy.usdz */; };
 		629D84092BC1313E00677998 /* AppleMetalLearnApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 629D84082BC1313E00677998 /* AppleMetalLearnApp.swift */; };
 		629D840D2BC1313F00677998 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 629D840C2BC1313F00677998 /* Assets.xcassets */; };
 		629D84102BC1313F00677998 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 629D840F2BC1313F00677998 /* Preview Assets.xcassets */; };
@@ -31,6 +35,10 @@
 
 /* Begin PBXFileReference section */
 		628AE5B12BCBC2240094CAD7 /* SceneLighting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneLighting.swift; sourceTree = "<group>"; };
+		62986BB82BCC430200B7DF50 /* GBufferRenderPass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GBufferRenderPass.swift; sourceTree = "<group>"; };
+		62986BBA2BCC432E00B7DF50 /* RenderPass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RenderPass.swift; sourceTree = "<group>"; };
+		62986BBC2BCC4D4600B7DF50 /* PipelineStates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PipelineStates.swift; sourceTree = "<group>"; };
+		62986BC42BCC5A6500B7DF50 /* RubberToy.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = RubberToy.usdz; sourceTree = "<group>"; };
 		629D84052BC1313E00677998 /* AppleMetalLearn.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AppleMetalLearn.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		629D84082BC1313E00677998 /* AppleMetalLearnApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleMetalLearnApp.swift; sourceTree = "<group>"; };
 		629D840C2BC1313F00677998 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -65,6 +73,32 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		62986BB72BCC42EB00B7DF50 /* RenderPasses */ = {
+			isa = PBXGroup;
+			children = (
+				62986BB82BCC430200B7DF50 /* GBufferRenderPass.swift */,
+				62986BBA2BCC432E00B7DF50 /* RenderPass.swift */,
+				62986BBC2BCC4D4600B7DF50 /* PipelineStates.swift */,
+			);
+			path = RenderPasses;
+			sourceTree = "<group>";
+		};
+		62986BBE2BCC576400B7DF50 /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				62986BBF2BCC577400B7DF50 /* Models */,
+			);
+			path = Assets;
+			sourceTree = "<group>";
+		};
+		62986BBF2BCC577400B7DF50 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				62986BC42BCC5A6500B7DF50 /* RubberToy.usdz */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		629D83FC2BC1313E00677998 = {
 			isa = PBXGroup;
 			children = (
@@ -84,12 +118,13 @@
 		629D84072BC1313E00677998 /* AppleMetalLearn */ = {
 			isa = PBXGroup;
 			children = (
+				62986BBE2BCC576400B7DF50 /* Assets */,
+				62986BB72BCC42EB00B7DF50 /* RenderPasses */,
 				62C631282BC9DE0D00F90378 /* Input */,
 				62C631232BC9D84E00F90378 /* Application */,
 				62D0EFEB2BC7320E004BFD58 /* Textures */,
 				62D0EFE22BC72795004BFD58 /* Utils */,
 				62EA6E8F2BC5DC140017991A /* Model */,
-				62E2A7B62BC2FF5700E6C97A /* Renderer.swift */,
 				62E2A7B82BC302D800E6C97A /* ShaderTypes.h */,
 				629D84082BC1313E00677998 /* AppleMetalLearnApp.swift */,
 				629D840C2BC1313F00677998 /* Assets.xcassets */,
@@ -111,6 +146,7 @@
 		62C631232BC9D84E00F90378 /* Application */ = {
 			isa = PBXGroup;
 			children = (
+				62E2A7B62BC2FF5700E6C97A /* Renderer.swift */,
 				62C631262BC9D8AA00F90378 /* Camera.swift */,
 				62D9D6152BCA692400EE9691 /* GameController.swift */,
 				62D9D6172BCB029700EE9691 /* PlayerCamera.swift */,
@@ -216,6 +252,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				629D84102BC1313F00677998 /* Preview Assets.xcassets in Resources */,
+				62986BC52BCC5A6500B7DF50 /* RubberToy.usdz in Resources */,
 				629D840D2BC1313F00677998 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -233,6 +270,7 @@
 				62D9D6142BCA68E200EE9691 /* InputController.swift in Sources */,
 				628AE5B22BCBC2240094CAD7 /* SceneLighting.swift in Sources */,
 				62D0EFED2BC73236004BFD58 /* TextureController.swift in Sources */,
+				62986BBD2BCC4D4600B7DF50 /* PipelineStates.swift in Sources */,
 				62C6312A2BC9DE2300F90378 /* Movement.swift in Sources */,
 				629D84122BC1313F00677998 /* Persistence.swift in Sources */,
 				62EA6E932BC5DC400017991A /* Transform.swift in Sources */,
@@ -241,6 +279,8 @@
 				62E2A7B72BC2FF5700E6C97A /* Renderer.swift in Sources */,
 				62D0EFE82BC72925004BFD58 /* Mesh.swift in Sources */,
 				62C631272BC9D8AA00F90378 /* Camera.swift in Sources */,
+				62986BBB2BCC432E00B7DF50 /* RenderPass.swift in Sources */,
+				62986BB92BCC430200B7DF50 /* GBufferRenderPass.swift in Sources */,
 				62D9D6182BCB029700EE9691 /* PlayerCamera.swift in Sources */,
 				62D0EFEA2BC729AA004BFD58 /* Submesh.swift in Sources */,
 				629D84152BC1313F00677998 /* AppleMetalLearn.xcdatamodeld in Sources */,

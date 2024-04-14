@@ -22,7 +22,7 @@ struct GameScene{
             rotation: [-0.6,10.7,0.0])
     }
     
-    //var lighting = SceneLighting()
+    var lighting = SceneLighting()
     
     init(){
         

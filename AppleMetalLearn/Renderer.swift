@@ -18,6 +18,8 @@ let maxBuffersInFlight = 3
 class Renderer: NSObject, MTKViewDelegate{
     static var device: MTLDevice!
     static var commandQueue: MTLCommandQueue!
+    static var library: MTLLibrary!
+    
     var dynamicUniformBuffer: MTLBuffer
     var opaquePipeLineState: MTLRenderPipelineState
     var depthState: MTLDepthStencilState
@@ -31,9 +33,8 @@ class Renderer: NSObject, MTKViewDelegate{
     
     var projectionMatrix: matrix_float4x4 = matrix_float4x4()
     
-    //temp
-    var rotation = 0
-    var mesh: MTKMesh
+    var shdowCamera = OrthographicCamera()
+    
     
     
     init?(metalKitView: MTKView){
@@ -61,12 +62,11 @@ class Renderer: NSObject, MTKViewDelegate{
         
     }
     
-    // TODO: to mesh class
-   // class func buildMTLVertexDescriptor() -> MTLVertexDescriptor{
+    func updateGameState(scene: GameScene){
+        uniforms[0].projectionMatrix = scene.camera.projectionMatrix
+        uniforms[0].viewMatrix = scene.camera.viewMatrix
         
-        
-        
-    //}
+    }
     
     class func buildRenderPipelineWithDevice(device: MTLDevice,
                                              metalKitView: MTKView,

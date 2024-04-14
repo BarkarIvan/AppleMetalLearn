@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		628AE5B22BCBC2240094CAD7 /* SceneLighting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 628AE5B12BCBC2240094CAD7 /* SceneLighting.swift */; };
 		629D84092BC1313E00677998 /* AppleMetalLearnApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 629D84082BC1313E00677998 /* AppleMetalLearnApp.swift */; };
 		629D840D2BC1313F00677998 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 629D840C2BC1313F00677998 /* Assets.xcassets */; };
 		629D84102BC1313F00677998 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 629D840F2BC1313F00677998 /* Preview Assets.xcassets */; };
@@ -29,6 +30,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		628AE5B12BCBC2240094CAD7 /* SceneLighting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneLighting.swift; sourceTree = "<group>"; };
 		629D84052BC1313E00677998 /* AppleMetalLearn.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AppleMetalLearn.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		629D84082BC1313E00677998 /* AppleMetalLearnApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleMetalLearnApp.swift; sourceTree = "<group>"; };
 		629D840C2BC1313F00677998 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -113,6 +115,7 @@
 				62D9D6152BCA692400EE9691 /* GameController.swift */,
 				62D9D6172BCB029700EE9691 /* PlayerCamera.swift */,
 				62D9D6192BCB07AE00EE9691 /* GameScene.swift */,
+				628AE5B12BCBC2240094CAD7 /* SceneLighting.swift */,
 			);
 			path = Application;
 			sourceTree = "<group>";
@@ -228,6 +231,7 @@
 				62EA6E952BC5DD370017991A /* MathLibrary.swift in Sources */,
 				62D9D61A2BCB07AE00EE9691 /* GameScene.swift in Sources */,
 				62D9D6142BCA68E200EE9691 /* InputController.swift in Sources */,
+				628AE5B22BCBC2240094CAD7 /* SceneLighting.swift in Sources */,
 				62D0EFED2BC73236004BFD58 /* TextureController.swift in Sources */,
 				62C6312A2BC9DE2300F90378 /* Movement.swift in Sources */,
 				629D84122BC1313F00677998 /* Persistence.swift in Sources */,

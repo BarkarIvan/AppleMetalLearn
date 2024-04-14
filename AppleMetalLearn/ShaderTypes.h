@@ -65,7 +65,7 @@ typedef struct{
 
 typedef struct{
     matrix_float4x4 projectionMatrix;
-    matrix_float4x4 modelViewMatrix;
+    matrix_float4x4 viewMatrix;
     matrix_float4x4 normalMatrix;
     matrix_float4x4 shadowProjectionMatrix;
     matrix_float4x4 shadowViewMatrix;
@@ -77,5 +77,26 @@ typedef struct {
     float metallic;
     float emission;
 }Material
+
+typedef enum {
+    unused = 0,
+    directionalLightType = 1,
+    spotLightType = 2,
+    pointLightType = 3,
+    ambientLightType = 4
+}LightType
+
+typedef struct {
+    LightType type;
+    vector_float3 position;
+    vector_float3 color;
+    float radius;
+    vector_float3 attenuation;
+    float coneangle;
+    vector_float3 coneDirection;
+    float coneAttenuation;
+}Light;
+
+
 
 #endif /* Definitions_h */

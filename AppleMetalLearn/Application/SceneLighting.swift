@@ -27,12 +27,12 @@ struct SceneLighting{
     }()
     
     
-    var lights: [Light]
+   // var lights: [Light]
     var directionalLights: [Light]
     var pointLights: [Light]
-    var lightBuffer: MTLBuffer
-    var directionalBuffer: MTLBuffer
-    var pointBuffer: MTLBuffer
+    //var lightBuffer: MTLBuffer
+   // var directionalBuffer: MTLBuffer
+   // var pointBuffer: MTLBuffer
     
     
     static func createPointLight( position: simd_float3, color: simd_float3, attenuation: simd_float3) -> Light

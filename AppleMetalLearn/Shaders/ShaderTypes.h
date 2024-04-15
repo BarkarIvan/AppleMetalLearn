@@ -61,9 +61,9 @@ typedef struct{
     uint height;
     uint tiling;
     uint lightCount;
-    vector_float4 cameraPosition;
+    vector_float3 cameraPosition;
     float scaleFactor;
-} Params
+} Params;
 
 typedef struct{
     matrix_float4x4 projectionMatrix;
@@ -79,7 +79,7 @@ typedef struct {
     float roughness;
     float metallic;
     float emission;
-}Material
+}Material;
 
 typedef enum {
     unused = 0,
@@ -87,7 +87,7 @@ typedef enum {
     spotLightType = 2,
     pointLightType = 3,
     ambientLightType = 4
-}LightType
+}LightType;
 
 typedef struct {
     LightType type;
@@ -102,4 +102,4 @@ typedef struct {
 
 
 
-#endif /* Definitions_h */
+#endif //

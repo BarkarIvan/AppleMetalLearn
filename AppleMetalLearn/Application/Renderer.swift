@@ -15,89 +15,79 @@ let alignedUniformsSize = (MemoryLayout<Uniforms>.size + 0x3F) & -0x40
 let maxBuffersInFlight = 3
 
 
-class Renderer: NSObject, MTKViewDelegate{
+class Renderer: NSObject{
     static var device: MTLDevice!
     static var commandQueue: MTLCommandQueue!
     static var library: MTLLibrary!
     
-    var dynamicUniformBuffer: MTLBuffer
-    var opaquePipeLineState: MTLRenderPipelineState
-    var depthState: MTLDepthStencilState
-    var colorMap: MTLTexture
+    var uniforms = Uniforms()
+    var params = Params()
     
-    //unoforms
-    let inFlightSemaphore = DispatchSemaphore(value: maxBuffersInFlight)
-    var uniformBufferOffset = 0
-    var uniformBufferIndex = 0
-    var uniforms: UnsafeMutablePointer<Uniforms>
+   // var shadowRenderPass: Shadow
+    var gBufferRenderPass: GBufferRenderPass
     
-    var projectionMatrix: matrix_float4x4 = matrix_float4x4()
+   // var shadowCamera = OrthographicCamera()
     
-    var shdowCamera = OrthographicCamera()
-    
-    
-    
-    init?(metalKitView: MTKView){
-        let device = metalKitView.device
-        
+    init (metalView: MTKView){
         guard
-            let commandQueue = device?.makeCommandQueue() else {return nil}
+            let device = MTLCreateSystemDefaultDevice(),
+            let commandQueue = device.makeCommandQueue() else {
+            fatalError("No GPU available")
+        }
+        Self.device = device
+        Self.commandQueue = commandQueue
+        metalView.device = device
         
-        let uniformBufferSize = alignedUniformsSize * maxBuffersInFlight
+        Self.library = device.makeDefaultLibrary()
         
-        //Uniforms
-        guard let buffer = device?.makeBuffer(length: uniformBufferSize, options: [MTLResourceOptions.storageModeShared]) else {return nil}
+        gBufferRenderPass = GBufferRenderPass(view: metalView)
         
-        dynamicUniformBuffer = buffer
-        self.dynamicUniformBuffer.label = "UniformBuffer"
-        uniforms = UnsafeMutableRawPointer(dynamicUniformBuffer.contents()).bindMemory(to: Uniforms.self, capacity:1)
+        super.init()
+        metalView.clearColor = MTLClearColor(red: 0.5, green: 0.5, blue: 0.0, alpha: 1)
+        metalView.depthStencilPixelFormat = .depth32Float
         
-        //states pixel
-        metalKitView.depthStencilPixelFormat = MTLPixelFormat.depth32Float_stencil8
-        metalKitView.colorPixelFormat = .bgra8Unorm_srgb
-        metalKitView.sampleCount = 1
+        mtkView(metalView, drawableSizeWillChange: metalView.drawableSize)
         
-        //render pipelines
+        params.scaleFactor = Float(UIScreen.main.scale)
+    }
+}
+
+extension Renderer {
+    func mtkView(
+    _ view: MTKView, drawableSizeWillChange size: CGSize)
+    {
+        gBufferRenderPass.resize(view: view, size: size)
+    }
+    
+    func updateUniforms(scene: GameScene){
+        uniforms.viewMatrix = scene.camera.viewMatrix
+        uniforms.projectionMatrix = scene.camera.projectionMatrix
+        params.lightCount = 0;//UInt32(scene.lighting.lights.count)
+        params.cameraPosition = scene.camera.position
         
+        //TODO: shadows camera and matrices
+        //let directional = scene.lighting.lights[0]
         
     }
     
-    func updateGameState(scene: GameScene){
-        uniforms[0].projectionMatrix = scene.camera.projectionMatrix
-        uniforms[0].viewMatrix = scene.camera.viewMatrix
+    func draw(scene: GameScene, in view: MTKView){
+        guard
+            let commandBuffer = Self.commandQueue.makeCommandBuffer(),
+            let descriptor = view.currentRenderPassDescriptor   else {return}
+        
+        updateUniforms(scene: scene)
+        
+        //shadowpass
+        
+        gBufferRenderPass.draw(commandBuffer: commandBuffer, scene: scene, uniforms: uniforms, params: params)
+        
+        //forward transparent
+        
+        //opacity
+        guard let drawable = view.currentDrawable else {return}
+        commandBuffer.present(drawable)
+        commandBuffer.commit()
         
     }
-    
-    class func buildRenderPipelineWithDevice(device: MTLDevice,
-                                             metalKitView: MTKView,
-                                             mtlVertexDescriptor: MTLVertexDescriptor) throws -> MTLRenderPipelineState{
-        
-        let library = device.makeDefaultLibrary()
-        let vertexFuction = library?.makeFunction(name: "vertexDefaultShader")
-        let fragmentFunctionn = library?.makeFunction(name: "fragmentGBuffer")
-        
-        let pipelineDescriptor = MTLRenderPipelineDescriptor()
-        pipelineDescriptor.label = "RendrPipeline"
-        pipelineDescriptor.vertexFunction = vertexFuction
-        pipelineDescriptor.fragmentFunction = fragmentFunctionn
-        pipelineDescriptor.vertexDescriptor = mtlVertexDescriptor
-        
-        pipelineDescriptor.colorAttachments[0].pixelFormat = metalKitView.colorPixelFormat
-        pipelineDescriptor.depthAttachmentPixelFormat = metalKitView.depthStencilPixelFormat
-        pipelineDescriptor.stencilAttachmentPixelFormat = metalKitView.depthStencilPixelFormat
-        
-        return try device.makeRenderPipelineState(descriptor: pipelineDescriptor)
-        
-    }
-    
-    
-    func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {
-        <#code#>
-    }
-    
-    func draw(in view: MTKView) {
-        <#code#>
-    }
-    
     
 }

@@ -13,7 +13,7 @@ struct GBufferRenderPass: RenderPass{
     
     var pipelineState: MTLRenderPipelineState
     let depthStencilState: MTLDepthStencilState?
-    weak var shadowTexture: MTLTexture?
+   // weak var shadowTexture: MTLTexture?
     
     var albedoTexture: MTLTexture?
     var normaltexture: MTLTexture?
@@ -21,7 +21,7 @@ struct GBufferRenderPass: RenderPass{
     var depthTexture: MTLTexture?
     
     init(view: MTKView){
-        pipelineState = PipelineStates.createGBufferPipelineState(colorPixelFormat: view.colorPixelFormat, vertexFunctionName: "vertex_main", fragmentFunctionName: "fragment_GBuffer")
+        pipelineState = PipelineStates.createGBufferPipelineState( vertexFunctionName: "vertex_main", fragmentFunctionName: "fragment_GBuffer")
         depthStencilState = Self.buildDepthStencilState()
         descriptor = MTLRenderPassDescriptor()
     }
@@ -52,6 +52,8 @@ struct GBufferRenderPass: RenderPass{
             return
         }
         renderEncoder.label = name
+       // renderEncoder.setCullMode(.back)
+        //renderEncoder.setFrontFacing(.clockwise)
         renderEncoder.setDepthStencilState(depthStencilState)
         renderEncoder.setRenderPipelineState(pipelineState)
         
@@ -60,8 +62,10 @@ struct GBufferRenderPass: RenderPass{
         
         for model in scene.models{
             renderEncoder.pushDebugGroup(model.name)
-            model.render(commandBuffer: <#T##MTLCommandBuffer#>, scene: <#T##GameScene#>, uniforms: <#T##Uniforms#>, params: <#T##Params#>)
+            model.render(encoder: renderEncoder, uniforms: uniforms, params: params)
+            renderEncoder.popDebugGroup()
         }
+        renderEncoder.endEncoding()
     }
     
     

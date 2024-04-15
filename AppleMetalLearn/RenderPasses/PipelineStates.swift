@@ -23,19 +23,22 @@ enum PipelineStates{
         
     }
     
-    static func createGBufferPipelineState(colorPixelFormat: MTLPixelFormat, vertexFunctionName: String, fragmentFunctionName: String) -> MTLRenderPipelineState{
+    static func createGBufferPipelineState(vertexFunctionName: String, fragmentFunctionName: String) -> MTLRenderPipelineState{
         let vertexFunction = Renderer.library?.makeFunction(name: vertexFunctionName)
         let fragmentFunction = Renderer.library?.makeFunction(name: fragmentFunctionName)
         let pipelineDescriptor = MTLRenderPipelineDescriptor()
         pipelineDescriptor.vertexFunction = vertexFunction
         pipelineDescriptor.fragmentFunction = fragmentFunction
-        pipelineDescriptor.colorAttachments[0].pixelFormat = colorPixelFormat
-        pipelineDescriptor.depthAttachmentPixelFormat = .depth16Unorm
+       // pipelineDescriptor.colorAttachments[0].pixelFormat = .invalid
+        pipelineDescriptor.colorAttachments[RenderTargetIndex.albedo.rawValue].pixelFormat = .bgra8Unorm_srgb
+        pipelineDescriptor.colorAttachments[RenderTargetIndex.normal.rawValue].pixelFormat = .rgba16Float
+        pipelineDescriptor.colorAttachments[RenderTargetIndex.position.rawValue].pixelFormat = .rgba16Float
+        pipelineDescriptor.depthAttachmentPixelFormat = .depth32Float
         pipelineDescriptor.vertexDescriptor = MTLVertexDescriptor.defaultLayout
         return createPipelineState(descriptor: pipelineDescriptor)
     }
     
-    
+    /*
     static func createShadowPipelineState() -> MTLRenderPipelineState{
         let vertexFunction = Renderer.library?.makeFunction(name: "vertex_depth")
           let pipelineDescriptor = MTLRenderPipelineDescriptor()
@@ -45,20 +48,7 @@ enum PipelineStates{
         pipelineDescriptor.vertexDescriptor = .defaultLayout
         return createPipelineState(descriptor: pipelineDescriptor)
     }
-    
-}
-
-
-
-
-
-
-extension MTLRenderPipelineDescriptor{
-    func setGBufferPixeelFormats(){
-        colorAttachments[RenderTargetIndex.albedo.rawValue].pixelFormat = .bgra8Unorm_srgb
-        colorAttachments[RenderTargetIndex.normal.rawValue].pixelFormat = .rgba16Float
-        colorAttachments[RenderTargetIndex.position.rawValue].pixelFormat = .rgba16Float
-    }
+    */
 }
 
     

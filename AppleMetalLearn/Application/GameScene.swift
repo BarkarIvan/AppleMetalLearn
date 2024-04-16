@@ -18,7 +18,7 @@ struct GameScene{
     
     var defaultview: Transform{
         Transform(
-            position: [0, 0, 5],
+            position: [0, 0, 0],
             rotation: [0.0,0.0,0.0])
     }
     
@@ -28,9 +28,9 @@ struct GameScene{
         
         camera.far = 10
         camera.transform = defaultview
-        testModel.position = [0,1,0]
+        testModel.position = [0,0,-5]
         testModel.scale = [0.5,0.5,0.5]
-        testModel.rotation = [45,45,45]
+        testModel.rotation = [0,45,45]
         models = [testModel]
     }
     

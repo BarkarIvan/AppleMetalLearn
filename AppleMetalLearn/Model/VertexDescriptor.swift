@@ -39,24 +39,18 @@ extension MDLVertexDescriptor {
         //normal
         vertexDscriptor.attributes[VertexAttribute.normal.rawValue] = MDLVertexAttribute(
             name: MDLVertexAttributeNormal,
-            format: .float3,
+            format: .half3,
             offset: offset,
             bufferIndex: BufferIndex.meshGenerics.rawValue)
-        offset += MemoryLayout<SIMD3<Float>>.stride
+        offset += MemoryLayout<SIMD3<Float16>>.stride
         //tan
         vertexDscriptor.attributes[VertexAttribute.tangent.rawValue] = MDLVertexAttribute(
             name: MDLVertexAttributeTangent,
-            format: .float3,
+            format: .float4,
             offset: offset,
             bufferIndex: BufferIndex.meshGenerics.rawValue)
-        offset += MemoryLayout<SIMD3<Float>>.stride
-        //bitan
-        vertexDscriptor.attributes[VertexAttribute.bitangent.rawValue] = MDLVertexAttribute(
-            name: MDLVertexAttributeBitangent,
-            format: .float3,
-            offset: offset,
-            bufferIndex: BufferIndex.meshGenerics.rawValue)
-        offset += MemoryLayout<SIMD3<Float>>.stride
+        offset += MemoryLayout<SIMD4<Float>>.stride
+
         
         //color
         //TODO: test stride and format
@@ -65,7 +59,7 @@ extension MDLVertexDescriptor {
             format: .half4,
             offset: offset,
             bufferIndex: BufferIndex.meshGenerics.rawValue)
-        offset += 8 //4 half * 2 bytes
+        offset += MemoryLayout<SIMD4<Float16>>.stride //4 half * 2 bytes
         vertexDscriptor.layouts[BufferIndex.meshGenerics.rawValue] = MDLVertexBufferLayout(stride: offset)
         
         return vertexDscriptor

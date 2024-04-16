@@ -34,7 +34,7 @@ struct GBufferRenderPass: RenderPass{
     }
     
     func draw(commandBuffer: MTLCommandBuffer, scene: GameScene, uniforms: Uniforms, params: Params) {
-        
+
         let textures = [albedoTexture, normaltexture, positionTexture]
         
         for (index, texture) in textures.enumerated(){
@@ -51,11 +51,17 @@ struct GBufferRenderPass: RenderPass{
               let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: descriptor) else{
             return
         }
+        renderEncoder.pushDebugGroup("G-Buffer Render Pass")
+        renderEncoder.pushDebugGroup("Set states")
+        
         renderEncoder.label = name
        // renderEncoder.setCullMode(.back)
         //renderEncoder.setFrontFacing(.clockwise)
         renderEncoder.setDepthStencilState(depthStencilState)
         renderEncoder.setRenderPipelineState(pipelineState)
+        
+        renderEncoder.popDebugGroup()
+
         
         //TODO:
         //renderEncoder.setFragmentTexture(shadowTexture, index: TextureIndex.shadow.rawValue)
@@ -65,6 +71,8 @@ struct GBufferRenderPass: RenderPass{
             model.render(encoder: renderEncoder, uniforms: uniforms, params: params)
             renderEncoder.popDebugGroup()
         }
+        renderEncoder.popDebugGroup()
+
         renderEncoder.endEncoding()
     }
     

@@ -27,12 +27,12 @@ struct SceneLighting{
     }()
     
     
-   // var lights: [Light]
-    var directionalLights: [Light]
-    var pointLights: [Light]
-    //var lightBuffer: MTLBuffer
-   // var directionalBuffer: MTLBuffer
-   // var pointBuffer: MTLBuffer
+    var lights: [Light]
+    var directionalLightsArray: [Light]
+    var pointLightsArray: [Light]
+    var lightBuffer: MTLBuffer
+    var directionalLightsBuffer: MTLBuffer
+    var pointLightsBuffer: MTLBuffer
     
     
     static func createPointLight( position: simd_float3, color: simd_float3, attenuation: simd_float3) -> Light
@@ -46,10 +46,14 @@ struct SceneLighting{
         }
     
     init(){
-        directionalLights = [directionalLight]
-        pointLights = []
+        directionalLightsArray = [directionalLight]
+        pointLightsArray = []
         let pointLight = Self.createPointLight( position: [0,1,0], color: [1.0,1.0,1.0], attenuation: [4,4,4])
-        pointLights.append(pointLight)
+        pointLightsArray.append(pointLight)
+        lights = directionalLightsArray + pointLightsArray
+        lightBuffer = Self.createBuffer(lightsArray: lights)
+        directionalLightsBuffer = Self.createBuffer(lightsArray: directionalLightsArray)
+        pointLightsBuffer = Self.createBuffer(lightsArray: pointLightsArray)
     }
     
     //буффекр исторчников

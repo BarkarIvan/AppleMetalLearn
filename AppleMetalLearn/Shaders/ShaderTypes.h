@@ -28,7 +28,8 @@ typedef NS_ENUM(EnumBackingType, BufferIndex)
     BufferIndexMeshGenerics  = 1, //uv
     BufferIndexUniforms      = 2, 
     BufferIndexParams        = 3,
-    BufferIndexMaterial      = 4
+    BufferIndexMaterial      = 4,
+    BufferIndexLighting      = 5
 };
 
 typedef NS_ENUM(EnumBackingType, VertexAttribute)
@@ -43,10 +44,13 @@ typedef NS_ENUM(EnumBackingType, VertexAttribute)
 
 typedef NS_ENUM(EnumBackingType, TextureIndex)
 {
-    TextureIndexColor    = 0,
+    TextureIndexAlbedo    = 0,
     TextureIndexAdditional = 1,
     TextureIndexEmission = 2,
-    TextureIndexShadow = 3
+    TextureIndexShadow = 3,
+    //to another enum?!
+    TextureIndexNormal = 4,
+    TextureIndexPosition = 5
 };
 
 typedef NS_ENUM(EnumBackingType, RenderTargetIndex){

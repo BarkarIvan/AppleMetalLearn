@@ -43,7 +43,7 @@ extension Model{
     func setTexture(name: String, type: TextureIndex){
         if let texture = TextureController.loadTexture(name: name){
             switch type{
-            case TextureIndex.color:
+            case TextureIndex.albedo:
                 meshes[0].submeshes[0].textures.baseColor = texture
             default: break
             }
@@ -73,7 +73,7 @@ extension Model{
                 var material = submeshe.material
                 encoder.setFragmentBytes(&material, length: MemoryLayout<Material>.stride, index: BufferIndex.material.rawValue)
                 
-                encoder.setFragmentTexture(submeshe.textures.baseColor, index: TextureIndex.color.rawValue)
+                encoder.setFragmentTexture(submeshe.textures.baseColor, index: TextureIndex.albedo.rawValue)
                 
                 encoder.setFragmentTexture(submeshe.textures.additionalMap, index: TextureIndex.additional.rawValue)
                 

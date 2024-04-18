@@ -25,7 +25,7 @@ fragment GBufferOut fragment_GBuffer(
     GBufferOut OUT;
     OUT.albedo = float4(1,1,0,1);//float4(material.baseColor, 1.0);
     //albedo.a = shadow
-    OUT.normal = half4(normalize(IN.normalWS), 1.0);
+    OUT.normal = half4(normalize(IN.normalWS),1.0);
     OUT.positiob = float4(IN.positionWS);
     return OUT;
 }

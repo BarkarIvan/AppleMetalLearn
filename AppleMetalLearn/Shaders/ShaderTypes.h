@@ -29,7 +29,10 @@ typedef NS_ENUM(EnumBackingType, BufferIndex)
     BufferIndexUniforms      = 2, 
     BufferIndexParams        = 3,
     BufferIndexMaterial      = 4,
-    BufferIndexLighting      = 5
+    BufferIndexFrameData     = 5,
+    BufferIndexLightsPoaition = 6,
+    BufferIndexLightingData  = 7,
+    
 };
 
 typedef NS_ENUM(EnumBackingType, VertexAttribute)
@@ -57,6 +60,7 @@ typedef NS_ENUM(EnumBackingType, RenderTargetIndex){
     RenderTargetAlbedo = 1,
     RenderTargetNormal = 2,
     RenderTargetPosition = 3,
+    RenderTargetLighting = 4
 } ;
 
 //TODO: pack to float4

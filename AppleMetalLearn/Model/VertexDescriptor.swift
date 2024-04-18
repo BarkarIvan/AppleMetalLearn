@@ -18,48 +18,53 @@ extension MDLVertexDescriptor {
         let vertexDscriptor = MDLVertexDescriptor()
         
         //pos
-        var offset = 0
         vertexDscriptor.attributes[VertexAttribute.position.rawValue] = MDLVertexAttribute(
             name: MDLVertexAttributePosition,
             format: .float3,
-            offset: offset,
+            offset: 0,
             bufferIndex: BufferIndex.meshPositions.rawValue)
-        offset += MemoryLayout<SIMD3<Float>>.stride
-        vertexDscriptor.layouts[BufferIndex.meshPositions.rawValue] = MDLVertexBufferLayout(stride: offset)
+        vertexDscriptor.layouts[BufferIndex.meshPositions.rawValue] = MDLVertexBufferLayout(stride: 12)
         
         //generics
-        offset = 0
+        var offset = 0
         //uv
         vertexDscriptor.attributes[VertexAttribute.texcoord.rawValue] = MDLVertexAttribute(
             name: MDLVertexAttributeTextureCoordinate,
             format: .float2,
             offset: offset,
             bufferIndex: BufferIndex.meshGenerics.rawValue)
-        offset += MemoryLayout<SIMD2<Float>>.stride
+        offset += 2 * 4
         //normal
         vertexDscriptor.attributes[VertexAttribute.normal.rawValue] = MDLVertexAttribute(
             name: MDLVertexAttributeNormal,
-            format: .half3,
+            format: .half4,
             offset: offset,
             bufferIndex: BufferIndex.meshGenerics.rawValue)
-        offset += MemoryLayout<SIMD3<Float16>>.stride
+        offset += 4 * 2
         //tan
         vertexDscriptor.attributes[VertexAttribute.tangent.rawValue] = MDLVertexAttribute(
             name: MDLVertexAttributeTangent,
-            format: .float4,
+            format: .half4,
             offset: offset,
             bufferIndex: BufferIndex.meshGenerics.rawValue)
-        offset += MemoryLayout<SIMD4<Float>>.stride
-
+        offset += 4 * 2
         
-        //color
-        //TODO: test stride and format
+        //bitan
+        vertexDscriptor.attributes[VertexAttribute.bitangent.rawValue] = MDLVertexAttribute(
+            name: MDLVertexAttributeBitangent,
+            format: .half4,
+            offset: offset,
+            bufferIndex: BufferIndex.meshGenerics.rawValue)
+        offset += 4 * 2
+
         vertexDscriptor.attributes[VertexAttribute.color.rawValue] = MDLVertexAttribute(
             name: MDLVertexAttributeColor,
             format: .half4,
             offset: offset,
             bufferIndex: BufferIndex.meshGenerics.rawValue)
-        offset += MemoryLayout<SIMD4<Float16>>.stride //4 half * 2 bytes
+        offset += 4 * 2 //4 half * 2 bytes
+        
+        
         vertexDscriptor.layouts[BufferIndex.meshGenerics.rawValue] = MDLVertexBufferLayout(stride: offset)
         
         return vertexDscriptor

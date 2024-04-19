@@ -34,6 +34,7 @@ extension MDLVertexDescriptor {
             offset: offset,
             bufferIndex: BufferIndex.meshGenerics.rawValue)
         offset += 2 * 4
+        
         //normal
         vertexDscriptor.attributes[VertexAttribute.normal.rawValue] = MDLVertexAttribute(
             name: MDLVertexAttributeNormal,
@@ -41,6 +42,7 @@ extension MDLVertexDescriptor {
             offset: offset,
             bufferIndex: BufferIndex.meshGenerics.rawValue)
         offset += 4 * 2
+       
         //tan
         vertexDscriptor.attributes[VertexAttribute.tangent.rawValue] = MDLVertexAttribute(
             name: MDLVertexAttributeTangent,
@@ -62,7 +64,7 @@ extension MDLVertexDescriptor {
             format: .half4,
             offset: offset,
             bufferIndex: BufferIndex.meshGenerics.rawValue)
-        offset += 4 * 2 //4 half * 2 bytes
+        offset += 4 * 2
         
         
         vertexDscriptor.layouts[BufferIndex.meshGenerics.rawValue] = MDLVertexBufferLayout(stride: offset)

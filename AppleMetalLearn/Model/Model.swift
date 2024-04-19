@@ -16,6 +16,7 @@ class Model: Transformable{
     init(){}
     
     init(name: String){
+        
         guard let assetURL = Bundle.main.url(forResource: name, withExtension: nil) else{
             fatalError("Model /(name) not found")
         }
@@ -27,7 +28,7 @@ class Model: Transformable{
         let mdlMeshes = asset.childObjects(of: MDLMesh.self) as? [MDLMesh] ?? []
         _ = mdlMeshes.map 
         {
-            mdlMesh in mdlMesh.addTangentBasis(forTextureCoordinateAttributeNamed: MDLVertexAttributeTextureCoordinate, normalAttributeNamed: MDLVertexAttributeNormal, tangentAttributeNamed: MDLVertexAttributeTangent)
+            mdlMesh in mdlMesh.addOrthTanBasis(forTextureCoordinateAttributeNamed: MDLVertexAttributeTextureCoordinate, normalAttributeNamed: MDLVertexAttributeNormal, tangentAttributeNamed: MDLVertexAttributeTangent)
             
             mdlMesh.addTangentBasis(forTextureCoordinateAttributeNamed: MDLVertexAttributeTextureCoordinate,
                                     tangentAttributeNamed: MDLVertexAttributeTangent,

@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		6215E19B2BD1BB770067C86F /* TBDRRenderPass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6215E19A2BD1BB770067C86F /* TBDRRenderPass.swift */; };
 		6215E19D2BD1C2060067C86F /* GBufferTextures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6215E19C2BD1C2060067C86F /* GBufferTextures.swift */; };
+		6215E19F2BD29C890067C86F /* DepthStencilStates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6215E19E2BD29C890067C86F /* DepthStencilStates.swift */; };
+		6215E1A12BD29D0B0067C86F /* RenderDestination.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6215E1A02BD29D0B0067C86F /* RenderDestination.swift */; };
+		6215E1A32BD30B390067C86F /* BufferView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6215E1A22BD30B390067C86F /* BufferView.swift */; };
 		622167412BCDBF3F0067269F /* Vertex.metal in Sources */ = {isa = PBXBuildFile; fileRef = 622167402BCDBF3F0067269F /* Vertex.metal */; };
 		622167442BCDC57D0067269F /* Deffered.metal in Sources */ = {isa = PBXBuildFile; fileRef = 622167432BCDC57D0067269F /* Deffered.metal */; };
 		622167462BCDCF5D0067269F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622167452BCDCF5D0067269F /* ContentView.swift */; };
@@ -45,6 +48,9 @@
 /* Begin PBXFileReference section */
 		6215E19A2BD1BB770067C86F /* TBDRRenderPass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TBDRRenderPass.swift; sourceTree = "<group>"; };
 		6215E19C2BD1C2060067C86F /* GBufferTextures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GBufferTextures.swift; sourceTree = "<group>"; };
+		6215E19E2BD29C890067C86F /* DepthStencilStates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DepthStencilStates.swift; sourceTree = "<group>"; };
+		6215E1A02BD29D0B0067C86F /* RenderDestination.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RenderDestination.swift; sourceTree = "<group>"; };
+		6215E1A22BD30B390067C86F /* BufferView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BufferView.swift; sourceTree = "<group>"; };
 		622167402BCDBF3F0067269F /* Vertex.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Vertex.metal; sourceTree = "<group>"; };
 		622167422BCDC0EE0067269F /* ShaderDefs.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShaderDefs.h; sourceTree = "<group>"; };
 		622167432BCDC57D0067269F /* Deffered.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Deffered.metal; sourceTree = "<group>"; };
@@ -103,17 +109,19 @@
 			path = Shaders;
 			sourceTree = "<group>";
 		};
-		62986BB72BCC42EB00B7DF50 /* RenderPasses */ = {
+		62986BB72BCC42EB00B7DF50 /* Render */ = {
 			isa = PBXGroup;
 			children = (
+				62E2A7B62BC2FF5700E6C97A /* Renderer.swift */,
 				62986BB82BCC430200B7DF50 /* GBufferRenderPass.swift */,
 				62986BBA2BCC432E00B7DF50 /* RenderPass.swift */,
 				62986BBC2BCC4D4600B7DF50 /* PipelineStates.swift */,
 				62ED7BEB2BD05E6C0047A6E5 /* LightingRenderPass.swift */,
 				6215E19A2BD1BB770067C86F /* TBDRRenderPass.swift */,
 				6215E19C2BD1C2060067C86F /* GBufferTextures.swift */,
+				6215E19E2BD29C890067C86F /* DepthStencilStates.swift */,
 			);
-			path = RenderPasses;
+			path = Render;
 			sourceTree = "<group>";
 		};
 		62986BBE2BCC576400B7DF50 /* Assets */ = {
@@ -155,7 +163,7 @@
 				62ED7BE72BD05B6B0047A6E5 /* New Group */,
 				6221673C2BCDBBB80067269F /* Shaders */,
 				62986BBE2BCC576400B7DF50 /* Assets */,
-				62986BB72BCC42EB00B7DF50 /* RenderPasses */,
+				62986BB72BCC42EB00B7DF50 /* Render */,
 				62C631282BC9DE0D00F90378 /* Input */,
 				62C631232BC9D84E00F90378 /* Application */,
 				62D0EFEB2BC7320E004BFD58 /* Textures */,
@@ -183,7 +191,6 @@
 			children = (
 				622167472BCDCF7E0067269F /* MetalView.swift */,
 				622167452BCDCF5D0067269F /* ContentView.swift */,
-				62E2A7B62BC2FF5700E6C97A /* Renderer.swift */,
 				62C631262BC9D8AA00F90378 /* Camera.swift */,
 				62D9D6152BCA692400EE9691 /* GameController.swift */,
 				62D9D6172BCB029700EE9691 /* PlayerCamera.swift */,
@@ -206,6 +213,8 @@
 			isa = PBXGroup;
 			children = (
 				62EA6E942BC5DD370017991A /* MathLibrary.swift */,
+				6215E1A02BD29D0B0067C86F /* RenderDestination.swift */,
+				6215E1A22BD30B390067C86F /* BufferView.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -318,17 +327,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6215E1A32BD30B390067C86F /* BufferView.swift in Sources */,
 				62D9D6162BCA692400EE9691 /* GameController.swift in Sources */,
 				62EA6E952BC5DD370017991A /* MathLibrary.swift in Sources */,
 				622167462BCDCF5D0067269F /* ContentView.swift in Sources */,
 				62D9D61A2BCB07AE00EE9691 /* GameScene.swift in Sources */,
 				62D9D6142BCA68E200EE9691 /* InputController.swift in Sources */,
 				628AE5B22BCBC2240094CAD7 /* SceneLighting.swift in Sources */,
+				6215E19F2BD29C890067C86F /* DepthStencilStates.swift in Sources */,
 				62D0EFED2BC73236004BFD58 /* TextureController.swift in Sources */,
 				62986BBD2BCC4D4600B7DF50 /* PipelineStates.swift in Sources */,
 				62C6312A2BC9DE2300F90378 /* Movement.swift in Sources */,
 				629D84122BC1313F00677998 /* Persistence.swift in Sources */,
 				62EA6E932BC5DC400017991A /* Transform.swift in Sources */,
+				6215E1A12BD29D0B0067C86F /* RenderDestination.swift in Sources */,
 				622167442BCDC57D0067269F /* Deffered.metal in Sources */,
 				62D9D61C2BCB0AAC00EE9691 /* VertexDescriptor.swift in Sources */,
 				629D84092BC1313E00677998 /* AppleMetalLearnApp.swift in Sources */,

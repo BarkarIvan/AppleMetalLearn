@@ -5,9 +5,23 @@
 //  Created by barkar on 13.04.2024.
 //
 
+let maxFramesInFlight = 3
+
 import MetalKit
 
-struct GameScene{
+struct GameScene
+{
+    
+    var currentFramNum: Int = 0
+    var currentBufferIndex: Int = 0
+    var gbufferTextures = GBufferTextures()
+
+    var shadowMap: MTLTexture
+    private var uniforms = [BufferView<Uniforms>]()
+    
+    let shadowPojectionMatrix : simd_float4x4
+    let simpleQuadVertexBuffer: BufferView<SimpleVertex>
+    
     
     lazy var testModel: Model = {
         Model(name: "RubberToy.usdz")
@@ -24,7 +38,7 @@ struct GameScene{
     
     var lighting = SceneLighting()
     
-    init(){
+    init(device: MTLDevice){
         
         camera.far = 10
         camera.transform = defaultview
@@ -32,6 +46,31 @@ struct GameScene{
         testModel.scale = [0.5,0.5,0.5]
         testModel.rotation = [0,45,45]
         models = [testModel]
+        
+        //to cereate Shadowm map func
+        let shadowMapTextureDesciptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: .depth32Float, width: 2048, height: 2048, mipmapped: false)
+        shadowMapTextureDesciptor.resourceOptions = .storageModePrivate
+        shadowMapTextureDesciptor.usage = [.renderTarget, .shaderRead]
+        
+        guard let shadowMap = device.makeTexture(descriptor: shadowMapTextureDesciptor)
+        else{
+            fatalError("Fail shadowMap creation \(shadowMapTextureDesciptor.description)")
+        }
+        shadowMap.label = "Shadow Map"
+        self.shadowMap = shadowMap
+        
+        //to simple quad func
+        let quadVertices: [SimpleVertex] = [
+            .init(position: .init(x: -1, y: -1)),
+            .init(position: .init(x: -1, y:  1)),
+            .init(position: .init(x:  1, y: -1)),
+                                           
+            .init(position: .init(x:  1, y: -1)),
+             .init(position: .init(x: -1, y:  1)),
+            .init(position: .init(x:  1, y:  1))
+             ]
+        
+        simpleQuadVertexBuffer = .init(device: device, array: quadVertices)
     }
     
     mutating func update(size: CGSize){
@@ -39,6 +78,7 @@ struct GameScene{
     }
     
     mutating func update(deltaTime: Float){
+        currentFramNum += 1
         updateInput()
         camera.update(deltaTime: deltaTime)
     }
@@ -49,6 +89,35 @@ struct GameScene{
             camera.transform = Transform()
         }
     }
+    
+    
+    
+    ////
+    
+   
+    
+    
+    func setGBufferTextures(renderEncoder: MTLRenderCommandEncoder)
+    {
+        
+        renderEncoder.setFragmentTexture(gbufferTextures.albedoMetallic, index: RenderTargetIndex.albedoMetallic.rawValue)
+        
+        renderEncoder.setFragmentTexture(gbufferTextures.normalRoughnessShadow, index: RenderTargetIndex.nomalRoughtnessShadow.rawValue)
+        
+        renderEncoder.setFragmentTexture(gbufferTextures.depth, index: RenderTargetIndex.depth.rawValue)
+    }
+    
+    func setGbufferTextures(_ renderPassDescrriptor: MTLRenderPassDescriptor)
+    {
+        renderPassDescrriptor.colorAttachments[RenderTargetIndex.albedoMetallic.rawValue].texture = gbufferTextures.albedoMetallic
+        
+        renderPassDescrriptor.colorAttachments[RenderTargetIndex.albedoMetallic.rawValue].texture = gbufferTextures.albedoMetallic
+        
+        renderPassDescrriptor.colorAttachments[RenderTargetIndex.nomalRoughtnessShadow.rawValue].texture = gbufferTextures.normalRoughnessShadow
+        
+        renderPassDescrriptor.colorAttachments[RenderTargetIndex.depth.rawValue].texture = gbufferTextures.depth
+    }
+    
     
     
 }

@@ -20,10 +20,10 @@ struct TBDRRenderPass: RenderPass{
     
     
     mutating func resize(view: MTKView, size: CGSize) {
-        <#code#>
+        
     }
     
     func draw(commandBuffer: any MTLCommandBuffer, scene: GameScene, uniforms: Uniforms, params: Params) {
-        <#code#>
     }
+    
 }

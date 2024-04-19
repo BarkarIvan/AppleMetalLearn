@@ -11,9 +11,9 @@ using namespace metal;
 #import "ShaderDefs.h"
 
 struct GBufferOut{
-    float4 albedo [[color(RenderTargetAlbedo)]];
-    half4 normal [[color(RenderTargetNormal)]];
-    float4 positiob [[color(RenderTargetPosition)]];
+    float4 albedo [[color(RenderTargetAlbedoMetallic)]];
+    half4 normal [[color(RenderTargetNomalRoughtnessShadow)]];
+    
 };
 
 
@@ -26,7 +26,6 @@ fragment GBufferOut fragment_GBuffer(
     OUT.albedo = float4(1,1,0,1);//float4(material.baseColor, 1.0);
     //albedo.a = shadow
     OUT.normal = half4(normalize(IN.normalWS),1.0);
-    OUT.positiob = float4(IN.positionWS);
     return OUT;
 }
 

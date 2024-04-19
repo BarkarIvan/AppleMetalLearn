@@ -24,14 +24,13 @@ typedef NSInteger EnumBackingType;
 //индексы буферов и аттрибутов
 typedef NS_ENUM(EnumBackingType, BufferIndex)
 {
-    BufferIndexMeshPositions = 0, //pos
-    BufferIndexMeshGenerics  = 1, //uv
-    BufferIndexUniforms      = 2, 
-    BufferIndexParams        = 3,
-    BufferIndexMaterial      = 4,
-    BufferIndexFrameData     = 5,
-    BufferIndexLightsPoaition = 6,
-    BufferIndexLightingData  = 7,
+    BufferIndexMeshPositions    = 0, //pos
+    BufferIndexMeshGenerics     = 1, //uv
+    BufferIndexUniforms         = 2,
+    BufferIndexParams           = 3,
+    BufferIndexMaterial         = 4,
+   BufferIndexFrameData         = 5,
+    BufferIndexLightingData     = 6,
     
 };
 
@@ -47,20 +46,20 @@ typedef NS_ENUM(EnumBackingType, VertexAttribute)
 
 typedef NS_ENUM(EnumBackingType, TextureIndex)
 {
-    TextureIndexAlbedo    = 0,
-    TextureIndexAdditional = 1,
-    TextureIndexEmission = 2,
-    TextureIndexShadow = 3,
+    TextureIndexAlbedo          = 0,
+    TextureIndexAdditional      = 1,
+    TextureIndexEmission        = 2,
+    TextureIndexShadow          = 3,
     //to another enum?!
-    TextureIndexNormal = 4,
-    TextureIndexPosition = 5
+    TextureIndexNormal          = 4,
+    TextureIndexPosition        = 5
 };
 
 typedef NS_ENUM(EnumBackingType, RenderTargetIndex){
-    RenderTargetAlbedo = 1,
-    RenderTargetNormal = 2,
-    RenderTargetPosition = 3,
-    RenderTargetLighting = 4
+    RenderTargetAlbedoMetallic          = 0,
+    RenderTargetNomalRoughtnessShadow   = 1,
+    RenderTargetDepth                   = 2,
+    RenderTargetLighting                = 3
 } ;
 
 //TODO: pack to float4
@@ -74,9 +73,14 @@ typedef struct{
 } Params;
 
 typedef struct{
+    //per fra,e
     matrix_float4x4 projectionMatrix;
-    matrix_float4x4 modelMatrix;
+    matrix_float4x4 projectionMatrixInverse;
     matrix_float4x4 viewMatrix;
+    uint frameBufferWidth;
+    uint frameBuffreHeight;
+    
+    matrix_float4x4 modelMatrix;
     matrix_float3x3 normalMatrix;
     matrix_float4x4 shadowProjectionMatrix;
     matrix_float4x4 shadowViewMatrix;
@@ -109,5 +113,13 @@ typedef struct {
 }Light;
 
 
+////del
+typedef struct{
+    packed_float2 position;
+} SimpleVertex;
+
+typedef struct{
+    packed_float3 position;
+} ShadowVertex;
 
 #endif //

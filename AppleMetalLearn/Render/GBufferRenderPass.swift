@@ -26,6 +26,7 @@ struct GBufferRenderPass: RenderPass{
         descriptor = MTLRenderPassDescriptor()
     }
     
+    //пересоздаем текстуры
     mutating func resize(view: MTKView, size: CGSize) {
         albedoTexture = Self.makeTexture(size: size, pixelFormat: .bgra8Unorm_srgb, name: "Albedo texture")
         normaltexture = Self.makeTexture(size: size, pixelFormat: .rgba8Snorm, name: "Normal texture")

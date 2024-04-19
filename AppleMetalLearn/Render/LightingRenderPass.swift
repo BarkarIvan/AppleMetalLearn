@@ -65,7 +65,7 @@ struct LightingRenderPass: RenderPass{
         var params = params
         params.lightCount = UInt32(scene.lighting.directionalLightsArray.count)
         renderEncoder.setFragmentBytes(&params, length: MemoryLayout<Params>.stride, index: BufferIndex.params.rawValue)
-        renderEncoder.setFragmentBuffer(scene.lighting.directionalLightsBuffer, offset: 0, index: BufferIndex.lighting.rawValue)
+        renderEncoder.setFragmentBuffer(scene.lighting.directionalLightsBuffer, offset: 0, index: BufferIndex.lightingData.rawValue)
         renderEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 6)
         renderEncoder.popDebugGroup()
     }
@@ -73,7 +73,7 @@ struct LightingRenderPass: RenderPass{
     func drawPointLights(renderEncoder: MTLRenderCommandEncoder, scene: GameScene, params: Params){
         renderEncoder.pushDebugGroup("PointLights")
         renderEncoder.setRenderPipelineState(pointLightPipelineState)
-        renderEncoder.setVertexBuffer(scene.lighting.pointLightsBuffer, offset: 0, index: BufferIndex.lighting.rawValue)
+        renderEncoder.setVertexBuffer(scene.lighting.pointLightsBuffer, offset: 0, index: BufferIndex.lightingData.rawValue)
         
         var params = params
         params.lightCount = UInt32(scene.lighting.pointLightsArray.count)

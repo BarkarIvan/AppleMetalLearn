@@ -32,7 +32,7 @@ struct GBufferTextures{
     static let depthPixelFormat = MTLPixelFormat.r32Float
     
     
-    mutating func makeTexture(device: MTLDevice, size: CGSize, storageMode: MTLStorageMode){
+    mutating func makeTextures(device: MTLDevice, size: CGSize, storageMode: MTLStorageMode){
         
         let GBufferTextureDescriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: .invalid, width: Int(size.width), height: Int(size.height), mipmapped: false)
             

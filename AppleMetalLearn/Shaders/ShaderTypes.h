@@ -11,6 +11,7 @@
 
 //использоввание типов и макросов в зависимости где компилится
 #ifdef __METAL_VERSION__
+
 #define NS_ENUM(_type, _name) enum _name : _type _name; enum _name : _type
 typedef metal::int32_t EnumBackingType;
 #else
@@ -29,7 +30,7 @@ typedef NS_ENUM(EnumBackingType, BufferIndex)
     BufferIndexUniforms         = 2,
     BufferIndexParams           = 3,
     BufferIndexMaterial         = 4,
-   BufferIndexFrameData         = 5,
+    BufferIndexFrameData         = 5,
     BufferIndexLightingData     = 6,
     
 };
@@ -79,11 +80,13 @@ typedef struct{
     matrix_float4x4 viewMatrix;
     uint frameBufferWidth;
     uint frameBuffreHeight;
-    
-    matrix_float4x4 modelMatrix;
-    matrix_float3x3 normalMatrix;
     matrix_float4x4 shadowProjectionMatrix;
     matrix_float4x4 shadowViewMatrix;
+} FrameData;
+
+typedef struct{
+    matrix_float4x4 modelMatrix;
+    matrix_float3x3 normalMatrix;
 } Uniforms;
 
 typedef struct {
@@ -119,7 +122,7 @@ typedef struct{
 } SimpleVertex;
 
 typedef struct{
-    packed_float3 position;
+    vector_float3 position;
 } ShadowVertex;
 
 #endif //

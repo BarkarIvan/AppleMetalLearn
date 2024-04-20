@@ -16,16 +16,19 @@ struct GameScene
     var currentBufferIndex: Int = 0
     var gbufferTextures = GBufferTextures()
 
-    var shadowMap: MTLTexture
-    private var uniforms = [BufferView<Uniforms>]()
+   // var shadowMap: MTLTexture
+    private var frameDataBuffers = [BufferView<FrameData>]()
+    var currentFrameDataBuffer: BufferView<FrameData>{
+        frameDataBuffers[currentBufferIndex]
+    }
     
-    let shadowPojectionMatrix : simd_float4x4
-    let simpleQuadVertexBuffer: BufferView<SimpleVertex>
+   // let shadowPojectionMatrix : simd_float4x4
+    //let simpleQuadVertexBuffer: BufferView<SimpleVertex>
     
     
-    lazy var testModel: Model = {
-        Model(name: "RubberToy.usdz")
-    }()
+    //lazy var testModel: Model = {
+      //  Model(name: "RubberToy.usdz")
+    //}()
     
     var models: [Model] = []
     var camera = FPCamera()
@@ -36,16 +39,20 @@ struct GameScene
             rotation: [0.0,0.0,0.0])
     }
     
-    var lighting = SceneLighting()
+   // var lighting = SceneLighting()
     
     init(device: MTLDevice){
         
+        var testModel = Model(device: device, name: "RubberToy.usdz")
+
         camera.far = 10
         camera.transform = defaultview
         testModel.position = [0,0,-5]
         testModel.scale = [0.5,0.5,0.5]
         testModel.rotation = [0,45,45]
+        
         models = [testModel]
+        //lights
         
         //to cereate Shadowm map func
         let shadowMapTextureDesciptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: .depth32Float, width: 2048, height: 2048, mipmapped: false)
@@ -57,7 +64,7 @@ struct GameScene
             fatalError("Fail shadowMap creation \(shadowMapTextureDesciptor.description)")
         }
         shadowMap.label = "Shadow Map"
-        self.shadowMap = shadowMap
+        //self.shadowMap = shadowMap
         
         //to simple quad func
         let quadVertices: [SimpleVertex] = [
@@ -66,11 +73,11 @@ struct GameScene
             .init(position: .init(x:  1, y: -1)),
                                            
             .init(position: .init(x:  1, y: -1)),
-             .init(position: .init(x: -1, y:  1)),
+            .init(position: .init(x: -1, y:  1)),
             .init(position: .init(x:  1, y:  1))
              ]
         
-        simpleQuadVertexBuffer = .init(device: device, array: quadVertices)
+     //   simpleQuadVertexBuffer = .init(device: device, array: quadVertices)
     }
     
     mutating func update(size: CGSize){
@@ -81,6 +88,17 @@ struct GameScene
         currentFramNum += 1
         updateInput()
         camera.update(deltaTime: deltaTime)
+        
+       var frameData = FrameData()
+        frameData.viewMatrix = camera.viewMatrix
+        frameData.projectionMatrix = camera.projectionMatrix
+        frameData.projectionMatrixInverse = camera.projectionMatrix.inverse
+        frameData.frameBufferWidth = gbufferTextures.width
+        frameData.frameBuffreHeight = gbufferTextures.height
+        
+        currentBufferIndex = (currentBufferIndex + 1) % 3
+        frameDataBuffers[currentBufferIndex].assign(frameData)
+        
     }
     
     mutating func updateInput(){

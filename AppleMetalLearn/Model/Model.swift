@@ -15,12 +15,12 @@ class Model: Transformable{
     
     init(){}
     
-    init(name: String){
+    init(device: MTLDevice, name: String){
         
         guard let assetURL = Bundle.main.url(forResource: name, withExtension: nil) else{
             fatalError("Model /(name) not found")
         }
-        let allocator = MTKMeshBufferAllocator(device: Renderer.device)
+        let allocator = MTKMeshBufferAllocator(device: device)
         let asset = MDLAsset(url: assetURL, vertexDescriptor: .defaultLayout, bufferAllocator: allocator)
         
         asset.loadTextures()
@@ -35,10 +35,11 @@ class Model: Transformable{
                                     bitangentAttributeNamed: MDLVertexAttributeBitangent)
             mdlMesh.vertexDescriptor = .defaultLayout
             
-            mtkMeshes.append(try! MTKMesh(mesh: mdlMesh, device: Renderer.device))
+            mtkMeshes.append(try! MTKMesh(mesh: mdlMesh, device: device))
             
         }
-        meshes = zip(mdlMeshes, mtkMeshes).map { Mesh(mdlMesh: $0.0, mtkMesh: $0.1)
+        var textureLoader = MTKTextureLoader(device: device)
+        meshes = zip(mdlMeshes, mtkMeshes).map { Mesh(mdlMesh: $0.0, mtkMesh: $0.1, textureLoader: textureLoader)
         }
         self.name = name
     }
@@ -46,27 +47,18 @@ class Model: Transformable{
 
 //TODO: TEMP
 extension Model{
-    func setTexture(name: String, type: TextureIndex){
-        if let texture = TextureController.loadTexture(name: name){
-            switch type{
-            case TextureIndex.albedo:
-                meshes[0].submeshes[0].textures.baseColor = texture
-            default: break
-            }
-        }
-    }
     
-    func render ( encoder: MTLRenderCommandEncoder, uniforms vertex: Uniforms, params fragment: Params){
+    func render ( encoder: MTLRenderCommandEncoder, uniforms vertex: Uniforms){
         
         var uniforms = vertex
-        var params = fragment
-        params.tiling = tiling
+       // var params = fragment
+       // params.tiling = tiling
         
         uniforms.modelMatrix = transform.modelMatrix
         uniforms.normalMatrix = transform.modelMatrix.upperLeft
         
         encoder.setVertexBytes(&uniforms, length: MemoryLayout<Uniforms>.stride, index: BufferIndex.uniforms.rawValue)
-        encoder.setFragmentBytes(&params, length: MemoryLayout<Params>.stride , index: BufferIndex.params.rawValue)
+        
         
         for mesh in meshes {
             for(index, vertexBuffer) in mesh.vertexBuffers.enumerated(){

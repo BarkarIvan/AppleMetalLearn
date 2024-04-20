@@ -12,9 +12,10 @@ using namespace metal;
 
 vertex Varyings vertex_main (
             Attributes IN [[stage_in]],
-            constant Uniforms &uniforms [[buffer(BufferIndexUniforms)]])
+            constant Uniforms &uniforms [[buffer(BufferIndexUniforms)]],
+            constant FrameData &FrameData[[buffer(BufferIndexFrameData)]])
 {
-    float4 positionCS = uniforms.projectionMatrix * uniforms.viewMatrix * uniforms.modelMatrix * IN.positionOS;
+    float4 positionCS = FrameData.projectionMatrix * FrameData.viewMatrix * uniforms.modelMatrix * IN.positionOS;
     half3x3 normalhalf = half3x3(uniforms.normalMatrix);
     float4 positionWS = uniforms.modelMatrix * IN.positionOS;
     Varyings OUT;

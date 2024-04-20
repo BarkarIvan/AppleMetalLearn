@@ -16,7 +16,7 @@ class GameController: NSObject{
     
     init(metalView: MTKView)
     {
-        renderer = Renderer(metalView: metalView)
+        renderer = Renderer()
         scene = GameScene()
         super.init()
         metalView.delegate = self

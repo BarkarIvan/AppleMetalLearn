@@ -18,6 +18,8 @@ class Renderer: NSObject{
         return descriptor
     }()
 
+    var uniforms = Uniforms()
+    var params = Params()
     
     //семафор ддля синзхронизации GPU-CPU
     private let inFlightsemaphore: DispatchSemaphore
@@ -116,6 +118,9 @@ class Renderer: NSObject{
         else{
             fatalError("Failed make commands \(descriptor.description)")
         }
+        renderEncoder.label = label
+        encodingBlock(renderEncoder)
+        renderEncoder.endEncoding()
     }
     
     
@@ -137,10 +142,30 @@ class Renderer: NSObject{
             renderEncoder.setDepthStencilState(depthStencilStates.gBuffergeneration)
             renderEncoder.setCullMode(.back)
             renderEncoder.setStencilReferenceValue(128)
-            renderEncoder.setVertexBuffer(scene.fd, offset: 0, index: BufferIndex.frameData.rawValue)
-            renderEncoder.setFragmentBuffer(<#T##buffer: (any MTLBuffer)?##(any MTLBuffer)?#>, offset: <#T##Int#>, index: <#T##Int#>)
-            renderEncoder.setFragmentTexture(scene.shadowMap, index: TextureIndex.shadow.rawValue)
+            renderEncoder.setVertexBuffer(scene.currentFrameDataBuffer, offset: 0, index: BufferIndex.frameData.rawValue)
+            renderEncoder.setFragmentBuffer(scene.currentFrameDataBuffer , offset: 0, index: BufferIndex.frameData.rawValue)
+           // renderEncoder.setFragmentTexture(scene.shadowMap, index: TextureIndex.shadow.rawValue)
+            //set shadowmap
+           // renderEncoder.draw(m)
+            for model in scene.models{
+                renderEncoder.pushDebugGroup(model.name)
+                model.render(encoder: renderEncoder, uniforms: uniforms)
+                renderEncoder.popDebugGroup()
+            }
         }
     }
     
+}
+
+// MARK: - MTKViewDelegate
+extension Renderer: MTKViewDelegate {
+    
+    /// MTKViewDelegate Callback: Respond to device orientation change or other view size change
+    func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {
+        
+    }
+    
+    func draw(in view: MTKView) {
+        
+    }
 }

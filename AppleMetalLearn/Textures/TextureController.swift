@@ -10,12 +10,12 @@ import MetalKit
 enum TextureController{
     static var textures: [String: MTLTexture] = [:]
     
-    static func loadTexture(texture: MDLTexture, name: String) -> MTLTexture?
+    static func loadTexture(device: MTLDevice, texture: MDLTexture, name: String) -> MTLTexture?
     {
         if let texture = textures[name]{
             return texture
         }
-        let textureLoader = MTKTextureLoader(device: Renderer.device)
+        let textureLoader = MTKTextureLoader(device: device)
         let textureLoaderOptions: [MTKTextureLoader.Option: Any] = [.origin: MTKTextureLoader.Origin.bottomLeft,
             .generateMipmaps : true]
         let texture = try? textureLoader.newTexture(texture: texture, options: textureLoaderOptions)
@@ -24,13 +24,13 @@ enum TextureController{
     }
     
     
-    static func loadTexture(name: String) -> MTLTexture? {
+    static func loadTexture(device: MTLDevice, name: String) -> MTLTexture? {
        
         if let texture = textures[name] {
          return texture
        }
         
-       let textureLoader = MTKTextureLoader(device: Renderer.device)
+       let textureLoader = MTKTextureLoader(device: device)
        let texture: MTLTexture?
        texture = try? textureLoader.newTexture(
          name: name,

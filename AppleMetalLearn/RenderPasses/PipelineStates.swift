@@ -30,8 +30,8 @@ enum PipelineStates{
         pipelineDescriptor.vertexFunction = vertexFunction
         pipelineDescriptor.fragmentFunction = fragmentFunction
        // pipelineDescriptor.colorAttachments[0].pixelFormat = .invalid
-        pipelineDescriptor.colorAttachments[RenderTargetIndex.albedo.rawValue].pixelFormat = .bgra8Unorm_srgb
-        pipelineDescriptor.colorAttachments[RenderTargetIndex.normal.rawValue].pixelFormat = .rgba16Float
+        pipelineDescriptor.colorAttachments[RenderTargetIndex.albedoMetallic.rawValue].pixelFormat = .bgra8Unorm_srgb
+        pipelineDescriptor.colorAttachments[RenderTargetIndex.normRoughShadow.rawValue].pixelFormat = .rgba8Snorm
         pipelineDescriptor.colorAttachments[RenderTargetIndex.position.rawValue].pixelFormat = .rgba16Float
         pipelineDescriptor.depthAttachmentPixelFormat = .depth32Float
         pipelineDescriptor.vertexDescriptor = MTLVertexDescriptor.defaultLayout

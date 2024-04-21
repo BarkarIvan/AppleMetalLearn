@@ -21,8 +21,8 @@ struct Submesh{
         var emissionMap:        MTLTexture?
     }
     
-    var textures: Textures
-    var material: Material
+  //  var textures: Textures
+   // var materialProperties: MaterialProperties
 }
 
 extension Submesh{
@@ -31,17 +31,19 @@ extension Submesh{
         indexType = mtkSubmesh.indexType
         indexBuffer = mtkSubmesh.indexBuffer.buffer
         indexBufferOffset = mtkSubmesh.indexBuffer.offset
-        textures = Textures(material: mdlSubmesh.material)
-        material = Material(material: mdlSubmesh.material)
+        //textures = Textures(m)
+        //temp
+        //var props = MaterialProperties(baseColor: [1,1,1], roughness: 0, metallic: 0, emission: 0)
+       // material = Material(properties: props)//Material(material: mdlSubmesh.material)
     
     }
 }
 
 
-
+/*
 private extension Submesh.Textures{
     init(material: MDLMaterial?){
-        baseColor = material?.texture(type: .baseColor)
+        baseColor = material?.texture(type: .userDefined)
         additionalMap = material?.texture(type: .userDefined)
         diffuseBrushMap = material?.texture(type: .userDefined)
         emissionMap = material?.texture(type: .emission)
@@ -66,13 +68,14 @@ private extension MDLMaterial{
     }
 }
 
-private extension Material{
-    init (material: MDLMaterial?){
+private extension MaterialProperties{
+    init (material: Material?){
         self.init()
-        if let baseColor = material?.property(with: .baseColor),
-           baseColor.type == .float3{
-            self.baseColor = baseColor.float3Value
-        }
+        if let baseColor = material?.properties.baseColor,
+          // baseColor.type == .float3{
+        { self.baseColor = baseColor}()
+        
+    
         if let roughness = material?.property(with: .roughness),
            roughness.type == .float{
             self.roughness = roughness.floatValue
@@ -82,4 +85,6 @@ private extension Material{
             self.metallic = metallic.floatValue
         }
     }
-}
+ */
+
+

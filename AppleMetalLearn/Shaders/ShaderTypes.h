@@ -50,8 +50,8 @@ typedef NS_ENUM(EnumBackingType, TextureIndex)
 };
 
 typedef NS_ENUM(EnumBackingType, RenderTargetIndex){
-    RenderTargetAlbedo = 1,
-    RenderTargetNormal = 2,
+    RenderTargetAlbedoMetallic = 1,
+    RenderTargetNormRoughShadow = 2,
     RenderTargetPosition = 3,
 } ;
 
@@ -78,8 +78,8 @@ typedef struct {
     vector_float3 baseColor;
     float roughness;
     float metallic;
-    float emission;
-}Material;
+    vector_float3 emissionColor;
+}MaterialProperties;
 
 typedef enum {
     unused = 0,

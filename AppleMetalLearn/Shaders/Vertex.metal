@@ -19,12 +19,12 @@ vertex Varyings vertex_main (
     float4 positionWS = uniforms.modelMatrix * IN.positionOS;
     Varyings OUT;
     
-        OUT.positionCS = positionCS,
-        OUT.positionWS = positionWS,
-        OUT.texCoord = IN.texCoord,
-        OUT.normalWS = normalhalf * IN.normalOS,
-        OUT.tangentWS = normalhalf * half3(IN.tangentOS),
-    OUT.bitangentWS = normalhalf * (cross(OUT.tangentWS, OUT.normalWS) * IN.tangentOS.w) ;
+    OUT.positionCS = positionCS;
+    OUT.positionWS = positionWS;
+    OUT.texCoord = IN.texCoord;
+    OUT.normalWS = normalhalf * IN.normalOS;
+    OUT.tangentWS = normalhalf * IN.tangentOS.xyz;
+    OUT.bitangentWS = (cross(OUT.tangentWS, OUT.normalWS)* IN.tangentOS.w) ;
         //shadow coords
     
     return OUT;

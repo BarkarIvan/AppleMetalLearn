@@ -12,43 +12,55 @@ class Model: Transformable{
     var meshes: [Mesh] = []
     var name: String = "Untitled"
     var tiling: UInt32 = 1
+    var materials: [Material] = []
     
     init(){}
     
-    init(name: String){
+    init(name: String, materials: [Material]){
         guard let assetURL = Bundle.main.url(forResource: name, withExtension: nil) else{
             fatalError("Model /(name) not found")
         }
         let allocator = MTKMeshBufferAllocator(device: Renderer.device)
-        let asset = MDLAsset(url: assetURL, vertexDescriptor: .defaultLayout, bufferAllocator: allocator)
+        let asset = MDLAsset(url: assetURL, vertexDescriptor: nil, bufferAllocator: allocator)
         
         asset.loadTextures()
         var mtkMeshes: [MTKMesh] = []
         let mdlMeshes = asset.childObjects(of: MDLMesh.self) as? [MDLMesh] ?? []
-        _ = mdlMeshes.map 
+        _ = mdlMeshes.map
         {
-            mdlMesh in mdlMesh.addOrthTanBasis(forTextureCoordinateAttributeNamed: MDLVertexAttributeTextureCoordinate, normalAttributeNamed: MDLVertexAttributeNormal, tangentAttributeNamed: MDLVertexAttributeTangent)
+            mdlMesh in mdlMesh.addTangentBasis(forTextureCoordinateAttributeNamed: MDLVertexAttributeTextureCoordinate, normalAttributeNamed: MDLVertexAttributeNormal, tangentAttributeNamed: MDLVertexAttributeTangent)
+            
+          //  mdlMesh.addTangentBasis(forTextureCoordinateAttributeNamed: MDLVertexAttributeTextureCoordinate,
+            //                        tangentAttributeNamed: MDLVertexAttributeTangent,
+              //                      bitangentAttributeNamed: MDLVertexAttributeBitangent)
+            mdlMesh.vertexDescriptor = .defaultLayout
+            
             
             mtkMeshes.append(try! MTKMesh(mesh: mdlMesh, device: Renderer.device))
             
         }
         meshes = zip(mdlMeshes, mtkMeshes).map { Mesh(mdlMesh: $0.0, mtkMesh: $0.1)
         }
+        self.materials = materials
         self.name = name
     }
-}
-
-//TODO: TEMP
-extension Model{
-    func setTexture(name: String, type: TextureIndex){
-        if let texture = TextureController.loadTexture(name: name){
-            switch type{
-            case TextureIndex.color:
-                meshes[0].submeshes[0].textures.baseColor = texture
-            default: break
-            }
-        }
-    }
+    
+    
+    
+    
+    //TODO: TEMP
+    /*
+     extension Model{
+     func setTexture(name: String, type: TextureIndex){
+     if let texture = TextureController.loadTexture(name: name){
+     switch type{
+     case TextureIndex.color:
+     meshes[0].submeshes[0].textures.baseColor = texture
+     default: break
+     }
+     }
+     }
+     */
     
     func render ( encoder: MTLRenderCommandEncoder, uniforms vertex: Uniforms, params fragment: Params){
         
@@ -67,18 +79,20 @@ extension Model{
                 encoder.setVertexBuffer(vertexBuffer, offset: 0, index: index)
             }
             
-            for submeshe in mesh.submeshes {
+            for (index,submeshe) in mesh.submeshes.enumerated() {
                 //frag texture here
+                var material = materials[index % mesh.submeshes.count]
+                var materialProps = material.properties
+                encoder.setFragmentBytes(&materialProps, length: MemoryLayout<Material>.stride, index: BufferIndex.material.rawValue)
                 
-                var material = submeshe.material
-                encoder.setFragmentBytes(&material, length: MemoryLayout<Material>.stride, index: BufferIndex.material.rawValue)
+                //TODO: refactor
+                encoder.setFragmentTexture(material.baseColorTexture, index: TextureIndex.color.rawValue)
                 
-                encoder.setFragmentTexture(submeshe.textures.baseColor, index: TextureIndex.color.rawValue)
+                encoder.setFragmentTexture(material.normalXYRoughMetallic, index: TextureIndex.additional.rawValue)
                 
-                encoder.setFragmentTexture(submeshe.textures.additionalMap, index: TextureIndex.additional.rawValue)
+                encoder.setFragmentTexture(material.emissionTexture, index: TextureIndex.emission.rawValue)
                 
                 //TODO: BRUSH TEXTURE
-                //TODO: EEMISSION TEXTURE
                 
                 encoder.drawIndexedPrimitives(type: .triangle, indexCount: submeshe.indexCount, indexType: submeshe.indexType, indexBuffer: submeshe.indexBuffer, indexBufferOffset: submeshe.indexBufferOffset)
             }

@@ -29,7 +29,9 @@ enum PipelineStates{
         let pipelineDescriptor = MTLRenderPipelineDescriptor()
         pipelineDescriptor.vertexFunction = vertexFunction
         pipelineDescriptor.fragmentFunction = fragmentFunction
-       // pipelineDescriptor.colorAttachments[0].pixelFormat = .invalid
+        //no drawable
+        pipelineDescriptor.colorAttachments[0].pixelFormat = .invalid
+        
         pipelineDescriptor.colorAttachments[RenderTargetIndex.albedoMetallic.rawValue].pixelFormat = .bgra8Unorm_srgb
         pipelineDescriptor.colorAttachments[RenderTargetIndex.normRoughShadow.rawValue].pixelFormat = .rgba8Snorm
         pipelineDescriptor.colorAttachments[RenderTargetIndex.position.rawValue].pixelFormat = .rgba16Float
@@ -38,6 +40,28 @@ enum PipelineStates{
         return createPipelineState(descriptor: pipelineDescriptor)
     }
     
+    static func createeDirectionalLightPipelineState(vertexFunctionName: String, fragmentFunctionName: String, colorPixelFormat: MTLPixelFormat) -> MTLRenderPipelineState
+    {
+        let vertexFunction = Renderer.library?.makeFunction(name: vertexFunctionName)
+        let fragmentFunction = Renderer.library?.makeFunction(name: fragmentFunctionName)
+        let pipelineDescriptor = MTLRenderPipelineDescriptor()
+        pipelineDescriptor.vertexFunction = vertexFunction
+        pipelineDescriptor.fragmentFunction = fragmentFunction
+        pipelineDescriptor.colorAttachments[0].pixelFormat =  colorPixelFormat
+        pipelineDescriptor.depthAttachmentPixelFormat = .depth32Float
+        pipelineDescriptor.vertexDescriptor = .defaultLayout
+        let attachment = pipelineDescriptor.colorAttachments[0]
+        attachment?.isBlendingEnabled = true
+        attachment?.rgbBlendOperation = .add
+        attachment?.alphaBlendOperation = .add
+        
+        attachment?.sourceRGBBlendFactor = .one
+        attachment?.destinationRGBBlendFactor = .one
+
+        attachment?.sourceAlphaBlendFactor = .one
+        attachment?.destinationAlphaBlendFactor = .zero
+        return createPipelineState(descriptor: pipelineDescriptor)
+    }
     /*
     static func createShadowPipelineState() -> MTLRenderPipelineState{
         let vertexFunction = Renderer.library?.makeFunction(name: "vertex_depth")

@@ -59,14 +59,7 @@ extension MDLVertexDescriptor {
             bufferIndex: BufferIndex.meshGenerics.rawValue)
         offset += 2 * 4
 
-        //bi
-        vertexDscriptor.attributes[VertexAttribute.bitangent.rawValue] = MDLVertexAttribute(
-            name: MDLVertexAttributeBitangent,
-            format: .half4,
-            offset: offset,
-            bufferIndex: BufferIndex.meshGenerics.rawValue)
-        offset += 2 * 4
-        
+       
         //color
         //TODO: test stride and format
         vertexDscriptor.attributes[VertexAttribute.color.rawValue] = MDLVertexAttribute(

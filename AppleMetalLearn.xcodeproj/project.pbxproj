@@ -11,6 +11,8 @@
 		622167442BCDC57D0067269F /* GBuffer.metal in Sources */ = {isa = PBXBuildFile; fileRef = 622167432BCDC57D0067269F /* GBuffer.metal */; };
 		622167462BCDCF5D0067269F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622167452BCDCF5D0067269F /* ContentView.swift */; };
 		622167482BCDCF7E0067269F /* MetalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622167472BCDCF7E0067269F /* MetalView.swift */; };
+		625E21802BD6FD3800263CCA /* platonic.obj in Resources */ = {isa = PBXBuildFile; fileRef = 625E217F2BD6FD3800263CCA /* platonic.obj */; };
+		625E218A2BD7124B00263CCA /* teapot.obj in Resources */ = {isa = PBXBuildFile; fileRef = 625E21892BD7124B00263CCA /* teapot.obj */; };
 		6278D0962BD50D2F00A29602 /* Material.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6278D0952BD50D2F00A29602 /* Material.swift */; };
 		6278D09A2BD511D300A29602 /* testBaseColor.tga in Resources */ = {isa = PBXBuildFile; fileRef = 6278D0992BD511D300A29602 /* testBaseColor.tga */; };
 		6278D09D2BD54F9C00A29602 /* Albedo.tga in Resources */ = {isa = PBXBuildFile; fileRef = 6278D09B2BD54F9C00A29602 /* Albedo.tga */; };
@@ -49,6 +51,8 @@
 		622167432BCDC57D0067269F /* GBuffer.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = GBuffer.metal; sourceTree = "<group>"; };
 		622167452BCDCF5D0067269F /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		622167472BCDCF7E0067269F /* MetalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalView.swift; sourceTree = "<group>"; };
+		625E217F2BD6FD3800263CCA /* platonic.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = platonic.obj; path = ../../../../../../../Users/barkar/Desktop/temp/platonic.obj; sourceTree = "<group>"; };
+		625E21892BD7124B00263CCA /* teapot.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = teapot.obj; path = ../../../../../../../Users/barkar/Desktop/temp/teapot.obj; sourceTree = "<group>"; };
 		6278D0952BD50D2F00A29602 /* Material.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Material.swift; sourceTree = "<group>"; };
 		6278D0992BD511D300A29602 /* testBaseColor.tga */ = {isa = PBXFileReference; lastKnownFileType = file; path = testBaseColor.tga; sourceTree = "<group>"; };
 		6278D09B2BD54F9C00A29602 /* Albedo.tga */ = {isa = PBXFileReference; lastKnownFileType = file; path = Albedo.tga; sourceTree = "<group>"; };
@@ -154,6 +158,8 @@
 		62986BBF2BCC577400B7DF50 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				625E21892BD7124B00263CCA /* teapot.obj */,
+				625E217F2BD6FD3800263CCA /* platonic.obj */,
 				62986BC42BCC5A6500B7DF50 /* RubberToy.usdz */,
 			);
 			path = Models;
@@ -322,6 +328,8 @@
 				6278D09D2BD54F9C00A29602 /* Albedo.tga in Resources */,
 				629D840D2BC1313F00677998 /* Assets.xcassets in Resources */,
 				6278D0A02BD566E600A29602 /* Emission.tga in Resources */,
+				625E21802BD6FD3800263CCA /* platonic.obj in Resources */,
+				625E218A2BD7124B00263CCA /* teapot.obj in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

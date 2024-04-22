@@ -32,7 +32,7 @@ struct GameScene{
         let testMaterial = MaterialController.createMaterial(materialName: "Default", albedoTextureName: "Albedo.tga", additioanTextureNamee: "NRM.tga", emissionTextureName: "Emission.tga", baseColor: [1,1,1], roughtness: 1.0, metallic: 1.0, emissionColor: [1,1,1])
         
         var testModel: Model = {
-            Model(name: "RubberToy.usdz", materials: [testMaterial])
+            Model(name: "teapot.obj", materials: [testMaterial])
         }()
         
         testModel.position = [0,0,-5]

@@ -23,16 +23,15 @@ class Model: Transformable{
         let allocator = MTKMeshBufferAllocator(device: Renderer.device)
         let asset = MDLAsset(url: assetURL, vertexDescriptor: nil, bufferAllocator: allocator)
         
-        asset.loadTextures()
+        //asset.loadTextures()
         var mtkMeshes: [MTKMesh] = []
         let mdlMeshes = asset.childObjects(of: MDLMesh.self) as? [MDLMesh] ?? []
         _ = mdlMeshes.map
         {
-            mdlMesh in mdlMesh.addTangentBasis(forTextureCoordinateAttributeNamed: MDLVertexAttributeTextureCoordinate, normalAttributeNamed: MDLVertexAttributeNormal, tangentAttributeNamed: MDLVertexAttributeTangent)
+            mdlMesh in 
+            mdlMesh.addTangentBasis(forTextureCoordinateAttributeNamed: MDLVertexAttributeTextureCoordinate, normalAttributeNamed: MDLVertexAttributeNormal, tangentAttributeNamed: MDLVertexAttributeTangent)
             
-          //  mdlMesh.addTangentBasis(forTextureCoordinateAttributeNamed: MDLVertexAttributeTextureCoordinate,
-            //                        tangentAttributeNamed: MDLVertexAttributeTangent,
-              //                      bitangentAttributeNamed: MDLVertexAttributeBitangent)
+         
             mdlMesh.vertexDescriptor = .defaultLayout
             
             
@@ -81,9 +80,10 @@ class Model: Transformable{
             
             for (index,submeshe) in mesh.submeshes.enumerated() {
                 //frag texture here
-                var material = materials[index % mesh.submeshes.count]
+                let material = materials[index % mesh.submeshes.count]
                 var materialProps = material.properties
-                encoder.setFragmentBytes(&materialProps, length: MemoryLayout<Material>.stride, index: BufferIndex.material.rawValue)
+                encoder.setFragmentBytes(&materialProps, length: MemoryLayout<MaterialProperties>.stride, index: BufferIndex.material.rawValue)
+               
                 
                 //TODO: refactor
                 encoder.setFragmentTexture(material.baseColorTexture, index: TextureIndex.color.rawValue)

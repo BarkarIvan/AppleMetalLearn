@@ -23,8 +23,8 @@ vertex Varyings vertex_main (
     OUT.positionWS = positionWS;
     OUT.texCoord = IN.texCoord;
     OUT.normalWS = normalhalf * IN.normalOS;
-    OUT.tangentWS = normalhalf * IN.tangentOS.xyz;
-    OUT.bitangentWS = (cross(OUT.tangentWS, OUT.normalWS)* IN.tangentOS.w) ;
+    OUT.tangentWS = normalhalf*IN.tangentOS.xyz;
+    OUT.bitangentWS = normalhalf*(cross(IN.tangentOS.xyz, IN.normalOS.xyz) * IN.tangentOS.w);//* IN.tangentOS.w) ;
         //shadow coords
     
     return OUT;

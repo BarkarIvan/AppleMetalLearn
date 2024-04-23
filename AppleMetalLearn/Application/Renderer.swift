@@ -23,10 +23,10 @@ class Renderer: NSObject{
     var uniforms = Uniforms()
     var params = Params()
     
-   // var shadowRenderPass: Shadow
+    var shadowRenderPass: ShadowRenderPass
     var gBufferRenderPass: GBufferRenderPass
     
-   // var shadowCamera = OrthographicCamera()
+    var shadowCamera = OrthographicCamera()
     
     init (metalView: MTKView){
         guard
@@ -40,6 +40,7 @@ class Renderer: NSObject{
         
         Self.library = device.makeDefaultLibrary()
         
+        shadowRenderPass = ShadowRenderPass()
         gBufferRenderPass = GBufferRenderPass(view: metalView)
         
         super.init()
@@ -56,6 +57,7 @@ extension Renderer {
     func mtkView(
     _ view: MTKView, drawableSizeWillChange size: CGSize)
     {
+        shadowRenderPass.resize(view: view, size: size)
         gBufferRenderPass.resize(view: view, size: size)
     }
     
@@ -66,6 +68,10 @@ extension Renderer {
         params.cameraPosition = scene.camera.position
         
         //TODO: shadows camera and matrices
+        let directionalLight = scene.lighting.getMainLighht()
+        shadowCamera = OrthographicCamera.createShadowCamera(using: scene.camera, lightPositionn: directionalLight.position)
+        uniforms.shadowProjectionMatrix = shadowCamera.projectionMatrix
+        uniforms.shadowViewMatrix = float4x4(eye: shadowCamera.position, center: shadowCamera.center, up: [0,1,0], isLeftHand: false)
         //let directional = scene.lighting.lights[0]
         
     }
@@ -78,7 +84,7 @@ extension Renderer {
         updateUniforms(scene: scene)
         
         //shadowpass
-        
+        shadowRenderPass.draw(commandBuffer: commandBuffer, scene: scene, uniforms: uniforms, params: params)
         gBufferRenderPass.draw(commandBuffer: commandBuffer, scene: scene, uniforms: uniforms, params: params)
         
         //forward transparent

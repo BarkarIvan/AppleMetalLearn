@@ -10,6 +10,21 @@ using namespace metal;
 
 #import "ShaderDefs.h"
 
+
+//TODO: to utils
+half2 safeNormalize(half2 vec)
+{
+    half dv3 = max(HALF_MIN, dot(vec, vec));
+    return vec * rsqrt(dv3);
+}
+
+half3 safeNormalize(half3 vec)
+{
+    half dv3 = max(HALF_MIN, dot(vec, vec));
+    return vec * rsqrt(dv3);
+}
+
+
 //to def
 struct GBufferOut{
     half4 albedo [[color(RenderTargetAlbedoMetallic)]];
@@ -34,19 +49,18 @@ fragment GBufferOut fragment_GBuffer(
     half4 additionalData = NormRoughMetallic.sample(linearSampler, IN.texCoord);
     
     half3 normalTS;
-    half2 data = additionalData.xy * 2.0 - 1.0;
-    half dp3 = max(HALF_MIN, dot(data, data));
-    half2 safeNormalize = data * rsqrt(dp3);
-    normalTS.xy =  safeNormalize;////normalize(additionalData.xy * 2.0 - 1.0);
+    half2 data = half2(additionalData.x, additionalData.y) * 2.0 - 1.0;
+  
+    normalTS.xy =  safeNormalize(data.xy);
     normalTS.z = sqrt((normalTS.x * normalTS.x) - (normalTS.y * normalTS.y));
     half3x3 tantgenToWorld = half3x3((IN.tangentWS), (IN.bitangentWS), (IN.normalWS));
-    half3 normalWS = (normalTS) * tantgenToWorld;
+    half3 normalWS = tantgenToWorld * normalTS;
     
     OUT.albedo = albedo.sample(linearSampler, IN.texCoord);//float4(material.baseColor, 1.0);
     OUT.albedo.a = materialProperties.metallic;
     //albedo.a = shadow
     
-    OUT.normal = abs(half4(normalize(normalWS), 1.0));//half4(normalize(IN.normalWS), 1.0);
+    OUT.normal = half4(normalWS, 1.0);
     OUT.positiob = float4(additionalData.z, additionalData.w, 0.0,1.0);
     return OUT;
 }

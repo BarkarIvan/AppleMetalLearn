@@ -28,7 +28,7 @@ struct GBufferRenderPass: RenderPass{
     
     mutating func resize(view: MTKView, size: CGSize) {
         albedoTexture = Self.makeTexture(size: size, pixelFormat: .bgra8Unorm_srgb, name: "Albedo texture")
-        normaltexture = Self.makeTexture(size: size, pixelFormat: .rgba8Snorm, name: "Normal texture")
+        normaltexture = Self.makeTexture(size: size, pixelFormat: .rgba16Float, name: "Normal texture")
         positionTexture = Self.makeTexture(size: size, pixelFormat: .rgba16Float, name: "Position Texture")
         depthTexture = Self.makeTexture(size: size, pixelFormat: .depth32Float, name: "Depth texture")
     }
@@ -38,7 +38,7 @@ struct GBufferRenderPass: RenderPass{
         let textures = [albedoTexture, normaltexture, positionTexture]
         
         for (index, texture) in textures.enumerated(){
-            let attachment = descriptor?.colorAttachments[RenderTargetIndex.albedoMetallic.rawValue + index]
+            let attachment = descriptor?.colorAttachments[RenderTargetIndex.albedoMetallic.rawValue + index]//???
             attachment?.texture = texture
             attachment?.loadAction = .clear
             attachment?.storeAction = .store

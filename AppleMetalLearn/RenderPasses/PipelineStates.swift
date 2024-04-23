@@ -33,7 +33,7 @@ enum PipelineStates{
         pipelineDescriptor.colorAttachments[0].pixelFormat = .invalid
         
         pipelineDescriptor.colorAttachments[RenderTargetIndex.albedoMetallic.rawValue].pixelFormat = .bgra8Unorm_srgb
-        pipelineDescriptor.colorAttachments[RenderTargetIndex.normRoughShadow.rawValue].pixelFormat = .rgba8Snorm
+        pipelineDescriptor.colorAttachments[RenderTargetIndex.normRoughShadow.rawValue].pixelFormat = .rgba16Float
         pipelineDescriptor.colorAttachments[RenderTargetIndex.position.rawValue].pixelFormat = .rgba16Float
         pipelineDescriptor.depthAttachmentPixelFormat = .depth32Float
         pipelineDescriptor.vertexDescriptor = MTLVertexDescriptor.defaultLayout
@@ -62,7 +62,7 @@ enum PipelineStates{
         attachment?.destinationAlphaBlendFactor = .zero
         return createPipelineState(descriptor: pipelineDescriptor)
     }
-    /*
+    
     static func createShadowPipelineState() -> MTLRenderPipelineState{
         let vertexFunction = Renderer.library?.makeFunction(name: "vertex_depth")
           let pipelineDescriptor = MTLRenderPipelineDescriptor()
@@ -72,7 +72,7 @@ enum PipelineStates{
         pipelineDescriptor.vertexDescriptor = .defaultLayout
         return createPipelineState(descriptor: pipelineDescriptor)
     }
-    */
+    
 }
 
     

@@ -7,6 +7,7 @@
 
 #include <metal_stdlib>
 using namespace metal;
+
 #import "ShaderTypes.h"
 #import "ShaderDefs.h"
 
@@ -15,17 +16,18 @@ vertex Varyings vertex_main (
             constant Uniforms &uniforms [[buffer(BufferIndexUniforms)]])
 {
     float4 positionCS = uniforms.projectionMatrix * uniforms.viewMatrix * uniforms.modelMatrix * IN.positionOS;
-    half3x3 normalhalf = half3x3(uniforms.normalMatrix);
+    half3x3 normalMatrix = half3x3(uniforms.normalMatrix);
     float4 positionWS = uniforms.modelMatrix * IN.positionOS;
-    Varyings OUT;
-    
-    OUT.positionCS = positionCS;
-    OUT.positionWS = positionWS;
-    OUT.texCoord = IN.texCoord;
-    OUT.normalWS = normalhalf * IN.normalOS;
-    OUT.tangentWS = normalhalf*IN.tangentOS.xyz;
-    OUT.bitangentWS = normalhalf*(cross(IN.tangentOS.xyz, IN.normalOS.xyz) * IN.tangentOS.w);//* IN.tangentOS.w) ;
-        //shadow coords
-    
+   
+    Varyings OUT{
+        .positionCS = positionCS,
+        .positionWS = positionWS,
+        .texCoord = IN.texCoord,
+        .normalWS = normalMatrix * IN.normalOS,
+        .tangentWS = normalMatrix*IN.tangentOS.xyz,
+        .bitangentWS = normalMatrix*(cross(IN.tangentOS.xyz, IN.normalOS.xyz) * IN.tangentOS.w),
+        
+        .shadowCoord = uniforms.shadowViewProjectionMatrix * uniforms.modelMatrix * IN.positionOS
+    };
     return OUT;
 }

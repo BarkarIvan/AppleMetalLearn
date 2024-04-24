@@ -24,10 +24,6 @@ struct ShadowRenderPass: RenderPass
     {
         pipelineState = PipelineStates.createShadowPipelineState()
         shadowTextute = Self.makeTexture(size: size, pixelFormat: .depth32Float, name: "Shadow pass texture")
-        
-        //debug
-        debugTexture = Self.makeTexture(size: size, pixelFormat: .rgba8Unorm, name: "Debug Shadow Pass")
-        //debug
     }
     
     

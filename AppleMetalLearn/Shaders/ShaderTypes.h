@@ -52,7 +52,7 @@ typedef NS_ENUM(EnumBackingType, TextureIndex)
 typedef NS_ENUM(EnumBackingType, RenderTargetIndex){
     RenderTargetAlbedoMetallic = 1,
     RenderTargetNormRoughShadow = 2,
-    RenderTargetPosition = 3,
+    RenderTargetRoughtnessMetallic = 3,
 } ;
 
 //TODO: pack to float4
@@ -70,8 +70,8 @@ typedef struct{
     matrix_float4x4 modelMatrix;
     matrix_float4x4 viewMatrix;
     matrix_float3x3 normalMatrix;
-    matrix_float4x4 shadowProjectionMatrix;
-    matrix_float4x4 shadowViewMatrix;
+    matrix_float4x4 shadowViewProjectionMatrix;
+    //matrix_float4x4 shadowViewMatrix;
 } Uniforms;
 
 typedef struct {

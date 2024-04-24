@@ -17,7 +17,7 @@ struct GBufferRenderPass: RenderPass{
     
     var albedoTexture: MTLTexture?
     var normaltexture: MTLTexture?
-    var positionTexture: MTLTexture?
+    var roughtnessMetallic: MTLTexture?
     var depthTexture: MTLTexture?
     
     init(view: MTKView){
@@ -27,22 +27,22 @@ struct GBufferRenderPass: RenderPass{
     }
     
     mutating func resize(view: MTKView, size: CGSize) {
-        albedoTexture = Self.makeTexture(size: size, pixelFormat: .bgra8Unorm_srgb, name: "Albedo texture")
-        normaltexture = Self.makeTexture(size: size, pixelFormat: .rgba16Float, name: "Normal texture")
-        positionTexture = Self.makeTexture(size: size, pixelFormat: .rgba16Float, name: "Position Texture")
-        depthTexture = Self.makeTexture(size: size, pixelFormat: .depth32Float, name: "Depth texture")
+        albedoTexture = Self.makeTexture(size: size, pixelFormat: PixelFormats.albedo, name: "Albedo texture")
+        normaltexture = Self.makeTexture(size: size, pixelFormat: PixelFormats.normal, name: "Normal texture")
+        roughtnessMetallic = Self.makeTexture(size: size, pixelFormat: PixelFormats.roughMetallic, name: "Roughtness-Metallic Texture")
+        depthTexture = Self.makeTexture(size: size, pixelFormat: PixelFormats.depth, name: "Depth texture")
     }
     
     func draw(commandBuffer: MTLCommandBuffer, scene: GameScene, uniforms: Uniforms, params: Params) {
 
-        let textures = [albedoTexture, normaltexture, positionTexture]
+        let textures = [albedoTexture, normaltexture, roughtnessMetallic]
         
         for (index, texture) in textures.enumerated(){
             let attachment = descriptor?.colorAttachments[RenderTargetIndex.albedoMetallic.rawValue + index]//???
             attachment?.texture = texture
             attachment?.loadAction = .clear
             attachment?.storeAction = .store
-            attachment?.clearColor = MTLClearColor(red: 0.5, green: 0.5, blue: 0.0, alpha: 1.0)
+            attachment?.clearColor = MTLClearColor(red: 0, green: 0.0, blue: 0.0, alpha: 0.0)
         }
         descriptor?.depthAttachment.texture = depthTexture
         descriptor?.depthAttachment.storeAction = .dontCare

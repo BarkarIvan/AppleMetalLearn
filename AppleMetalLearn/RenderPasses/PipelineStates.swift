@@ -32,10 +32,10 @@ enum PipelineStates{
         //no drawable
         pipelineDescriptor.colorAttachments[0].pixelFormat = .invalid
         
-        pipelineDescriptor.colorAttachments[RenderTargetIndex.albedoMetallic.rawValue].pixelFormat = .bgra8Unorm_srgb
-        pipelineDescriptor.colorAttachments[RenderTargetIndex.normRoughShadow.rawValue].pixelFormat = .rgba16Float
-        pipelineDescriptor.colorAttachments[RenderTargetIndex.position.rawValue].pixelFormat = .rgba16Float
-        pipelineDescriptor.depthAttachmentPixelFormat = .depth32Float
+        pipelineDescriptor.colorAttachments[RenderTargetIndex.albedoMetallic.rawValue].pixelFormat = PixelFormats.albedo
+        pipelineDescriptor.colorAttachments[RenderTargetIndex.normRoughShadow.rawValue].pixelFormat = PixelFormats.normal
+        pipelineDescriptor.colorAttachments[RenderTargetIndex.roughtnessMetallic.rawValue].pixelFormat = PixelFormats.roughMetallic
+        pipelineDescriptor.depthAttachmentPixelFormat = PixelFormats.depth
         pipelineDescriptor.vertexDescriptor = MTLVertexDescriptor.defaultLayout
         return createPipelineState(descriptor: pipelineDescriptor)
     }

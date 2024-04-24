@@ -31,15 +31,14 @@ class Model: Transformable{
             mdlMesh in
             mdlMesh.addOrthTanBasis(forTextureCoordinateAttributeNamed: MDLVertexAttributeTextureCoordinate, normalAttributeNamed: MDLVertexAttributeNormal, tangentAttributeNamed: MDLVertexAttributeTangent)
             
-            
             mdlMesh.vertexDescriptor = .defaultLayout
-            
-            
+
             mtkMeshes.append(try! MTKMesh(mesh: mdlMesh, device: Renderer.device))
-            
         }
+        
         meshes = zip(mdlMeshes, mtkMeshes).map { Mesh(mdlMesh: $0.0, mtkMesh: $0.1)
         }
+        
         self.materials = materials
         self.name = name
     }
@@ -47,19 +46,6 @@ class Model: Transformable{
     
     
     
-    //TODO: TEMP
-    /*
-     extension Model{
-     func setTexture(name: String, type: TextureIndex){
-     if let texture = TextureController.loadTexture(name: name){
-     switch type{
-     case TextureIndex.color:
-     meshes[0].submeshes[0].textures.baseColor = texture
-     default: break
-     }
-     }
-     }
-     */
     
     func render ( encoder: MTLRenderCommandEncoder, uniforms vertex: Uniforms, params fragment: Params){
         

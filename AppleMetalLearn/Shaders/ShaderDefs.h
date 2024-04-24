@@ -16,7 +16,6 @@ typedef struct{
     float2 texCoord     [[attribute(VertexAttributeTexcoord)]];
     half3 normalOS      [[attribute(VertexAttributeNormal)]];
     half4 tangentOS     [[attribute(VertexAttributeTangent)]];
-  //  half4 bitangentOS   [[attribute(VertexAttributeBitangent)]];
     half4 color         [[attribute(VertexAttributeColor)]];
 } Attributes;
 
@@ -29,7 +28,7 @@ typedef struct{
     half3 tangentWS;
     half3 bitangentWS;
     half4 color;
-    //float4 shafdowCoord;
+    float4 shadowCoord;
 } Varyings;
 
 

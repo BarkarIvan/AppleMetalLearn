@@ -36,8 +36,8 @@ struct GameScene{
         }()
         
         testModel.position = [0,0,5]
-        testModel.scale = [3,3,3]
-        testModel.rotation = [0,90,45]
+        testModel.scale = [1,1,1]
+        testModel.rotation = [0,90,-45]
         models = [testModel]
         
         //lighting.allLightsArray[0].position = camera.transform.position

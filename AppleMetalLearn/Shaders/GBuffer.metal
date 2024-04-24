@@ -29,16 +29,14 @@ half3 safeNormalize(half3 vec)
 struct GBufferOut{
     half4 albedo [[color(RenderTargetAlbedoMetallic)]];
     half4 normal [[color(RenderTargetNormRoughShadow)]];
-    float4 positiob [[color(RenderTargetPosition)]];
+    float4 roughMetallic [[color(RenderTargetRoughtnessMetallic)]];
 };
 
 
 fragment GBufferOut fragment_GBuffer(
                     Varyings IN [[stage_in]],
-                    //temp
                     texture2d<half> albedo[[texture(TextureIndexColor)]],
                     texture2d<half> NormRoughMetallic[[texture(TextureIndexAdditional)]],
-                                     
                     constant MaterialProperties &materialProperties [[buffer(BufferIndexMaterial)]])
 {
     GBufferOut OUT;
@@ -57,11 +55,12 @@ fragment GBufferOut fragment_GBuffer(
     half3 normalWS = tantgenToWorld * normalTS;
     
     OUT.albedo = albedo.sample(linearSampler, IN.texCoord);//float4(material.baseColor, 1.0);
-    OUT.albedo.a = materialProperties.metallic;
-    //albedo.a = shadow
+    OUT.albedo.a = 1.0;//shadows?
     
-    OUT.normal = half4(normalWS, 1.0);
-    OUT.positiob = float4(additionalData.z, additionalData.w, 0.0,1.0);
+    OUT.normal.xyz = normalWS;
+    OUT.normal.a = 1.0;
+    
+    OUT.roughMetallic = float4(additionalData.z, additionalData.w, 0.0,1.0);
     return OUT;
 }
 

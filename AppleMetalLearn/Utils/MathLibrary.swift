@@ -102,8 +102,8 @@ extension float4x4 {
     }
     
     
-    init(projectionFov fov: Float, near: Float, far: Float, aspect: Float, isLeftHand: Bool = false) {
-        let y = 1 / tan(fov * 0.5)
+    init(projectionFov fov: Float, near: Float, far: Float, aspect: Float, isLeftHand: Bool = true) {
+        let y = 1 / tanf(fov * 0.5)
         let x = y / aspect
         let z = isLeftHand ? far / (far - near) : far / (near - far)
         let X = simd_float4( x,  0,  0,  0)
@@ -115,8 +115,8 @@ extension float4x4 {
     }
     
     // left-handed LookAt
-    init(eye: simd_float3, center: simd_float3, up: simd_float3, isLeftHand: Bool = false) {
-        let z = isLeftHand ? normalize(center - eye) : normalize(eye - center)
+    init(eye: simd_float3, center: simd_float3, up: simd_float3) {
+        let z = normalize(center - eye)
         let x = normalize(cross(up, z))
         let y = cross(z, x)
         

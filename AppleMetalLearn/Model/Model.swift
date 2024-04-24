@@ -28,10 +28,10 @@ class Model: Transformable{
         let mdlMeshes = asset.childObjects(of: MDLMesh.self) as? [MDLMesh] ?? []
         _ = mdlMeshes.map
         {
-            mdlMesh in 
+            mdlMesh in
             mdlMesh.addOrthTanBasis(forTextureCoordinateAttributeNamed: MDLVertexAttributeTextureCoordinate, normalAttributeNamed: MDLVertexAttributeNormal, tangentAttributeNamed: MDLVertexAttributeTangent)
             
-         
+            
             mdlMesh.vertexDescriptor = .defaultLayout
             
             
@@ -83,7 +83,7 @@ class Model: Transformable{
                 let material = materials[index % mesh.submeshes.count]
                 var materialProps = material.properties
                 encoder.setFragmentBytes(&materialProps, length: MemoryLayout<MaterialProperties>.stride, index: BufferIndex.material.rawValue)
-               
+                
                 
                 //TODO: refactor
                 encoder.setFragmentTexture(material.baseColorTexture, index: TextureIndex.color.rawValue)
@@ -94,7 +94,10 @@ class Model: Transformable{
                 
                 //TODO: BRUSH TEXTURE
                 
-                encoder.drawIndexedPrimitives(type: .triangle, indexCount: submeshe.indexCount, indexType: submeshe.indexType, indexBuffer: submeshe.indexBuffer, indexBufferOffset: submeshe.indexBufferOffset)
+                encoder.drawIndexedPrimitives(type: .triangle, indexCount: submeshe.indexCount,
+                                              indexType: submeshe.indexType, 
+                                              indexBuffer: submeshe.indexBuffer,
+                                              indexBufferOffset: submeshe.indexBufferOffset)
             }
         }
     }

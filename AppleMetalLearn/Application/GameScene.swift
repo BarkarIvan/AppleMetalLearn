@@ -35,10 +35,12 @@ struct GameScene{
             Model(name: "RubberToy.usdz", materials: [testMaterial])
         }()
         
-        testModel.position = [0,0,-5]
-        testModel.scale = [0.5,0.5,0.5]
+        testModel.position = [0,0,5]
+        testModel.scale = [3,3,3]
         testModel.rotation = [0,90,45]
         models = [testModel]
+        
+        //lighting.allLightsArray[0].position = camera.transform.position
         
         
     }

@@ -71,7 +71,7 @@ extension Renderer {
         let directionalLight = scene.lighting.getMainLighht()
         shadowCamera = OrthographicCamera.createShadowCamera(using: scene.camera, lightPositionn: directionalLight.position)
         uniforms.shadowProjectionMatrix = shadowCamera.projectionMatrix
-        uniforms.shadowViewMatrix = float4x4(eye: shadowCamera.position, center: shadowCamera.center, up: [0,1,0], isLeftHand: false)
+        uniforms.shadowViewMatrix = float4x4(eye: shadowCamera.position, center: shadowCamera.center, up: [0,1,0])
         //let directional = scene.lighting.lights[0]
         
     }

@@ -22,7 +22,7 @@ struct FPCamera: Camera{
     var near: Float = 0.1
     var far: Float = 100
     var projectionMatrix: float4x4{
-        float4x4(projectionFov: fov, near: near, far: far, aspect: aspect, isLeftHand: false)
+        float4x4(projectionFov: fov, near: near, far: far, aspect: aspect, isLeftHand: true)
     }
     
     mutating func update(size: CGSize){
@@ -86,7 +86,7 @@ struct ArcBallCamera : Camera, Movement
     var near: Float = 0.1
     var far: Float = 100
     var projectionMatrix: float4x4 {
-        float4x4(projectionFov: fov, near: near, far: far, aspect: aspect)
+        float4x4(projectionFov: fov, near: near, far: far, aspect: aspect, isLeftHand: true)
     }
     
     let minDistanse: Float = 0.0
@@ -113,7 +113,7 @@ struct ArcBallCamera : Camera, Movement
         {
             matrix = (float4x4(translation: target) * float4x4(rotationYXZ: rotation)).inverse
         }else{
-            matrix = float4x4(eye: position, center: target, up: [0,1,0], isLeftHand: false)
+            matrix = float4x4(eye: position, center: target, up: [0,1,0])
         }
         return matrix
     }

@@ -16,6 +16,7 @@ struct ShadowRenderPass: RenderPass
     var depthStencilState: MTLDepthStencilState? = Self.buildDepthStencilState()
     var pipelineState: MTLRenderPipelineState
     var shadowTextute: MTLTexture?
+    var debugTexture: MTLTexture?
     var size: CGSize = CGSize(width: 2048, height: 2048) //config
     
     
@@ -23,6 +24,10 @@ struct ShadowRenderPass: RenderPass
     {
         pipelineState = PipelineStates.createShadowPipelineState()
         shadowTextute = Self.makeTexture(size: size, pixelFormat: .depth32Float, name: "Shadow pass texture")
+        
+        //debug
+        debugTexture = Self.makeTexture(size: size, pixelFormat: .rgba8Unorm, name: "Debug Shadow Pass")
+        //debug
     }
     
     
@@ -33,6 +38,7 @@ struct ShadowRenderPass: RenderPass
     func draw(commandBuffer: any MTLCommandBuffer, scene: GameScene, uniforms: Uniforms, params: Params)
     {
         guard let descriptor = descriptor else {return}
+       
         descriptor.depthAttachment.texture = shadowTextute
         descriptor.depthAttachment.loadAction = .clear
         descriptor.depthAttachment.storeAction = .store

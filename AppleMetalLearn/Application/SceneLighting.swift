@@ -36,7 +36,7 @@ class SceneLighting{
     {
         var light = Light()
         light.color  = [1,1,1]
-        light.position = [0,10,45]
+        light.position = [3,3,-2]
         light.attenuation = [1,0,0]
         light.type = directionalLightType
         return light

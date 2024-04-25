@@ -10,18 +10,20 @@ using namespace metal;
 #import "Lighting.h"
 
 
-float calculateShadow (float4 shadowCoord, depth2d<float> shadowMap)
+float calculateShadow (float3 shadowCoord, depth2d<float> shadowMap)
 {
-    float2 shadowTextureCoord = (shadowCoord.xyz / shadowCoord.w).xy;
-    shadowCoord = shadowCoord * 0.5 + 0.5;
-    shadowCoord.y = 1 - shadowCoord.y;
+    float3 shadowTextureCoord = shadowCoord;
     
-    constexpr sampler shadowMapSampler(
-                                       coord::normalized,
+    //to cpu?
+    shadowTextureCoord.xy = shadowTextureCoord.xy * 0.5 + 0.5;
+    shadowTextureCoord.y = 1 - shadowTextureCoord.y;
+    
+    constexpr sampler shadowMapSampler(coord::normalized,
                                        filter::linear,
+                                       mip_filter::none,
                                        address::clamp_to_edge,
                                        compare_func::less);
-    float shadowSample = shadowMap.sample_compare(shadowMapSampler, shadowCoord.xy, shadowCoord.z);
+    float shadowSample = shadowMap.sample_compare(shadowMapSampler, shadowTextureCoord.xy, shadowTextureCoord.z - SHADOW_BIAS);
     
     return shadowSample;
 }

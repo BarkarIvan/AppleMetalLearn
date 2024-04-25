@@ -28,7 +28,7 @@ typedef struct{
     half3 tangentWS;
     half3 bitangentWS;
     half4 color;
-    float4 shadowCoord;
+    float3 shadowCoord; 
 } Varyings;
 
 

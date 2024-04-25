@@ -44,8 +44,8 @@ struct GameScene{
         testModel.scale = [1,1,1]
         testModel.rotation = [0,120,-45]
         
-        platonic.position = testModel.position + [2,1,0]
-        platonic.scale = [1,1,1]
+        platonic.position = testModel.position + [0,0.7,0]
+        platonic.scale = [0.3, 0.3, 0.3]
         platonic.rotation = [45, 45, 45]
         models = [testModel, platonic]
         

@@ -9,7 +9,9 @@
 #define Lighting_h
 #import "ShaderTypes.h"
 
-float calculateShadow (float4 shadowCoord, depth2d<float> shadowMap);
+#define SHADOW_BIAS 0.005
+
+float calculateShadow (float3 shadowCoord, depth2d<float> shadowMap);
 
 
 #endif /* Lighting_h */

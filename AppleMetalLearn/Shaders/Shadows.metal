@@ -21,11 +21,10 @@ struct VertexIn
 vertex float4 vertex_depth (const VertexIn in [[stage_in]],
                             constant Uniforms &uniforms [[buffer(BufferIndexUniforms)]])
 {
-    matrix_float4x4 modelViewProjectionMatrix = uniforms.shadowViewProjectionMatrix  * uniforms.modelMatrix;
-    float4 p = in.position;
-   // p.xyz +=   float3(in.normal * 0.001);
+    matrix_float4x4 modelViewProjectionMatrix = uniforms.shadowProjectionMatrix  * uniforms.shadowViewMatrix *  uniforms.modelMatrix;
+    float4 position = float4( in.position.xyz,1.0);
     
-    return modelViewProjectionMatrix * (p) ;
+    return modelViewProjectionMatrix * position;
 }
 
 

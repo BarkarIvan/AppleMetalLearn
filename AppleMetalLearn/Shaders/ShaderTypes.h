@@ -70,8 +70,9 @@ typedef struct{
     matrix_float4x4 modelMatrix;
     matrix_float4x4 viewMatrix;
     matrix_float3x3 normalMatrix;
-    matrix_float4x4 shadowViewProjectionMatrix;
-    //matrix_float4x4 shadowViewMatrix;
+    matrix_float4x4 shadowProjectionMatrix;
+    matrix_float4x4 shadowViewMatrix;
+    vector_float3 mainLighWorldPos;
 } Uniforms;
 
 typedef struct {

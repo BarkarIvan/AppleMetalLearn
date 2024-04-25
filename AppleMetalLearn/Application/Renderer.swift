@@ -86,6 +86,8 @@ extension Renderer {
         
         //shadowpass
         shadowRenderPass.draw(commandBuffer: commandBuffer, scene: scene, uniforms: uniforms, params: params)
+        
+        gBufferRenderPass.shadowMap = shadowRenderPass.shadowMap
         gBufferRenderPass.draw(commandBuffer: commandBuffer, scene: scene, uniforms: uniforms, params: params)
         
         //forward transparent

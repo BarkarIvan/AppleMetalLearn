@@ -46,7 +46,7 @@ typedef NS_ENUM(EnumBackingType, TextureIndex)
     TextureIndexColor    = 0,
     TextureIndexAdditional = 1,
     TextureIndexEmission = 2,
-    TextureIndexShadow = 3
+    TextureIndexShadowMap = 3
 };
 
 typedef NS_ENUM(EnumBackingType, RenderTargetIndex){

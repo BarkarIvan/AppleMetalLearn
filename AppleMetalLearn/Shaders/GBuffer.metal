@@ -8,8 +8,8 @@
 #include <metal_stdlib>
 using namespace metal;
 
+#import "Lighting.h"
 #import "ShaderDefs.h"
-
 
 //TODO: to utils
 half2 safeNormalize(half2 vec)
@@ -37,6 +37,7 @@ fragment GBufferOut fragment_GBuffer(
                     Varyings IN [[stage_in]],
                     texture2d<half> albedo[[texture(TextureIndexColor)]],
                     texture2d<half> NormRoughMetallic[[texture(TextureIndexAdditional)]],
+                    depth2d<float>shadowMap[[texture(TextureIndexShadowMap)]],
                     constant MaterialProperties &materialProperties [[buffer(BufferIndexMaterial)]])
 {
     GBufferOut OUT;
@@ -54,8 +55,10 @@ fragment GBufferOut fragment_GBuffer(
     half3x3 tantgenToWorld = half3x3((IN.tangentWS), (IN.bitangentWS), (IN.normalWS));
     half3 normalWS = tantgenToWorld * normalTS;
     
-    OUT.albedo = albedo.sample(linearSampler, IN.texCoord);//float4(material.baseColor, 1.0);
-    OUT.albedo.a = 1.0;//shadows?
+    half shadow = calculateShadow(IN.shadowCoord, shadowMap);
+    
+    OUT.albedo.xyz = half3(1,1,1) * (shadow + 0.5);//albedo.sample(linearSampler, IN.texCoord);//float4(material.baseColor, 1.0);
+    OUT.albedo.a = 1.0;//shadow;
     
     OUT.normal.xyz = normalWS;
     OUT.normal.a = 1.0;

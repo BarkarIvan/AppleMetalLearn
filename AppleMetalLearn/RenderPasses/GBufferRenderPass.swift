@@ -13,7 +13,7 @@ struct GBufferRenderPass: RenderPass{
     
     var pipelineState: MTLRenderPipelineState
     let depthStencilState: MTLDepthStencilState?
-   // weak var shadowTexture: MTLTexture?
+    weak var shadowMap: MTLTexture?
     
     var albedoTexture: MTLTexture?
     var normaltexture: MTLTexture?
@@ -62,9 +62,9 @@ struct GBufferRenderPass: RenderPass{
         
         renderEncoder.popDebugGroup()
 
+        // shadowMap
         
-        //TODO:
-        //renderEncoder.setFragmentTexture(shadowTexture, index: TextureIndex.shadow.rawValue)
+        renderEncoder.setFragmentTexture(shadowMap, index: TextureIndex.shadowMap.rawValue)
         
         for model in scene.models{
             renderEncoder.pushDebugGroup(model.name)

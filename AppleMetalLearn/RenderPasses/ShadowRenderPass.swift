@@ -15,7 +15,7 @@ struct ShadowRenderPass: RenderPass
     var descriptor: MTLRenderPassDescriptor? = MTLRenderPassDescriptor()
     var depthStencilState: MTLDepthStencilState? = Self.buildDepthStencilState()
     var pipelineState: MTLRenderPipelineState
-    var shadowTextute: MTLTexture?
+    var shadowMap: MTLTexture?
     var debugTexture: MTLTexture?
     var size: CGSize = CGSize(width: 2048, height: 2048) //config
     
@@ -23,7 +23,7 @@ struct ShadowRenderPass: RenderPass
     init()
     {
         pipelineState = PipelineStates.createShadowPipelineState()
-        shadowTextute = Self.makeTexture(size: size, pixelFormat: .depth32Float, name: "Shadow pass texture")
+        shadowMap = Self.makeTexture(size: size, pixelFormat: .depth32Float, name: "Shadow pass texture")
     }
     
     
@@ -35,7 +35,7 @@ struct ShadowRenderPass: RenderPass
     {
         guard let descriptor = descriptor else {return}
        
-        descriptor.depthAttachment.texture = shadowTextute
+        descriptor.depthAttachment.texture = shadowMap
         descriptor.depthAttachment.loadAction = .clear
         descriptor.depthAttachment.storeAction = .store
         

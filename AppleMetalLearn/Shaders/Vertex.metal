@@ -15,9 +15,10 @@ vertex Varyings vertex_main (
             Attributes IN [[stage_in]],
             constant Uniforms &uniforms [[buffer(BufferIndexUniforms)]])
 {
-    float4 positionCS = uniforms.projectionMatrix * uniforms.viewMatrix * uniforms.modelMatrix * IN.positionOS;
-    half3x3 normalMatrix = half3x3(uniforms.normalMatrix);
     float4 positionWS = uniforms.modelMatrix * IN.positionOS;
+    float4 positionCS = uniforms.projectionMatrix * uniforms.viewMatrix * positionWS;
+    half3x3 normalMatrix = half3x3(uniforms.normalMatrix);
+ 
    
     Varyings OUT{
         .positionCS = positionCS,
@@ -27,7 +28,7 @@ vertex Varyings vertex_main (
         .tangentWS = normalMatrix*IN.tangentOS.xyz,
         .bitangentWS = normalMatrix*(cross(IN.tangentOS.xyz, IN.normalOS.xyz) * IN.tangentOS.w),
         
-        .shadowCoord = uniforms.shadowViewProjectionMatrix * uniforms.modelMatrix * IN.positionOS
+        .shadowCoord = (uniforms.shadowViewProjectionMatrix * positionWS)
     };
     return OUT;
 }

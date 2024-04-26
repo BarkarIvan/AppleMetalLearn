@@ -23,7 +23,7 @@ class Renderer: NSObject{
     var uniforms = Uniforms()
     var params = Params()
     
-    var shadowRenderPass: ShadowRenderPass
+    var shadowRenderPass: DepthOnlyPass
     var gBufferRenderPass: GBufferRenderPass
     
     var shadowCamera = OrthographicCamera()
@@ -40,7 +40,7 @@ class Renderer: NSObject{
         
         Self.library = device.makeDefaultLibrary()
         
-        shadowRenderPass = ShadowRenderPass()
+        shadowRenderPass = DepthOnlyPass()
         gBufferRenderPass = GBufferRenderPass(view: metalView)
         
         super.init()
@@ -89,7 +89,7 @@ extension Renderer {
         //shadowpass
         shadowRenderPass.draw(commandBuffer: commandBuffer, scene: scene, uniforms: uniforms, params: params)
         
-        gBufferRenderPass.shadowMap = shadowRenderPass.shadowMap
+        gBufferRenderPass.shadowMap = shadowRenderPass.destinationTexture
         gBufferRenderPass.draw(commandBuffer: commandBuffer, scene: scene, uniforms: uniforms, params: params)
         
         //forward transparent

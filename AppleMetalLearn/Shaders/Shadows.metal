@@ -13,7 +13,6 @@ using namespace metal;
 struct VertexIn
 {
     float4 position [[attribute(VertexAttributePosition)]];
-    half3 normal [[attribute(VertexAttributeNormal)]];
 };
 
 

@@ -7,7 +7,7 @@
 
 import MetalKit
 
-struct ShadowRenderPass: RenderPass
+struct DepthOnlyPass: RenderPass
 {
 
     let name: String = "Shadow Render Pass"
@@ -15,7 +15,7 @@ struct ShadowRenderPass: RenderPass
     var descriptor: MTLRenderPassDescriptor? = MTLRenderPassDescriptor()
     var depthStencilState: MTLDepthStencilState? = Self.buildDepthStencilState()
     var pipelineState: MTLRenderPipelineState
-    var shadowMap: MTLTexture?
+    var destinationTexture: MTLTexture?
     var debugTexture: MTLTexture?
     var size: CGSize = CGSize(width: 2048, height: 2048) //config
     
@@ -23,7 +23,7 @@ struct ShadowRenderPass: RenderPass
     init()
     {
         pipelineState = PipelineStates.createShadowPipelineState()
-        shadowMap = Self.makeTexture(size: size, pixelFormat: .depth32Float, name: "Shadow pass texture")
+        destinationTexture = Self.makeTexture(size: size, pixelFormat: .depth32Float, name: "Shadow pass texture")
     }
     
     
@@ -35,7 +35,7 @@ struct ShadowRenderPass: RenderPass
     {
         guard let descriptor = descriptor else {return}
        
-        descriptor.depthAttachment.texture = shadowMap
+        descriptor.depthAttachment.texture = destinationTexture
         descriptor.depthAttachment.loadAction = .clear
         descriptor.depthAttachment.storeAction = .store
         
@@ -48,6 +48,7 @@ struct ShadowRenderPass: RenderPass
         for model in scene.models
         {
             renderEncoder.pushDebugGroup(model.name)
+            //TODO: материал не нужен
             model.render(encoder: renderEncoder, uniforms: uniforms, params: params)
             renderEncoder.popDebugGroup()
             

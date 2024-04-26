@@ -70,7 +70,7 @@ enum PipelineStates{
         pipelineDescriptor.vertexFunction = vertexFunction
         pipelineDescriptor.colorAttachments[0].pixelFormat = .invalid
         pipelineDescriptor.depthAttachmentPixelFormat = .depth32Float
-        pipelineDescriptor.vertexDescriptor = .defaultLayout
+        pipelineDescriptor.vertexDescriptor = .depthOnlyLayout
         return createPipelineState(descriptor: pipelineDescriptor)
     }
     

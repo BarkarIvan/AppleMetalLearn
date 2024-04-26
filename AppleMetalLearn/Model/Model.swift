@@ -46,7 +46,7 @@ class Model: Transformable{
     
     
     
-    
+    //нужен ли материал
     func render ( encoder: MTLRenderCommandEncoder, uniforms vertex: Uniforms, params fragment: Params){
         
         var uniforms = vertex

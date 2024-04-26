@@ -11,9 +11,31 @@ extension MTLVertexDescriptor{
     static var defaultLayout: MTLVertexDescriptor?{
         MTKMetalVertexDescriptorFromModelIO(.defaultLayout)
     }
+    static var depthOnlyLayout: MTLVertexDescriptor?
+    {
+        MTKMetalVertexDescriptorFromModelIO(.depthOnlyLayout)
+    }
 }
 
+
+
 extension MDLVertexDescriptor {
+    
+    static var depthOnlyLayout: MDLVertexDescriptor
+    {
+        let vertexDescriptor = MDLVertexDescriptor()
+        vertexDescriptor.attributes[VertexAttribute.position.rawValue] = MDLVertexAttribute(
+            name: MDLVertexAttributePosition,
+            format: .float3,
+            offset: 0,
+            bufferIndex: BufferIndex.meshPositions.rawValue)
+        vertexDescriptor.layouts[BufferIndex.meshPositions.rawValue] = MDLVertexBufferLayout(stride: 4 * 3)
+        
+        return vertexDescriptor
+    }
+    
+    
+    
     static var defaultLayout: MDLVertexDescriptor{
         let vertexDscriptor = MDLVertexDescriptor()
         

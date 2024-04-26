@@ -8,8 +8,9 @@
 import MetalKit
 
 struct PixelFormats {
-    static var albedo: MTLPixelFormat = .bgra8Unorm_srgb
-    static var normal: MTLPixelFormat = .rgba8Snorm
-    static var roughMetallic: MTLPixelFormat = .rg8Unorm
+    static var albedo: MTLPixelFormat = .rgba8Unorm_srgb
+    static var normal: MTLPixelFormat = .rgba16Float
+    static var emission: MTLPixelFormat = .rgba8Unorm_srgb
+    static var roughMetallic: MTLPixelFormat = .rgba8Unorm_srgb
     static var depth: MTLPixelFormat = .depth32Float
 }

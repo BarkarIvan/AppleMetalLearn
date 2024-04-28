@@ -11,7 +11,6 @@
 
 //использоввание типов и макросов в зависимости где компилится
 #ifdef __METAL_VERSION__
-
 #define NS_ENUM(_type, _name) enum _name : _type _name; enum _name : _type
 typedef metal::int32_t EnumBackingType;
 #else
@@ -25,14 +24,11 @@ typedef NSInteger EnumBackingType;
 //индексы буферов и аттрибутов
 typedef NS_ENUM(EnumBackingType, BufferIndex)
 {
-    BufferIndexMeshPositions    = 0, //pos
-    BufferIndexMeshGenerics     = 1, //uv
-    BufferIndexUniforms         = 2,
-    BufferIndexParams           = 3,
-    BufferIndexMaterial         = 4,
-    BufferIndexFrameData         = 5,
-    BufferIndexLightingData     = 6,
-    
+    BufferIndexMeshPositions = 0, //pos
+    BufferIndexMeshGenerics  = 1, //uv
+    BufferIndexUniforms      = 2, 
+    BufferIndexParams        = 3,
+    BufferIndexMaterial      = 4
 };
 
 typedef NS_ENUM(EnumBackingType, VertexAttribute)
@@ -41,26 +37,22 @@ typedef NS_ENUM(EnumBackingType, VertexAttribute)
     VertexAttributeTexcoord  = 1,
     VertexAttributeNormal    = 2,
     VertexAttributeTangent   = 3,
-    VertexAttributeBitangent = 4,
-    VertexAttributeColor     = 5,
+   // VertexAttributeBitangent = 4,
+    //VertexAttributeColor     = 4,
 };
 
 typedef NS_ENUM(EnumBackingType, TextureIndex)
 {
-    TextureIndexAlbedo          = 0,
-    TextureIndexAdditional      = 1,
-    TextureIndexEmission        = 2,
-    TextureIndexShadow          = 3,
-    //to another enum?!
-    TextureIndexNormal          = 4,
-    TextureIndexPosition        = 5
+    TextureIndexColor    = 0,
+    TextureIndexAdditional = 1,
+    TextureIndexEmission = 2,
+    TextureIndexShadowMap = 3
 };
 
 typedef NS_ENUM(EnumBackingType, RenderTargetIndex){
-    RenderTargetAlbedoMetallic          = 0,
-    RenderTargetNomalRoughtnessShadow   = 1,
-    RenderTargetDepth                   = 2,
-    RenderTargetLighting                = 3
+    RenderTargetAlbedoMetallic = 1,
+    RenderTargetNormRoughShadow = 2,
+    RenderTargetRoughtnessMetallic = 3,
 } ;
 
 //TODO: pack to float4
@@ -74,27 +66,21 @@ typedef struct{
 } Params;
 
 typedef struct{
-    //per fra,e
     matrix_float4x4 projectionMatrix;
-    matrix_float4x4 projectionMatrixInverse;
+    matrix_float4x4 modelMatrix;
     matrix_float4x4 viewMatrix;
-    uint frameBufferWidth;
-    uint frameBuffreHeight;
+    matrix_float3x3 normalMatrix;
     matrix_float4x4 shadowProjectionMatrix;
     matrix_float4x4 shadowViewMatrix;
-} FrameData;
-
-typedef struct{
-    matrix_float4x4 modelMatrix;
-    matrix_float3x3 normalMatrix;
+    vector_float3 mainLighWorldPos;
 } Uniforms;
 
 typedef struct {
     vector_float3 baseColor;
     float roughness;
     float metallic;
-    float emission;
-}Material;
+    vector_float3 emissionColor;
+}MaterialProperties;
 
 typedef enum {
     unused = 0,
@@ -116,13 +102,5 @@ typedef struct {
 }Light;
 
 
-////del
-typedef struct{
-    packed_float2 position;
-} SimpleVertex;
-
-typedef struct{
-    vector_float3 position;
-} ShadowVertex;
 
 #endif //

@@ -15,22 +15,23 @@ typedef struct{
     float4 positionOS   [[attribute(VertexAttributePosition)]];
     float2 texCoord     [[attribute(VertexAttributeTexcoord)]];
     half3 normalOS      [[attribute(VertexAttributeNormal)]];
-    half3 tangentOS     [[attribute(VertexAttributeTangent)]];
-    half3 bitangentOS   [[attribute(VertexAttributeBitangent)]];
-    half4 color         [[attribute(VertexAttributeColor)]];
+    half4 tangentOS     [[attribute(VertexAttributeTangent)]];
+    //half4 bitangentOS   [[attribute(VertexAttributeBitangent)]];
 } Attributes;
 
 
 typedef struct{
     float4 positionCS [[position]];
-    float4 positionWS;
+    float3 positionWS;
     float2 texCoord ;
     half3 normalWS;
     half3 tangentWS;
     half3 bitangentWS;
-    half3 color;
-    float3 shafdowCoord;
+    half4 color;
+    float3 shadowCoord; 
 } Varyings;
+
+
 
 
 #endif /* ShaderDefs_h */

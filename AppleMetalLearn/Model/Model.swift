@@ -12,73 +12,92 @@ class Model: Transformable{
     var meshes: [Mesh] = []
     var name: String = "Untitled"
     var tiling: UInt32 = 1
+    var materials: [Material] = []
     
     init(){}
     
-    init(device: MTLDevice, name: String){
-        
+    init(name: String, materials: [Material]){
         guard let assetURL = Bundle.main.url(forResource: name, withExtension: nil) else{
             fatalError("Model /(name) not found")
         }
-        let allocator = MTKMeshBufferAllocator(device: device)
-        let asset = MDLAsset(url: assetURL, vertexDescriptor: .defaultLayout, bufferAllocator: allocator)
+        let allocator = MTKMeshBufferAllocator(device: Renderer.device)
+        let asset = MDLAsset(url: assetURL, vertexDescriptor: nil, bufferAllocator: allocator)
         
-        asset.loadTextures()
+        
+        let mdlVertexDescriptor = MTKModelIOVertexDescriptorFromMetal(VertexDescriptors().basic)
+        guard let attributes = mdlVertexDescriptor.attributes as? [MDLVertexAttribute] else {
+            fatalError("Bad vertex descriptor")
+        }
+        attributes[VertexAttribute.position.rawValue].name = MDLVertexAttributePosition
+        attributes[VertexAttribute.texcoord.rawValue].name = MDLVertexAttributeTextureCoordinate
+        attributes[VertexAttribute.normal.rawValue].name = MDLVertexAttributeNormal
+        attributes[VertexAttribute.tangent.rawValue].name = MDLVertexAttributeTangent
+        
+        
         var mtkMeshes: [MTKMesh] = []
         let mdlMeshes = asset.childObjects(of: MDLMesh.self) as? [MDLMesh] ?? []
-        _ = mdlMeshes.map 
+        _ = mdlMeshes.map
         {
-            mdlMesh in mdlMesh.addOrthTanBasis(forTextureCoordinateAttributeNamed: MDLVertexAttributeTextureCoordinate, normalAttributeNamed: MDLVertexAttributeNormal, tangentAttributeNamed: MDLVertexAttributeTangent)
+            mdlMesh in
+            mdlMesh.addOrthTanBasis(forTextureCoordinateAttributeNamed: MDLVertexAttributeTextureCoordinate,
+                                        normalAttributeNamed: MDLVertexAttributeNormal,
+                                        tangentAttributeNamed: MDLVertexAttributeTangent)
             
-            mdlMesh.addTangentBasis(forTextureCoordinateAttributeNamed: MDLVertexAttributeTextureCoordinate,
-                                    tangentAttributeNamed: MDLVertexAttributeTangent,
-                                    bitangentAttributeNamed: MDLVertexAttributeBitangent)
-            mdlMesh.vertexDescriptor = .defaultLayout
-            
-            mtkMeshes.append(try! MTKMesh(mesh: mdlMesh, device: device))
-            
+           mdlMesh.vertexDescriptor = mdlVertexDescriptor
+
+            mtkMeshes.append(try! MTKMesh(mesh: mdlMesh, device: Renderer.device))
         }
-        var textureLoader = MTKTextureLoader(device: device)
-        meshes = zip(mdlMeshes, mtkMeshes).map { Mesh(mdlMesh: $0.0, mtkMesh: $0.1, textureLoader: textureLoader)
+        
+        meshes = zip(mdlMeshes, mtkMeshes).map { Mesh(mdlMesh: $0.0, mtkMesh: $0.1)
         }
+        
+        self.materials = materials
         self.name = name
     }
-}
-
-//TODO: TEMP
-extension Model{
     
-    func render ( encoder: MTLRenderCommandEncoder, uniforms vertex: Uniforms){
+    
+    
+    
+    //нужен ли материал
+    func render ( encoder: MTLRenderCommandEncoder, uniforms vertex: Uniforms, params fragment: Params){
         
         var uniforms = vertex
-       // var params = fragment
-       // params.tiling = tiling
+        var params = fragment
+        params.tiling = tiling
         
         uniforms.modelMatrix = transform.modelMatrix
         uniforms.normalMatrix = transform.modelMatrix.upperLeft
         
+        encoder.pushDebugGroup("Set veertex and fragment bytes")
         encoder.setVertexBytes(&uniforms, length: MemoryLayout<Uniforms>.stride, index: BufferIndex.uniforms.rawValue)
-        
+        encoder.setFragmentBytes(&params, length: MemoryLayout<Params>.stride , index: BufferIndex.params.rawValue)
+        encoder.setFragmentBytes(&uniforms, length: MemoryLayout<Uniforms>.stride, index: BufferIndex.uniforms.rawValue)
+        encoder.popDebugGroup()
         
         for mesh in meshes {
             for(index, vertexBuffer) in mesh.vertexBuffers.enumerated(){
                 encoder.setVertexBuffer(vertexBuffer, offset: 0, index: index)
             }
             
-            for submeshe in mesh.submeshes {
-                //frag texture here
+            for (index,submeshe) in mesh.submeshes.enumerated() {
+                let material = materials[index % materials.count]
+                var materialProps = material.properties
+                encoder.setFragmentBytes(&materialProps, length: MemoryLayout<MaterialProperties>.stride, index: BufferIndex.material.rawValue)
                 
-                var material = submeshe.material
-                encoder.setFragmentBytes(&material, length: MemoryLayout<Material>.stride, index: BufferIndex.material.rawValue)
                 
-                encoder.setFragmentTexture(submeshe.textures.baseColor, index: TextureIndex.albedo.rawValue)
+                //TODO: refactor
+                encoder.setFragmentTexture(material.baseColorTexture, index: TextureIndex.color.rawValue)
                 
-                encoder.setFragmentTexture(submeshe.textures.additionalMap, index: TextureIndex.additional.rawValue)
+                encoder.setFragmentTexture(material.normalXYRoughMetallic, index: TextureIndex.additional.rawValue)
+                
+                encoder.setFragmentTexture(material.emissionTexture, index: TextureIndex.emission.rawValue)
                 
                 //TODO: BRUSH TEXTURE
-                //TODO: EEMISSION TEXTURE
                 
-                encoder.drawIndexedPrimitives(type: .triangle, indexCount: submeshe.indexCount, indexType: submeshe.indexType, indexBuffer: submeshe.indexBuffer, indexBufferOffset: submeshe.indexBufferOffset)
+                encoder.drawIndexedPrimitives(type: .triangle, indexCount: submeshe.indexCount,
+                                              indexType: submeshe.indexType, 
+                                              indexBuffer: submeshe.indexBuffer,
+                                              indexBufferOffset: submeshe.indexBufferOffset)
             }
         }
     }

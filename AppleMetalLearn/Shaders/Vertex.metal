@@ -7,26 +7,30 @@
 
 #include <metal_stdlib>
 using namespace metal;
+
 #import "ShaderTypes.h"
 #import "ShaderDefs.h"
 
 vertex Varyings vertex_main (
             Attributes IN [[stage_in]],
-            constant Uniforms &uniforms [[buffer(BufferIndexUniforms)]],
-            constant FrameData &FrameData[[buffer(BufferIndexFrameData)]])
+            constant Uniforms &uniforms [[buffer(BufferIndexUniforms)]])
 {
-    float4 positionCS = FrameData.projectionMatrix * FrameData.viewMatrix * uniforms.modelMatrix * IN.positionOS;
-    half3x3 normalhalf = half3x3(uniforms.normalMatrix);
     float4 positionWS = uniforms.modelMatrix * IN.positionOS;
-    Varyings OUT;
+    float4 positionCS = uniforms.projectionMatrix * uniforms.viewMatrix * float4(positionWS.xyz, 1.0);
+    half3x3 normalMatrix = half3x3(uniforms.normalMatrix);
+    half3 normalWS = normalMatrix * IN.normalOS.xyz;
+    half3 tanWS = normalMatrix * IN.tangentOS.xyz;
     
-        OUT.positionCS = positionCS,
-        OUT.positionWS = positionWS,
-        OUT.texCoord = IN.texCoord,
-        OUT.normalWS = normalhalf * IN.normalOS,
-        OUT.tangentWS = normalhalf * half3(IN.tangentOS),
-    OUT.bitangentWS = normalhalf * (IN.bitangentOS);// * IN.tangentOS.w) ;
-        //shadow coords
-    
+                           
+    Varyings OUT{
+        .positionCS = positionCS,
+        .positionWS = positionWS.xyz / positionWS.w,
+        .texCoord = IN.texCoord,
+        .normalWS = normalize(normalWS),
+        .tangentWS = normalize(tanWS),
+        .bitangentWS = normalize(normalMatrix * (cross(IN.normalOS.xyz, IN.tangentOS.xyz) * IN.tangentOS.w)),
+        .shadowCoord = (uniforms.shadowProjectionMatrix * uniforms.shadowViewMatrix *  positionWS).xyz
+    };
     return OUT;
 }
+

@@ -16,13 +16,13 @@ typedef struct{
     float2 texCoord     [[attribute(VertexAttributeTexcoord)]];
     half3 normalOS      [[attribute(VertexAttributeNormal)]];
     half4 tangentOS     [[attribute(VertexAttributeTangent)]];
-    half4 color         [[attribute(VertexAttributeColor)]];
+    //half4 bitangentOS   [[attribute(VertexAttributeBitangent)]];
 } Attributes;
 
 
 typedef struct{
     float4 positionCS [[position]];
-    float4 positionWS;
+    float3 positionWS;
     float2 texCoord ;
     half3 normalWS;
     half3 tangentWS;

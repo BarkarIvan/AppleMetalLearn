@@ -36,7 +36,7 @@ enum PipelineStates{
         pipelineDescriptor.colorAttachments[RenderTargetIndex.normRoughShadow.rawValue].pixelFormat = PixelFormats.normal
         pipelineDescriptor.colorAttachments[RenderTargetIndex.roughtnessMetallic.rawValue].pixelFormat = PixelFormats.roughMetallic
         pipelineDescriptor.depthAttachmentPixelFormat = PixelFormats.depth
-        pipelineDescriptor.vertexDescriptor = MTLVertexDescriptor.defaultLayout
+        pipelineDescriptor.vertexDescriptor = VertexDescriptors().basic
         return createPipelineState(descriptor: pipelineDescriptor)
     }
     
@@ -49,7 +49,7 @@ enum PipelineStates{
         pipelineDescriptor.fragmentFunction = fragmentFunction
         pipelineDescriptor.colorAttachments[0].pixelFormat =  colorPixelFormat
         pipelineDescriptor.depthAttachmentPixelFormat = .depth32Float
-        pipelineDescriptor.vertexDescriptor = .defaultLayout
+        pipelineDescriptor.vertexDescriptor = VertexDescriptors().basic
         let attachment = pipelineDescriptor.colorAttachments[0]
         attachment?.isBlendingEnabled = true
         attachment?.rgbBlendOperation = .add
@@ -70,7 +70,7 @@ enum PipelineStates{
         pipelineDescriptor.vertexFunction = vertexFunction
         pipelineDescriptor.colorAttachments[0].pixelFormat = .invalid
         pipelineDescriptor.depthAttachmentPixelFormat = .depth32Float
-        pipelineDescriptor.vertexDescriptor = .depthOnlyLayout
+        pipelineDescriptor.vertexDescriptor = VertexDescriptors().depthOnly
         return createPipelineState(descriptor: pipelineDescriptor)
     }
     

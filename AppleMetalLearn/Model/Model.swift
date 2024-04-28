@@ -23,15 +23,27 @@ class Model: Transformable{
         let allocator = MTKMeshBufferAllocator(device: Renderer.device)
         let asset = MDLAsset(url: assetURL, vertexDescriptor: nil, bufferAllocator: allocator)
         
-        //asset.loadTextures()
+        
+        let mdlVertexDescriptor = MTKModelIOVertexDescriptorFromMetal(VertexDescriptors().basic)
+        guard let attributes = mdlVertexDescriptor.attributes as? [MDLVertexAttribute] else {
+            fatalError("Bad vertex descriptor")
+        }
+        attributes[VertexAttribute.position.rawValue].name = MDLVertexAttributePosition
+        attributes[VertexAttribute.texcoord.rawValue].name = MDLVertexAttributeTextureCoordinate
+        attributes[VertexAttribute.normal.rawValue].name = MDLVertexAttributeNormal
+        attributes[VertexAttribute.tangent.rawValue].name = MDLVertexAttributeTangent
+        
+        
         var mtkMeshes: [MTKMesh] = []
         let mdlMeshes = asset.childObjects(of: MDLMesh.self) as? [MDLMesh] ?? []
         _ = mdlMeshes.map
         {
             mdlMesh in
-            mdlMesh.addOrthTanBasis(forTextureCoordinateAttributeNamed: MDLVertexAttributeTextureCoordinate, normalAttributeNamed: MDLVertexAttributeNormal, tangentAttributeNamed: MDLVertexAttributeTangent)
+            mdlMesh.addOrthTanBasis(forTextureCoordinateAttributeNamed: MDLVertexAttributeTextureCoordinate,
+                                        normalAttributeNamed: MDLVertexAttributeNormal,
+                                        tangentAttributeNamed: MDLVertexAttributeTangent)
             
-            mdlMesh.vertexDescriptor = .defaultLayout
+           mdlMesh.vertexDescriptor = mdlVertexDescriptor
 
             mtkMeshes.append(try! MTKMesh(mesh: mdlMesh, device: Renderer.device))
         }
@@ -56,8 +68,11 @@ class Model: Transformable{
         uniforms.modelMatrix = transform.modelMatrix
         uniforms.normalMatrix = transform.modelMatrix.upperLeft
         
+        encoder.pushDebugGroup("Set veertex and fragment bytes")
         encoder.setVertexBytes(&uniforms, length: MemoryLayout<Uniforms>.stride, index: BufferIndex.uniforms.rawValue)
         encoder.setFragmentBytes(&params, length: MemoryLayout<Params>.stride , index: BufferIndex.params.rawValue)
+        encoder.setFragmentBytes(&uniforms, length: MemoryLayout<Uniforms>.stride, index: BufferIndex.uniforms.rawValue)
+        encoder.popDebugGroup()
         
         for mesh in meshes {
             for(index, vertexBuffer) in mesh.vertexBuffers.enumerated(){
@@ -65,8 +80,7 @@ class Model: Transformable{
             }
             
             for (index,submeshe) in mesh.submeshes.enumerated() {
-                //frag texture here
-                let material = materials[index % mesh.submeshes.count]
+                let material = materials[index % materials.count]
                 var materialProps = material.properties
                 encoder.setFragmentBytes(&materialProps, length: MemoryLayout<MaterialProperties>.stride, index: BufferIndex.material.rawValue)
                 

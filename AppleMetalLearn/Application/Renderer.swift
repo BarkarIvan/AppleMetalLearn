@@ -61,13 +61,15 @@ extension Renderer {
         gBufferRenderPass.resize(view: view, size: size)
     }
     
+    
     func updateUniforms(scene: GameScene){
         uniforms.viewMatrix = scene.camera.viewMatrix
         uniforms.projectionMatrix = scene.camera.projectionMatrix
         params.lightCount = 0;//UInt32(scene.lighting.lights.count)
         params.cameraPosition = scene.camera.position
         
-        //TODO: shadows camera and matrices
+
+        //lightung
         let directionalLight = scene.lighting.getMainLighht()
         shadowCamera = OrthographicCamera.createShadowCamera(using: scene.camera, lightPositionn: directionalLight.position)
         let shadowViewMatrix: float4x4 = float4x4(eye: shadowCamera.position, center: shadowCamera.center, up: [0,1,0])

@@ -35,35 +35,44 @@ struct GBufferOut{
 
 fragment GBufferOut fragment_GBuffer(
                     Varyings IN [[stage_in]],
+                    constant Uniforms &uniforms [[buffer(BufferIndexUniforms)]],
+                    constant MaterialProperties &materialProperties [[buffer(BufferIndexMaterial)]],
                     texture2d<half> albedo[[texture(TextureIndexColor)]],
                     texture2d<half> NormRoughMetallic[[texture(TextureIndexAdditional)]],
-                    depth2d<float>shadowMap[[texture(TextureIndexShadowMap)]],
-                    constant MaterialProperties &materialProperties [[buffer(BufferIndexMaterial)]])
+                    depth2d<float>  shadowMap[[texture(TextureIndexShadowMap)]])
 {
     GBufferOut OUT;
     constexpr sampler linearSampler(mip_filter::linear,
                                     mag_filter::linear,
-                                    min_filter::linear);
+                                    min_filter::linear,
+                                    address::repeat);
     
-    half4 additionalData = NormRoughMetallic.sample(linearSampler, IN.texCoord);
+    half4 normalMap = NormRoughMetallic.sample(linearSampler, IN.texCoord);
     
-    half3 normalTS;
-    half2 data = half2(additionalData.x, additionalData.y) * 2.0 - 1.0;
+    //half3 normalTS;
+  //  half2 data = half2(additionalData.x, additionalData.y) * 2.0 - 1.0;
   
-    normalTS.xy =  safeNormalize(data.xy);
-    normalTS.z = sqrt((normalTS.x * normalTS.x) - (normalTS.y * normalTS.y));
-    half3x3 tantgenToWorld = half3x3((IN.tangentWS), (IN.bitangentWS), (IN.normalWS));
+    //normalTS.xy =  safeNormalize(data.xy);
+    //normalTS.z = sqrt((normalTS.x * normalTS.x) - (normalTS.y * normalTS.y));
+   
+    half3x3 tantgenToWorld = half3x3(IN.tangentWS, IN.bitangentWS, IN.normalWS);
+    half3 normalTS = (normalMap.xyz * 2.0 - 1.0);
     half3 normalWS = tantgenToWorld * normalTS;
+    normalWS = normalize(normalWS);
+    
+    half3 lightDir = half3(normalize(uniforms.mainLighWorldPos));
+    half NdotL = max(half(0.0), dot(normalWS, lightDir));
     
     half shadow = calculateShadow(IN.shadowCoord, shadowMap);
+    shadow *= NdotL;
     
-    OUT.albedo.xyz = half3(1,1,1) * (shadow + 0.5);//albedo.sample(linearSampler, IN.texCoord);//float4(material.baseColor, 1.0);
+    OUT.albedo.xyz = half3(1,1,1) * (shadow * 0.5 + 0.5);//albedo.sample(linearSampler, IN.texCoord);//float4(material.baseColor, 1.0);
     OUT.albedo.a = 1.0;//shadow;
     
-    OUT.normal.xyz = normalWS;
+    OUT.normal.xyz =  normalWS;
     OUT.normal.a = 1.0;
     
-    OUT.roughMetallic = float4(additionalData.z, additionalData.w, 0.0,1.0);
+    OUT.roughMetallic = float4(float3(IN.tangentWS.xyz), 1.0);// float4(additionalData.z, additionalData.w, 0.0,1.0);
     return OUT;
 }
 

@@ -30,6 +30,8 @@ enum TextureController{
         }
         let textureLoader = MTKTextureLoader(device: Renderer.device)
         let texture: MTLTexture?
+        
+
         texture = try? textureLoader.newTexture(
             name: name,
             scaleFactor: 1.0,
@@ -40,7 +42,6 @@ enum TextureController{
         }
         return texture
     }
-    
     static func loadTexture(filename: String) -> MTLTexture?
     {
         guard let url = Bundle.main.url(forResource: filename, withExtension: nil)

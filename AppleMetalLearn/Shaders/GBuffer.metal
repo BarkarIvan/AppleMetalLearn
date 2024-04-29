@@ -27,8 +27,8 @@ half3 safeNormalize(half3 vec)
 
 //to def
 struct GBufferOut{
-    half4 albedo [[color(RenderTargetAlbedoMetallic)]];
-    half4 normal [[color(RenderTargetNormRoughShadow)]];
+    half4 albedo [[color(RenderTargetAlbedoShadow)]];
+    half4 normal [[color(RenderTargetNormal)]];
     float4 roughMetallic [[color(RenderTargetRoughtnessMetallic)]];
 };
 
@@ -47,32 +47,31 @@ fragment GBufferOut fragment_GBuffer(
                                     min_filter::linear,
                                     address::repeat);
     
-    half4 normalMap = NormRoughMetallic.sample(linearSampler, IN.texCoord);
+    half4 normRoughMetSample = NormRoughMetallic.sample(linearSampler, IN.texCoord);
     
-    //half3 normalTS;
-  //  half2 data = half2(additionalData.x, additionalData.y) * 2.0 - 1.0;
-  
-    //normalTS.xy =  safeNormalize(data.xy);
-    //normalTS.z = sqrt((normalTS.x * normalTS.x) - (normalTS.y * normalTS.y));
+    half3 normalTS;
+    normalTS.xy = half2(normRoughMetSample.x, normRoughMetSample.y) * 2.0 - 1.0;
+    normalTS.z = sqrt(1 - (normalTS.x * normalTS.x) - (normalTS.y * normalTS.y));
    
     half3x3 tantgenToWorld = half3x3(IN.tangentWS, IN.bitangentWS, IN.normalWS);
-    half3 normalTS = (normalMap.xyz * 2.0 - 1.0);
     half3 normalWS = tantgenToWorld * normalTS;
     normalWS = normalize(normalWS);
     
-    half3 lightDir = half3(normalize(uniforms.mainLighWorldPos));
-    half NdotL = max(half(0.0), dot(normalWS, lightDir));
+    //half3 lightDir = half3(normalize(uniforms.mainLighWorldPos));
+    //half NdotL = max(half(0.0), dot(normalWS, lightDir));
     
     half shadow = calculateShadow(IN.shadowCoord, shadowMap);
-    shadow *= NdotL;
+    //shadow *= NdotL;
     
-    OUT.albedo.xyz = half3(1,1,1) * (shadow * 0.5 + 0.5);//albedo.sample(linearSampler, IN.texCoord);//float4(material.baseColor, 1.0);
-    OUT.albedo.a = 1.0;//shadow;
+    OUT.albedo.xyz = albedo.sample(linearSampler, IN.texCoord).xyz;
+    OUT.albedo.a = shadow;
     
     OUT.normal.xyz =  normalWS;
     OUT.normal.a = 1.0;
     
-    OUT.roughMetallic = float4(float3(IN.tangentWS.xyz), 1.0);// float4(additionalData.z, additionalData.w, 0.0,1.0);
+    OUT.roughMetallic = float4(normRoughMetSample.z, normRoughMetSample.w, 0.0,1.0);
     return OUT;
 }
+
+
 

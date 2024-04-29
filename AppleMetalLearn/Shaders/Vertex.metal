@@ -34,3 +34,21 @@ vertex Varyings vertex_main (
     return OUT;
 }
 
+//quad
+constant float3 vertices[6] = {
+  float3(-1,  1,  0),    // triangle 1
+  float3( 1, -1,  0),
+  float3(-1, -1,  0),
+  float3(-1,  1,  0),    // triangle 2
+  float3( 1,  1,  0),
+  float3( 1, -1,  0)
+};
+
+vertex VaryingsSimpeQuad vertex_quad (uint vertexID [[vertex_id]])
+{
+    VaryingsSimpeQuad OUT{
+        .positionCS = float4(vertices[vertexID],1.0)
+    };
+    return OUT
+}
+

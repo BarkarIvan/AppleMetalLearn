@@ -32,6 +32,11 @@ typedef struct{
 } Varyings;
 
 
+typedef struct{
+    float4 positionCS [[position]];
+} VaryingsSimpeQuad;
+
+
 
 
 #endif /* ShaderDefs_h */

@@ -38,7 +38,7 @@ struct GBufferRenderPass: RenderPass{
         let textures = [albedoTexture, normaltexture, roughtnessMetallic]
         
         for (index, texture) in textures.enumerated(){
-            let attachment = descriptor?.colorAttachments[RenderTargetIndex.albedoMetallic.rawValue + index]//???
+            let attachment = descriptor?.colorAttachments[RenderTargetIndex.albedoShadow.rawValue + index]//???
             attachment?.texture = texture
             attachment?.loadAction = .clear
             attachment?.storeAction = .store

@@ -50,9 +50,10 @@ typedef NS_ENUM(EnumBackingType, TextureIndex)
 };
 
 typedef NS_ENUM(EnumBackingType, RenderTargetIndex){
-    RenderTargetAlbedoMetallic = 1,
-    RenderTargetNormRoughShadow = 2,
+    RenderTargetAlbedoShadow = 1,
+    RenderTargetNormal = 2,
     RenderTargetRoughtnessMetallic = 3,
+    RenderTargetDepth = 4
 } ;
 
 //TODO: pack to float4

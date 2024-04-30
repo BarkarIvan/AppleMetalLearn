@@ -41,6 +41,8 @@
 		62BE7FB22BE031CE0059847E /* DirectionalLight.metal in Sources */ = {isa = PBXBuildFile; fileRef = 62BE7FB12BE031CE0059847E /* DirectionalLight.metal */; };
 		62C631272BC9D8AA00F90378 /* Camera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62C631262BC9D8AA00F90378 /* Camera.swift */; };
 		62C6312A2BC9DE2300F90378 /* Movement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62C631292BC9DE2300F90378 /* Movement.swift */; };
+		62CCE37E2BE0F34700FFD1E2 /* CGTools.metal in Sources */ = {isa = PBXBuildFile; fileRef = 62CCE37D2BE0F34700FFD1E2 /* CGTools.metal */; };
+		62CCE3802BE104F800FFD1E2 /* DirectionalLightRenderPass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62CCE37F2BE104F800FFD1E2 /* DirectionalLightRenderPass.swift */; };
 		62D0EFE62BC728D5004BFD58 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62D0EFE52BC728D5004BFD58 /* Model.swift */; };
 		62D0EFE82BC72925004BFD58 /* Mesh.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62D0EFE72BC72925004BFD58 /* Mesh.swift */; };
 		62D0EFEA2BC729AA004BFD58 /* Submesh.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62D0EFE92BC729AA004BFD58 /* Submesh.swift */; };
@@ -94,6 +96,9 @@
 		62BE7FB12BE031CE0059847E /* DirectionalLight.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = DirectionalLight.metal; sourceTree = "<group>"; };
 		62C631262BC9D8AA00F90378 /* Camera.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Camera.swift; sourceTree = "<group>"; };
 		62C631292BC9DE2300F90378 /* Movement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Movement.swift; sourceTree = "<group>"; };
+		62CCE37D2BE0F34700FFD1E2 /* CGTools.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = CGTools.metal; sourceTree = "<group>"; };
+		62CCE37F2BE104F800FFD1E2 /* DirectionalLightRenderPass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionalLightRenderPass.swift; sourceTree = "<group>"; };
+		62CCE3812BE12B4E00FFD1E2 /* CGTools.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CGTools.h; sourceTree = "<group>"; };
 		62D0EFE52BC728D5004BFD58 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		62D0EFE72BC72925004BFD58 /* Mesh.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mesh.swift; sourceTree = "<group>"; };
 		62D0EFE92BC729AA004BFD58 /* Submesh.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Submesh.swift; sourceTree = "<group>"; };
@@ -132,6 +137,8 @@
 				627657A22BDA8ACA0088F551 /* Lighting.h */,
 				627657A32BDA8B490088F551 /* Lighting.metal */,
 				62BE7FB12BE031CE0059847E /* DirectionalLight.metal */,
+				62CCE37D2BE0F34700FFD1E2 /* CGTools.metal */,
+				62CCE3812BE12B4E00FFD1E2 /* CGTools.h */,
 			);
 			path = Shaders;
 			sourceTree = "<group>";
@@ -165,6 +172,7 @@
 				62986BBA2BCC432E00B7DF50 /* RenderPass.swift */,
 				62986BBC2BCC4D4600B7DF50 /* PipelineStates.swift */,
 				629CB1F92BD857FA00D1DA10 /* DepthOnlyPass.swift */,
+				62CCE37F2BE104F800FFD1E2 /* DirectionalLightRenderPass.swift */,
 			);
 			path = RenderPasses;
 			sourceTree = "<group>";
@@ -397,6 +405,8 @@
 				62D0EFE82BC72925004BFD58 /* Mesh.swift in Sources */,
 				627E06752BDD8614005FF89D /* VertexDescriptors.swift in Sources */,
 				622167482BCDCF7E0067269F /* MetalView.swift in Sources */,
+				62CCE3802BE104F800FFD1E2 /* DirectionalLightRenderPass.swift in Sources */,
+				62CCE37E2BE0F34700FFD1E2 /* CGTools.metal in Sources */,
 				62C631272BC9D8AA00F90378 /* Camera.swift in Sources */,
 				62986BBB2BCC432E00B7DF50 /* RenderPass.swift in Sources */,
 				62986BB92BCC430200B7DF50 /* GBufferRenderPass.swift in Sources */,

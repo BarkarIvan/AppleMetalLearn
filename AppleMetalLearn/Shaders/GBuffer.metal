@@ -11,25 +11,17 @@ using namespace metal;
 #import "Lighting.h"
 #import "ShaderDefs.h"
 
-//TODO: to utils
-half2 safeNormalize(half2 vec)
-{
-    half dv3 = max(HALF_MIN, dot(vec, vec));
-    return vec * rsqrt(dv3);
-}
+#import "CGTools.h"
 
-half3 safeNormalize(half3 vec)
-{
-    half dv3 = max(HALF_MIN, dot(vec, vec));
-    return vec * rsqrt(dv3);
-}
+//TODO: to utils
+
 
 
 //to def
 struct GBufferOut{
     half4 albedo [[color(RenderTargetAlbedoShadow)]];
-    half4 normal [[color(RenderTargetNormal)]];
-    float4 roughMetallic [[color(RenderTargetRoughtnessMetallic)]];
+    half4 normal [[color(RenderTargetNormalRoughMetallic)]];
+    float4 emission [[color(RenderTargetEmission)]];
 };
 
 
@@ -49,10 +41,8 @@ fragment GBufferOut fragment_GBuffer(
     
     half4 normRoughMetSample = NormRoughMetallic.sample(linearSampler, IN.texCoord);
     
-    half3 normalTS;
-    normalTS.xy = half2(normRoughMetSample.x, normRoughMetSample.y) * 2.0 - 1.0;
-    normalTS.z = sqrt(1 - (normalTS.x * normalTS.x) - (normalTS.y * normalTS.y));
-   
+    half3 normalTS = reconstruct_normal(half2(normRoughMetSample.x, normRoughMetSample.y));
+    normalTS = normalize(normalTS);
     half3x3 tantgenToWorld = half3x3(IN.tangentWS, IN.bitangentWS, IN.normalWS);
     half3 normalWS = tantgenToWorld * normalTS;
     normalWS = normalize(normalWS);
@@ -66,10 +56,11 @@ fragment GBufferOut fragment_GBuffer(
     OUT.albedo.xyz = albedo.sample(linearSampler, IN.texCoord).xyz;
     OUT.albedo.a = shadow;
     
-    OUT.normal.xyz =  normalWS;
-    OUT.normal.a = 1.0;
+    OUT.normal.xy = normalWS.xy;
+    OUT.normal.z = normalWS.z;//normRoughMetSample.z;
+    OUT.normal.a = normRoughMetSample.w;
     
-    OUT.roughMetallic = float4(normRoughMetSample.z, normRoughMetSample.w, 0.0,1.0);
+    OUT.emission = 0.0;//float4(normRoughMetSample.z, normRoughMetSample.w, 0.0,1.0);
     return OUT;
 }
 

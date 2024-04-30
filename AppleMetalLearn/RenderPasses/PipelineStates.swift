@@ -32,9 +32,9 @@ enum PipelineStates{
         //no drawable
         pipelineDescriptor.colorAttachments[0].pixelFormat = .invalid
         
-        pipelineDescriptor.colorAttachments[RenderTargetIndex.albedoMetallic.rawValue].pixelFormat = PixelFormats.albedo
-        pipelineDescriptor.colorAttachments[RenderTargetIndex.normRoughShadow.rawValue].pixelFormat = PixelFormats.normal
-        pipelineDescriptor.colorAttachments[RenderTargetIndex.roughtnessMetallic.rawValue].pixelFormat = PixelFormats.roughMetallic
+        pipelineDescriptor.colorAttachments[RenderTargetIndex.albedoShadow.rawValue].pixelFormat = PixelFormats.albedo
+        pipelineDescriptor.colorAttachments[RenderTargetIndex.normalRoughMetallic.rawValue].pixelFormat = PixelFormats.normal
+        pipelineDescriptor.colorAttachments[RenderTargetIndex.emission.rawValue].pixelFormat = PixelFormats.roughMetallic
         pipelineDescriptor.depthAttachmentPixelFormat = PixelFormats.depth
         pipelineDescriptor.vertexDescriptor = VertexDescriptors().basic
         return createPipelineState(descriptor: pipelineDescriptor)
@@ -49,17 +49,8 @@ enum PipelineStates{
         pipelineDescriptor.fragmentFunction = fragmentFunction
         pipelineDescriptor.colorAttachments[0].pixelFormat =  colorPixelFormat
         pipelineDescriptor.depthAttachmentPixelFormat = .depth32Float
-        pipelineDescriptor.vertexDescriptor = VertexDescriptors().basic
-        let attachment = pipelineDescriptor.colorAttachments[0]
-        attachment?.isBlendingEnabled = true
-        attachment?.rgbBlendOperation = .add
-        attachment?.alphaBlendOperation = .add
-        
-        attachment?.sourceRGBBlendFactor = .one
-        attachment?.destinationRGBBlendFactor = .one
-
-        attachment?.sourceAlphaBlendFactor = .one
-        attachment?.destinationAlphaBlendFactor = .zero
+       // pipelineDescriptor.vertexDescriptor = VertexDescriptors().basic //???
+       
         return createPipelineState(descriptor: pipelineDescriptor)
     }
     

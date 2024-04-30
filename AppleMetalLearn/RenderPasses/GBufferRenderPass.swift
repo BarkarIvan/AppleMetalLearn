@@ -15,6 +15,7 @@ struct GBufferRenderPass: RenderPass{
     let depthStencilState: MTLDepthStencilState?
     weak var shadowMap: MTLTexture?
     
+    //RENAME!!!
     var albedoTexture: MTLTexture?
     var normaltexture: MTLTexture?
     var roughtnessMetallic: MTLTexture?

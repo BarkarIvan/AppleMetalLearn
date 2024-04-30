@@ -25,6 +25,7 @@ class Renderer: NSObject{
     
     var shadowRenderPass: DepthOnlyPass
     var gBufferRenderPass: GBufferRenderPass
+    var directionalLightRenderPass: DirectionalLightRenderPass
     
     var shadowCamera = OrthographicCamera()
     
@@ -42,6 +43,8 @@ class Renderer: NSObject{
         
         shadowRenderPass = DepthOnlyPass()
         gBufferRenderPass = GBufferRenderPass(view: metalView)
+        
+        directionalLightRenderPass = DirectionalLightRenderPass(view: metalView)
         
         super.init()
         metalView.clearColor = MTLClearColor(red: 0.5, green: 0.5, blue: 0.0, alpha: 1)
@@ -91,8 +94,20 @@ extension Renderer {
         //shadowpass
         shadowRenderPass.draw(commandBuffer: commandBuffer, scene: scene, uniforms: uniforms, params: params)
         
+        //gbuffer pass
         gBufferRenderPass.shadowMap = shadowRenderPass.destinationTexture
         gBufferRenderPass.draw(commandBuffer: commandBuffer, scene: scene, uniforms: uniforms, params: params)
+        
+        //directional light pass
+        directionalLightRenderPass.albedoShadowTexture = gBufferRenderPass.albedoTexture
+        directionalLightRenderPass.normalRoughtnessMetallicTexture = gBufferRenderPass.normaltexture
+        directionalLightRenderPass.emissionTeexture = gBufferRenderPass.roughtnessMetallic
+        directionalLightRenderPass.depthTexture = gBufferRenderPass.depthTexture
+        
+        directionalLightRenderPass.descriptor = descriptor
+        directionalLightRenderPass.draw(commandBuffer: commandBuffer, scene: scene, uniforms: uniforms, params: params)
+        
+        //point lights
         
         //forward transparent
         

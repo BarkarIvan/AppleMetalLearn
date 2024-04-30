@@ -23,7 +23,7 @@ struct GBufferRenderPass: RenderPass{
     
     init(view: MTKView){
         pipelineState = PipelineStates.createGBufferPipelineState( vertexFunctionName: "vertex_main", fragmentFunctionName: "fragment_GBuffer")
-        depthStencilState = Self.buildDepthStencilState()
+        depthStencilState = DepthStencilStates.crateGbufferDepthStencilState()
         descriptor = MTLRenderPassDescriptor()
     }
     
@@ -56,15 +56,13 @@ struct GBufferRenderPass: RenderPass{
         renderEncoder.pushDebugGroup("Set states")
         
         renderEncoder.label = name
-       // renderEncoder.setCullMode(.back)
-        //renderEncoder.setFrontFacing(.clockwise)
-        renderEncoder.setDepthStencilState(depthStencilState)
         renderEncoder.setRenderPipelineState(pipelineState)
+        renderEncoder.setDepthStencilState(depthStencilState)
+        renderEncoder.setCullMode(.back)
+        renderEncoder.setStencilReferenceValue(128)
         
         renderEncoder.popDebugGroup()
 
-        // shadowMap
-        
         renderEncoder.setFragmentTexture(shadowMap, index: TextureIndex.shadowMap.rawValue)
         
         for model in scene.models{

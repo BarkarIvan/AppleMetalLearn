@@ -7,13 +7,13 @@
 
 import MetalKit
 
-struct DepthOnlyPass: RenderPass
+struct DirectionalLightShadowPass: RenderPass
 {
 
     let name: String = "Shadow Render Pass"
     
     var descriptor: MTLRenderPassDescriptor? = MTLRenderPassDescriptor()
-    var depthStencilState: MTLDepthStencilState? = Self.buildDepthStencilState()
+    var depthStencilState: MTLDepthStencilState?
     var pipelineState: MTLRenderPipelineState
     var destinationTexture: MTLTexture?
     var debugTexture: MTLTexture?
@@ -23,6 +23,7 @@ struct DepthOnlyPass: RenderPass
     init()
     {
         pipelineState = PipelineStates.createShadowPipelineState()
+        depthStencilState = DepthStencilStates.createShadowDepthStencilState()
         destinationTexture = Self.makeTexture(size: size, pixelFormat: .depth32Float, name: "Shadow pass texture")
     }
     
@@ -44,6 +45,7 @@ struct DepthOnlyPass: RenderPass
         renderEncoder.label = "Shadow pass command buffer"
         renderEncoder.setDepthStencilState(depthStencilState)
         renderEncoder.setRenderPipelineState(pipelineState)
+        renderEncoder.setDepthBias(0.015, slopeScale: 7, clamp: 0.02)
         
         for model in scene.models
         {

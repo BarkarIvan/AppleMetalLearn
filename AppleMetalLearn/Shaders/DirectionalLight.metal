@@ -21,13 +21,13 @@ half4 calculate_deffered_directional_light(VaryingsSimpeQuad IN,
 
 {
     
-    float3 mainLightdir = normalize(uniforms.mainLighWorldPos);
-    half3 normalWS = normalRouhMetallic.xyz;// reconstruct_normal(normalRouhMetallic.xy);
+    float3 mainLightdir = safeNormalize(uniforms.mainLighWorldPos.xyz);
+    half3 normalWS =  normalRouhMetallic.xyz;
     
     half NdotL = max(0.0h, dot(normalWS, half3(mainLightdir)));
     
    //colors?
-    half4 color = NdotL * albedo_shadow.a;
+    half4 color = saturate(NdotL);// * albedo_shadow.a);
     color.a = 1.0;
     return color;
 }
@@ -38,7 +38,7 @@ fragment half4 deffered_directional_light_traditional(
                     constant Uniforms       &uniforms     [[buffer(BufferIndexUniforms)]],
                     texture2d<half>         albedoShadow  [[texture(TextureIndexColor)]],
                     texture2d<half>         normal        [[texture(TextureIndexAdditional)]],
-                     texture2d<half> emission [[texture(TextureIndexEmission)]])
+                    texture2d<half> emission [[texture(TextureIndexEmission)]])
                  //   texture2d<float>        depthGBuffer  [[texture(RenderTargetDepth)]])
                                                       
 {

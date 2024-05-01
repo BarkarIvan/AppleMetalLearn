@@ -20,6 +20,7 @@
 		6278D09D2BD54F9C00A29602 /* Albedo.tga in Resources */ = {isa = PBXBuildFile; fileRef = 6278D09B2BD54F9C00A29602 /* Albedo.tga */; };
 		6278D0A02BD566E600A29602 /* Emission.tga in Resources */ = {isa = PBXBuildFile; fileRef = 6278D09F2BD566E600A29602 /* Emission.tga */; };
 		6278D0A22BD56ADD00A29602 /* MaterialController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6278D0A12BD56ADD00A29602 /* MaterialController.swift */; };
+		627C81912BE281F5000F4665 /* DirectionalShadowRenderPass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 627C81902BE281F5000F4665 /* DirectionalShadowRenderPass.swift */; };
 		627E06712BDD54F1005FF89D /* toy.obj in Resources */ = {isa = PBXBuildFile; fileRef = 627E06702BDD54F1005FF89D /* toy.obj */; };
 		627E06752BDD8614005FF89D /* VertexDescriptors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 627E06742BDD8614005FF89D /* VertexDescriptors.swift */; };
 		6280A9592BD9A645009901FD /* PixelFormats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6280A9582BD9A645009901FD /* PixelFormats.swift */; };
@@ -31,7 +32,6 @@
 		62986BBB2BCC432E00B7DF50 /* RenderPass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62986BBA2BCC432E00B7DF50 /* RenderPass.swift */; };
 		62986BBD2BCC4D4600B7DF50 /* PipelineStates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62986BBC2BCC4D4600B7DF50 /* PipelineStates.swift */; };
 		62986BC52BCC5A6500B7DF50 /* RubberToy.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 62986BC42BCC5A6500B7DF50 /* RubberToy.usdz */; };
-		629CB1FA2BD857FA00D1DA10 /* DepthOnlyPass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 629CB1F92BD857FA00D1DA10 /* DepthOnlyPass.swift */; };
 		629CB1FC2BD8653600D1DA10 /* Shadows.metal in Sources */ = {isa = PBXBuildFile; fileRef = 629CB1FB2BD8653600D1DA10 /* Shadows.metal */; };
 		629D84092BC1313E00677998 /* AppleMetalLearnApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 629D84082BC1313E00677998 /* AppleMetalLearnApp.swift */; };
 		629D840D2BC1313F00677998 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 629D840C2BC1313F00677998 /* Assets.xcassets */; };
@@ -74,6 +74,7 @@
 		6278D09B2BD54F9C00A29602 /* Albedo.tga */ = {isa = PBXFileReference; lastKnownFileType = file; path = Albedo.tga; sourceTree = "<group>"; };
 		6278D09F2BD566E600A29602 /* Emission.tga */ = {isa = PBXFileReference; lastKnownFileType = file; path = Emission.tga; sourceTree = "<group>"; };
 		6278D0A12BD56ADD00A29602 /* MaterialController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaterialController.swift; sourceTree = "<group>"; };
+		627C81902BE281F5000F4665 /* DirectionalShadowRenderPass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DirectionalShadowRenderPass.swift; sourceTree = "<group>"; };
 		627E06702BDD54F1005FF89D /* toy.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = toy.obj; sourceTree = "<group>"; };
 		627E06742BDD8614005FF89D /* VertexDescriptors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VertexDescriptors.swift; sourceTree = "<group>"; };
 		6280A9582BD9A645009901FD /* PixelFormats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PixelFormats.swift; sourceTree = "<group>"; };
@@ -85,7 +86,6 @@
 		62986BBA2BCC432E00B7DF50 /* RenderPass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RenderPass.swift; sourceTree = "<group>"; };
 		62986BBC2BCC4D4600B7DF50 /* PipelineStates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PipelineStates.swift; sourceTree = "<group>"; };
 		62986BC42BCC5A6500B7DF50 /* RubberToy.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = RubberToy.usdz; sourceTree = "<group>"; };
-		629CB1F92BD857FA00D1DA10 /* DepthOnlyPass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DepthOnlyPass.swift; sourceTree = "<group>"; };
 		629CB1FB2BD8653600D1DA10 /* Shadows.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shadows.metal; sourceTree = "<group>"; };
 		629D84052BC1313E00677998 /* AppleMetalLearn.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AppleMetalLearn.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		629D84082BC1313E00677998 /* AppleMetalLearnApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleMetalLearnApp.swift; sourceTree = "<group>"; };
@@ -168,10 +168,10 @@
 		62986BB72BCC42EB00B7DF50 /* RenderPasses */ = {
 			isa = PBXGroup;
 			children = (
+				627C81902BE281F5000F4665 /* DirectionalShadowRenderPass.swift */,
 				62986BB82BCC430200B7DF50 /* GBufferRenderPass.swift */,
 				62986BBA2BCC432E00B7DF50 /* RenderPass.swift */,
 				62986BBC2BCC4D4600B7DF50 /* PipelineStates.swift */,
-				629CB1F92BD857FA00D1DA10 /* DepthOnlyPass.swift */,
 				62CCE37F2BE104F800FFD1E2 /* DirectionalLightRenderPass.swift */,
 			);
 			path = RenderPasses;
@@ -385,12 +385,12 @@
 				62EA6E952BC5DD370017991A /* MathLibrary.swift in Sources */,
 				622167462BCDCF5D0067269F /* ContentView.swift in Sources */,
 				6278D0A22BD56ADD00A29602 /* MaterialController.swift in Sources */,
+				627C81912BE281F5000F4665 /* DirectionalShadowRenderPass.swift in Sources */,
 				627657A42BDA8B490088F551 /* Lighting.metal in Sources */,
 				62E3A62F2BD813560012E530 /* ShadowCamera.swift in Sources */,
 				62D9D61A2BCB07AE00EE9691 /* GameScene.swift in Sources */,
 				62D9D6142BCA68E200EE9691 /* InputController.swift in Sources */,
 				628AE5B22BCBC2240094CAD7 /* SceneLighting.swift in Sources */,
-				629CB1FA2BD857FA00D1DA10 /* DepthOnlyPass.swift in Sources */,
 				62D0EFED2BC73236004BFD58 /* TextureController.swift in Sources */,
 				62986BBD2BCC4D4600B7DF50 /* PipelineStates.swift in Sources */,
 				62C6312A2BC9DE2300F90378 /* Movement.swift in Sources */,

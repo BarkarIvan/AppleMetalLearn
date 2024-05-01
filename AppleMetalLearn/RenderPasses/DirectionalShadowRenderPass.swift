@@ -7,7 +7,7 @@
 
 import MetalKit
 
-struct DepthOnlyPass: RenderPass
+struct DirectionalShadowRenderPass: RenderPass
 {
 
     let name: String = "Shadow Render Pass"

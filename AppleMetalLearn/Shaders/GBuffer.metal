@@ -41,24 +41,26 @@ fragment GBufferOut fragment_GBuffer(
     
     half4 normRoughMetSample = NormRoughMetallic.sample(linearSampler, IN.texCoord);
     
-    half3 normalTS = reconstruct_normal_tangent_space(half2(normRoughMetSample.x, normRoughMetSample.y));
+    half3 normalTS = reconstruct_normal(half2(normRoughMetSample.x, normRoughMetSample.y));
     normalTS = normalize(normalTS);
     half3x3 tantgenToWorld = half3x3(IN.tangentWS, IN.bitangentWS, IN.normalWS);
     half3 normalWS = tantgenToWorld * normalTS;
     normalWS = normalize(normalWS);
     
+    //half3 lightDir = half3(normalize(uniforms.mainLighWorldPos));
+    //half NdotL = max(half(0.0), dot(normalWS, lightDir));
+    
     half shadow = calculateShadow(IN.shadowCoord, shadowMap);
+    //shadow *= NdotL;
     
     OUT.albedo.xyz = albedo.sample(linearSampler, IN.texCoord).xyz;
     OUT.albedo.a = shadow;
     
-    OUT.normal.xyz = normalWS;
-    OUT.normal.a = normRoughMetSample.z;
+    OUT.normal.xy = normalWS.xy;
+    OUT.normal.z = normalWS.z;//normRoughMetSample.z;
+    OUT.normal.a = normRoughMetSample.w;
     
-    
-    OUT.emission = 0.0;
-    OUT.emission.a = normRoughMetSample.w;
-    
+    OUT.emission = 0.0;//float4(normRoughMetSample.z, normRoughMetSample.w, 0.0,1.0);
     return OUT;
 }
 

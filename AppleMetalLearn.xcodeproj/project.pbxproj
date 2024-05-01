@@ -11,7 +11,6 @@
 		622167442BCDC57D0067269F /* GBuffer.metal in Sources */ = {isa = PBXBuildFile; fileRef = 622167432BCDC57D0067269F /* GBuffer.metal */; };
 		622167462BCDCF5D0067269F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622167452BCDCF5D0067269F /* ContentView.swift */; };
 		622167482BCDCF7E0067269F /* MetalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622167472BCDCF7E0067269F /* MetalView.swift */; };
-		6247401B2BE17F26009510E7 /* DepthStencilStates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6247401A2BE17F26009510E7 /* DepthStencilStates.swift */; };
 		624E78372BDDB3FA00A32907 /* RubberToy.obj in Resources */ = {isa = PBXBuildFile; fileRef = 624E78362BDDB3FA00A32907 /* RubberToy.obj */; };
 		625E21802BD6FD3800263CCA /* platonic.obj in Resources */ = {isa = PBXBuildFile; fileRef = 625E217F2BD6FD3800263CCA /* platonic.obj */; };
 		625E218A2BD7124B00263CCA /* teapot.obj in Resources */ = {isa = PBXBuildFile; fileRef = 625E21892BD7124B00263CCA /* teapot.obj */; };
@@ -32,7 +31,7 @@
 		62986BBB2BCC432E00B7DF50 /* RenderPass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62986BBA2BCC432E00B7DF50 /* RenderPass.swift */; };
 		62986BBD2BCC4D4600B7DF50 /* PipelineStates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62986BBC2BCC4D4600B7DF50 /* PipelineStates.swift */; };
 		62986BC52BCC5A6500B7DF50 /* RubberToy.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 62986BC42BCC5A6500B7DF50 /* RubberToy.usdz */; };
-		629CB1FA2BD857FA00D1DA10 /* DirectionalLightShadowPass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 629CB1F92BD857FA00D1DA10 /* DirectionalLightShadowPass.swift */; };
+		629CB1FA2BD857FA00D1DA10 /* DepthOnlyPass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 629CB1F92BD857FA00D1DA10 /* DepthOnlyPass.swift */; };
 		629CB1FC2BD8653600D1DA10 /* Shadows.metal in Sources */ = {isa = PBXBuildFile; fileRef = 629CB1FB2BD8653600D1DA10 /* Shadows.metal */; };
 		629D84092BC1313E00677998 /* AppleMetalLearnApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 629D84082BC1313E00677998 /* AppleMetalLearnApp.swift */; };
 		629D840D2BC1313F00677998 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 629D840C2BC1313F00677998 /* Assets.xcassets */; };
@@ -65,7 +64,6 @@
 		622167432BCDC57D0067269F /* GBuffer.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = GBuffer.metal; sourceTree = "<group>"; };
 		622167452BCDCF5D0067269F /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		622167472BCDCF7E0067269F /* MetalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalView.swift; sourceTree = "<group>"; };
-		6247401A2BE17F26009510E7 /* DepthStencilStates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DepthStencilStates.swift; sourceTree = "<group>"; };
 		624E78362BDDB3FA00A32907 /* RubberToy.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = RubberToy.obj; sourceTree = "<group>"; };
 		625E217F2BD6FD3800263CCA /* platonic.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = platonic.obj; path = ../../../../../../../Users/barkar/Desktop/temp/platonic.obj; sourceTree = "<group>"; };
 		625E21892BD7124B00263CCA /* teapot.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = teapot.obj; path = ../../../../../../../Users/barkar/Desktop/temp/teapot.obj; sourceTree = "<group>"; };
@@ -87,7 +85,7 @@
 		62986BBA2BCC432E00B7DF50 /* RenderPass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RenderPass.swift; sourceTree = "<group>"; };
 		62986BBC2BCC4D4600B7DF50 /* PipelineStates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PipelineStates.swift; sourceTree = "<group>"; };
 		62986BC42BCC5A6500B7DF50 /* RubberToy.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = RubberToy.usdz; sourceTree = "<group>"; };
-		629CB1F92BD857FA00D1DA10 /* DirectionalLightShadowPass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionalLightShadowPass.swift; sourceTree = "<group>"; };
+		629CB1F92BD857FA00D1DA10 /* DepthOnlyPass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DepthOnlyPass.swift; sourceTree = "<group>"; };
 		629CB1FB2BD8653600D1DA10 /* Shadows.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shadows.metal; sourceTree = "<group>"; };
 		629D84052BC1313E00677998 /* AppleMetalLearn.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AppleMetalLearn.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		629D84082BC1313E00677998 /* AppleMetalLearnApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleMetalLearnApp.swift; sourceTree = "<group>"; };
@@ -173,9 +171,8 @@
 				62986BB82BCC430200B7DF50 /* GBufferRenderPass.swift */,
 				62986BBA2BCC432E00B7DF50 /* RenderPass.swift */,
 				62986BBC2BCC4D4600B7DF50 /* PipelineStates.swift */,
-				629CB1F92BD857FA00D1DA10 /* DirectionalLightShadowPass.swift */,
+				629CB1F92BD857FA00D1DA10 /* DepthOnlyPass.swift */,
 				62CCE37F2BE104F800FFD1E2 /* DirectionalLightRenderPass.swift */,
-				6247401A2BE17F26009510E7 /* DepthStencilStates.swift */,
 			);
 			path = RenderPasses;
 			sourceTree = "<group>";
@@ -383,7 +380,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6247401B2BE17F26009510E7 /* DepthStencilStates.swift in Sources */,
 				6278D0962BD50D2F00A29602 /* Material.swift in Sources */,
 				62D9D6162BCA692400EE9691 /* GameController.swift in Sources */,
 				62EA6E952BC5DD370017991A /* MathLibrary.swift in Sources */,
@@ -394,7 +390,7 @@
 				62D9D61A2BCB07AE00EE9691 /* GameScene.swift in Sources */,
 				62D9D6142BCA68E200EE9691 /* InputController.swift in Sources */,
 				628AE5B22BCBC2240094CAD7 /* SceneLighting.swift in Sources */,
-				629CB1FA2BD857FA00D1DA10 /* DirectionalLightShadowPass.swift in Sources */,
+				629CB1FA2BD857FA00D1DA10 /* DepthOnlyPass.swift in Sources */,
 				62D0EFED2BC73236004BFD58 /* TextureController.swift in Sources */,
 				62986BBD2BCC4D4600B7DF50 /* PipelineStates.swift in Sources */,
 				62C6312A2BC9DE2300F90378 /* Movement.swift in Sources */,

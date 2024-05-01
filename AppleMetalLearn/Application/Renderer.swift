@@ -23,7 +23,7 @@ class Renderer: NSObject{
     var uniforms = Uniforms()
     var params = Params()
     
-    var shadowRenderPass: DirectionalLightShadowPass
+    var shadowRenderPass: DepthOnlyPass
     var gBufferRenderPass: GBufferRenderPass
     var directionalLightRenderPass: DirectionalLightRenderPass
     
@@ -41,7 +41,7 @@ class Renderer: NSObject{
         
         Self.library = device.makeDefaultLibrary()
         
-        shadowRenderPass = DirectionalLightShadowPass()
+        shadowRenderPass = DepthOnlyPass()
         gBufferRenderPass = GBufferRenderPass(view: metalView)
         
         directionalLightRenderPass = DirectionalLightRenderPass(view: metalView)

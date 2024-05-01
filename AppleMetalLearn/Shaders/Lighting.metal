@@ -23,7 +23,7 @@ float calculateShadow (float3 shadowCoord, depth2d<float> shadowMap)
                                        mip_filter::none,
                                        address::clamp_to_edge,
                                        compare_func::less);
-    float shadowSample = shadowMap.sample_compare(shadowMapSampler, shadowTextureCoord.xy, shadowTextureCoord.z);
+    float shadowSample = shadowMap.sample_compare(shadowMapSampler, shadowTextureCoord.xy, shadowTextureCoord.z - SHADOW_BIAS);
     
     return shadowSample;
 }

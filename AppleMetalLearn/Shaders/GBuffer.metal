@@ -20,8 +20,9 @@ using namespace metal;
 //to def
 struct GBufferOut{
     half4 albedo [[color(RenderTargetAlbedoShadow)]];
-    half4 normal [[color(RenderTargetNormalRoughMetallic)]];
-    float4 emission [[color(RenderTargetEmission)]];
+    half4 normal [[color(RenderTargetNormalRoughtness)]];
+    float4 emission [[color(RenderTargetEmissionMetallic)]];
+    float depth [[color(RenderTargetDepth)]];
 };
 
 
@@ -60,7 +61,8 @@ fragment GBufferOut fragment_GBuffer(
     OUT.normal.z = normalWS.z;//normRoughMetSample.z;
     OUT.normal.a = normRoughMetSample.w;
     
-    OUT.emission = 0.0;//float4(normRoughMetSample.z, normRoughMetSample.w, 0.0,1.0);
+    OUT.emission = float4(0.0, 0.0, 0.0,1.0);
+    OUT.depth  = IN.positionCS.z;
     return OUT;
 }
 

@@ -100,8 +100,8 @@ extension Renderer {
         
         //directional light pass
         directionalLightRenderPass.albedoShadowTexture = gBufferRenderPass.albedoTexture
-        directionalLightRenderPass.normalRoughtnessMetallicTexture = gBufferRenderPass.normaltexture
-        directionalLightRenderPass.emissionTeexture = gBufferRenderPass.roughtnessMetallic
+        directionalLightRenderPass.normalRoughtnessMetallicTexture = gBufferRenderPass.normalRoughtnessTexture
+        directionalLightRenderPass.emissionTeexture = gBufferRenderPass.emissionTexture
         directionalLightRenderPass.depthTexture = gBufferRenderPass.depthTexture
         
         directionalLightRenderPass.descriptor = descriptor

@@ -17,8 +17,10 @@ struct GBufferRenderPass: RenderPass{
     
     //RENAME!!!
     var albedoTexture: MTLTexture?
-    var normaltexture: MTLTexture?
-    var roughtnessMetallic: MTLTexture?
+    var normalRoughtnessTexture: MTLTexture?
+    var emissionTexture: MTLTexture?
+    var emissionMetallicTexture: MTLTexture?
+    var GBufferDepth: MTLTexture?
     var depthTexture: MTLTexture?
     
     init(view: MTKView){
@@ -29,14 +31,15 @@ struct GBufferRenderPass: RenderPass{
     
     mutating func resize(view: MTKView, size: CGSize) {
         albedoTexture = Self.makeTexture(size: size, pixelFormat: PixelFormats.albedo, name: "Albedo texture")
-        normaltexture = Self.makeTexture(size: size, pixelFormat: PixelFormats.normal, name: "Normal texture")
-        roughtnessMetallic = Self.makeTexture(size: size, pixelFormat: PixelFormats.roughMetallic, name: "Roughtness-Metallic Texture")
-        depthTexture = Self.makeTexture(size: size, pixelFormat: PixelFormats.depth, name: "Depth texture")
+        normalRoughtnessTexture = Self.makeTexture(size: size, pixelFormat: PixelFormats.normal, name: "Normal texture")
+        emissionTexture = Self.makeTexture(size: size, pixelFormat: PixelFormats.roughMetallic, name: "Roughtness-Metallic Texture")
+        GBufferDepth = Self.makeTexture(size: size, pixelFormat: PixelFormats.depth, name: "GBUffer Depth")
+        depthTexture = Self.makeTexture(size: size, pixelFormat: .depth32Float, name: "Depth texture")
     }
     
     func draw(commandBuffer: MTLCommandBuffer, scene: GameScene, uniforms: Uniforms, params: Params) {
 
-        let textures = [albedoTexture, normaltexture, roughtnessMetallic]
+        let textures = [albedoTexture, normalRoughtnessTexture, emissionTexture, GBufferDepth]
         
         for (index, texture) in textures.enumerated(){
             let attachment = descriptor?.colorAttachments[RenderTargetIndex.albedoShadow.rawValue + index]//???

@@ -33,9 +33,11 @@ enum PipelineStates{
         pipelineDescriptor.colorAttachments[0].pixelFormat = .invalid
         
         pipelineDescriptor.colorAttachments[RenderTargetIndex.albedoShadow.rawValue].pixelFormat = PixelFormats.albedo
-        pipelineDescriptor.colorAttachments[RenderTargetIndex.normalRoughMetallic.rawValue].pixelFormat = PixelFormats.normal
-        pipelineDescriptor.colorAttachments[RenderTargetIndex.emission.rawValue].pixelFormat = PixelFormats.roughMetallic
-        pipelineDescriptor.depthAttachmentPixelFormat = PixelFormats.depth
+        pipelineDescriptor.colorAttachments[RenderTargetIndex.normalRoughtness.rawValue].pixelFormat = PixelFormats.normal
+        pipelineDescriptor.colorAttachments[RenderTargetIndex.emissionMetallic.rawValue].pixelFormat = PixelFormats.roughMetallic
+        pipelineDescriptor.colorAttachments[RenderTargetIndex.depth.rawValue].pixelFormat = PixelFormats.depth
+        
+        pipelineDescriptor.depthAttachmentPixelFormat = .depth32Float
         pipelineDescriptor.vertexDescriptor = VertexDescriptors().basic
         return createPipelineState(descriptor: pipelineDescriptor)
     }

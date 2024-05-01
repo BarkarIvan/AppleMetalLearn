@@ -44,6 +44,7 @@ struct DirectionalShadowRenderPass: RenderPass
         renderEncoder.label = "Shadow pass command buffer"
         renderEncoder.setDepthStencilState(depthStencilState)
         renderEncoder.setRenderPipelineState(pipelineState)
+        renderEncoder.setDepthBias(0.05, slopeScale: 7, clamp: 0.2)
         
         for model in scene.models
         {

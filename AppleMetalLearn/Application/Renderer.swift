@@ -47,8 +47,10 @@ class Renderer: NSObject{
         directionalLightRenderPass = DirectionalLightRenderPass(view: metalView)
         
         super.init()
+        //set view colors
         metalView.clearColor = MTLClearColor(red: 0.5, green: 0.5, blue: 0.0, alpha: 1)
-        metalView.depthStencilPixelFormat = .depth32Float
+        metalView.depthStencilPixelFormat = .depth32Float_stencil8
+        metalView.colorPixelFormat = .bgra8Unorm_srgb
         
         mtkView(metalView, drawableSizeWillChange: metalView.drawableSize)
         
@@ -68,7 +70,8 @@ extension Renderer {
     func updateUniforms(scene: GameScene){
         uniforms.viewMatrix = scene.camera.viewMatrix
         uniforms.projectionMatrix = scene.camera.projectionMatrix
-        params.lightCount = 0;//UInt32(scene.lighting.lights.count)
+        uniforms.projectionMatrixInverse = scene.camera.projectionMatrix.inverse
+        params.lightCount = UInt32(scene.lighting.allLightsArray.count)
         params.cameraPosition = scene.camera.position
         
 
@@ -92,20 +95,20 @@ extension Renderer {
         updateUniforms(scene: scene)
         
         //shadowpass
-        shadowRenderPass.draw(commandBuffer: commandBuffer, scene: scene, uniforms: uniforms, params: params)
+        shadowRenderPass.draw(in: view, commandBuffer: commandBuffer, scene: scene, uniforms: uniforms, params: params)
         
         //gbuffer pass
         gBufferRenderPass.shadowMap = shadowRenderPass.destinationTexture
-        gBufferRenderPass.draw(commandBuffer: commandBuffer, scene: scene, uniforms: uniforms, params: params)
+        gBufferRenderPass.draw(in: view, commandBuffer: commandBuffer, scene: scene, uniforms: uniforms, params: params)
         
         //directional light pass
         directionalLightRenderPass.albedoShadowTexture = gBufferRenderPass.albedoTexture
         directionalLightRenderPass.normalRoughtnessMetallicTexture = gBufferRenderPass.normalRoughtnessTexture
         directionalLightRenderPass.emissionTeexture = gBufferRenderPass.emissionTexture
-        directionalLightRenderPass.depthTexture = gBufferRenderPass.depthTexture
+        //directionalLightRenderPass.depthTexture = gBufferRenderPass.depthTexture
         
         directionalLightRenderPass.descriptor = descriptor
-        directionalLightRenderPass.draw(commandBuffer: commandBuffer, scene: scene, uniforms: uniforms, params: params)
+        directionalLightRenderPass.draw(in: view, commandBuffer: commandBuffer, scene: scene, uniforms: uniforms, params: params)
         
         //point lights
         

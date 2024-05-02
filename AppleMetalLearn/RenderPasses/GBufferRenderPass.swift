@@ -20,7 +20,7 @@ struct GBufferRenderPass: RenderPass{
     var normalRoughtnessTexture: MTLTexture?
     var emissionTexture: MTLTexture?
     var emissionMetallicTexture: MTLTexture?
-    var GBufferDepth: MTLTexture?
+    var GBufferDepthTexture: MTLTexture?
     var depthTexture: MTLTexture?
     
     init(view: MTKView){
@@ -30,16 +30,17 @@ struct GBufferRenderPass: RenderPass{
     }
     
     mutating func resize(view: MTKView, size: CGSize) {
-        albedoTexture = Self.makeTexture(size: size, pixelFormat: PixelFormats.albedo, name: "Albedo texture")
-        normalRoughtnessTexture = Self.makeTexture(size: size, pixelFormat: PixelFormats.normal, name: "Normal texture")
-        emissionTexture = Self.makeTexture(size: size, pixelFormat: PixelFormats.roughMetallic, name: "Roughtness-Metallic Texture")
-        GBufferDepth = Self.makeTexture(size: size, pixelFormat: PixelFormats.depth, name: "GBUffer Depth")
-        depthTexture = Self.makeTexture(size: size, pixelFormat: .depth32Float, name: "Depth texture")
+        albedoTexture = Self.makeTexture(size: size, pixelFormat: PixelFormats.albedo, name: "Albedo-Shadow texture")
+        normalRoughtnessTexture = Self.makeTexture(size: size, pixelFormat: PixelFormats.normal, name: "Normal-Roughtness texture")
+        emissionTexture = Self.makeTexture(size: size, pixelFormat: PixelFormats.roughMetallic, name: "Emission-Metallic Texture")
+        GBufferDepthTexture = Self.makeTexture(size: size, pixelFormat: PixelFormats.depth, name: "GBUffer Depth Texture" )
+       // depthTexture = Self.makeTexture(size: size, pixelFormat: .depth32Float, name: "Depth texture Texture")
     }
     
-    func draw(commandBuffer: MTLCommandBuffer, scene: GameScene, uniforms: Uniforms, params: Params) {
+    func draw(in view: MTKView, commandBuffer: MTLCommandBuffer, scene: GameScene, uniforms: Uniforms, params: Params) {
 
-        let textures = [albedoTexture, normalRoughtnessTexture, emissionTexture, GBufferDepth]
+        /*
+        let textures = [albedoTexture, normalRoughtnessTexture, emissionTexture, GBufferDepthTexture]
         
         for (index, texture) in textures.enumerated(){
             let attachment = descriptor?.colorAttachments[RenderTargetIndex.albedoShadow.rawValue + index]//???
@@ -48,8 +49,18 @@ struct GBufferRenderPass: RenderPass{
             attachment?.storeAction = .store
             attachment?.clearColor = MTLClearColor(red: 0, green: 0.0, blue: 0.0, alpha: 0.0)
         }
-        descriptor?.depthAttachment.texture = depthTexture
-        descriptor?.depthAttachment.storeAction = .dontCare
+         */
+        
+        descriptor?.colorAttachments[RenderTargetIndex.albedoShadow.rawValue].texture = albedoTexture
+        descriptor?.colorAttachments[RenderTargetIndex.normalRoughtness.rawValue].texture = normalRoughtnessTexture
+        descriptor?.colorAttachments[RenderTargetIndex.emissionMetallic.rawValue].texture = emissionTexture
+        descriptor?.colorAttachments[RenderTargetIndex.depth.rawValue].texture = GBufferDepthTexture
+        
+        
+        descriptor?.depthAttachment.texture = view.depthStencilTexture
+        descriptor?.stencilAttachment.texture = view.depthStencilTexture
+        descriptor?.depthAttachment.storeAction = .store
+        descriptor?.stencilAttachment.storeAction = .store
         
         guard let descriptor = descriptor,
               let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: descriptor) else{
@@ -59,15 +70,12 @@ struct GBufferRenderPass: RenderPass{
         renderEncoder.pushDebugGroup("Set states")
         
         renderEncoder.label = name
-       // renderEncoder.setCullMode(.back)
-        //renderEncoder.setFrontFacing(.clockwise)
         renderEncoder.setDepthStencilState(depthStencilState)
         renderEncoder.setRenderPipelineState(pipelineState)
         
         renderEncoder.popDebugGroup()
 
-        // shadowMap
-        
+        // set shadowmap
         renderEncoder.setFragmentTexture(shadowMap, index: TextureIndex.shadowMap.rawValue)
         
         for model in scene.models{

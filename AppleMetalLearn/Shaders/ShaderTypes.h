@@ -46,7 +46,8 @@ typedef NS_ENUM(EnumBackingType, TextureIndex)
     TextureIndexColor    = 0,
     TextureIndexAdditional = 1,
     TextureIndexEmission = 2,
-    TextureIndexShadowMap = 3
+    TextureIndexShadowMap = 3,
+    TextureIndexDepth = 4
 };
 
 typedef NS_ENUM(EnumBackingType, RenderTargetIndex){
@@ -69,6 +70,7 @@ typedef struct{
 
 typedef struct{
     matrix_float4x4 projectionMatrix;
+    matrix_float4x4 projectionMatrixInverse;
     matrix_float4x4 modelMatrix;
     matrix_float4x4 viewMatrix;
     matrix_float3x3 normalMatrix;

@@ -10,8 +10,10 @@ import MetalKit
 protocol RenderPass{
     var name: String {get}
     var descriptor: MTLRenderPassDescriptor?{get set}
+   
     mutating func resize(view: MTKView, size: CGSize)
-    func draw(commandBuffer: MTLCommandBuffer, scene: GameScene, uniforms: Uniforms, params: Params)
+    
+    func draw(in view: MTKView, commandBuffer: MTLCommandBuffer, scene: GameScene, uniforms: Uniforms, params: Params)
     
 }
 

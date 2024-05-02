@@ -13,4 +13,6 @@ struct PixelFormats {
     static var emission: MTLPixelFormat = .rgba8Unorm_srgb
     static var roughMetallic: MTLPixelFormat = .rgba8Unorm_srgb
     static var depth: MTLPixelFormat = .r32Float
+    //static var stencil: MTLPixelFormat = .depth32Float_stencil8
+    
 }

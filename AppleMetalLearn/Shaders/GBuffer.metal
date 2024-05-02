@@ -62,7 +62,7 @@ fragment GBufferOut fragment_GBuffer(
     OUT.normal.a = normRoughMetSample.w;
     
     OUT.emission = float4(0.0, 0.0, 0.0,1.0);
-    OUT.depth  = IN.positionCS.z;
+    OUT.depth  = IN.positionVS.z;
     return OUT;
 }
 

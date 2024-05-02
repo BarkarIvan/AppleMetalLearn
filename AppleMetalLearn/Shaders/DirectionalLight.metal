@@ -38,12 +38,14 @@ fragment half4 deffered_directional_light_traditional(
                     constant Uniforms       &uniforms     [[buffer(BufferIndexUniforms)]],
                     texture2d<half>         albedoShadow  [[texture(TextureIndexColor)]],
                     texture2d<half>         normal        [[texture(TextureIndexAdditional)]],
-                     texture2d<half> emission [[texture(TextureIndexEmission)]])
-                 //   texture2d<float>        depthGBuffer  [[texture(RenderTargetDepth)]])
+                     texture2d<half> emission [[texture(TextureIndexEmission)]],
+                     texture2d<float>        depthGBuffer  [[texture(RenderTargetDepth)]])
                                                       
 {
     uint2 position = uint2(IN.positionCS.xy);
-    //float depth = depthGBuffer.read(position.xy).x;
+    float depth = depthGBuffer.read(position.xy).x;
+    float3 viewDir = normalize(IN.positionVS)* depth;
+   
     half4 albedo_shadow = albedoShadow.read(position.xy);
     half4 normRgMt = normal.read(position.xy);
     return calculate_deffered_directional_light(IN, uniforms, albedo_shadow, normRgMt);

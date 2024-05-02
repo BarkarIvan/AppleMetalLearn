@@ -29,15 +29,21 @@ enum PipelineStates{
         let pipelineDescriptor = MTLRenderPipelineDescriptor()
         pipelineDescriptor.vertexFunction = vertexFunction
         pipelineDescriptor.fragmentFunction = fragmentFunction
-        //no drawable
+        
+        
+        //RENDER TARGET PIXEL FORMAT
         pipelineDescriptor.colorAttachments[0].pixelFormat = .invalid
         
         pipelineDescriptor.colorAttachments[RenderTargetIndex.albedoShadow.rawValue].pixelFormat = PixelFormats.albedo
         pipelineDescriptor.colorAttachments[RenderTargetIndex.normalRoughtness.rawValue].pixelFormat = PixelFormats.normal
         pipelineDescriptor.colorAttachments[RenderTargetIndex.emissionMetallic.rawValue].pixelFormat = PixelFormats.roughMetallic
-        pipelineDescriptor.colorAttachments[RenderTargetIndex.depth.rawValue].pixelFormat = PixelFormats.depth
+        pipelineDescriptor.colorAttachments[RenderTargetIndex.depth.rawValue].pixelFormat = .r32Float
+
+        //ATTACHMENT PIXEL FORMATS
+        pipelineDescriptor.depthAttachmentPixelFormat = .depth32Float_stencil8
+        pipelineDescriptor.stencilAttachmentPixelFormat = .depth32Float_stencil8
         
-        pipelineDescriptor.depthAttachmentPixelFormat = .depth32Float
+        //VERTEX DESCRIPTOR
         pipelineDescriptor.vertexDescriptor = VertexDescriptors().basic
         return createPipelineState(descriptor: pipelineDescriptor)
     }
@@ -50,9 +56,8 @@ enum PipelineStates{
         pipelineDescriptor.vertexFunction = vertexFunction
         pipelineDescriptor.fragmentFunction = fragmentFunction
         pipelineDescriptor.colorAttachments[0].pixelFormat =  colorPixelFormat
-        pipelineDescriptor.depthAttachmentPixelFormat = .depth32Float
-       // pipelineDescriptor.vertexDescriptor = VertexDescriptors().basic //???
-       
+        pipelineDescriptor.depthAttachmentPixelFormat = .depth32Float_stencil8
+        pipelineDescriptor.stencilAttachmentPixelFormat = .depth32Float_stencil8
         return createPipelineState(descriptor: pipelineDescriptor)
     }
     

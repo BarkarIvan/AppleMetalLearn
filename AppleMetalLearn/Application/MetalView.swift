@@ -88,9 +88,5 @@ struct MetalViewRepresentable: ViewRepresentable {
   //}
 }
 
-#Preview {
-  VStack {
-    MetalView()
-    Text("Metal View")
-  }
-}
+
+

@@ -36,7 +36,10 @@ struct DirectionalLightRenderPass: RenderPass
     
     mutating func resize(view: MTKView, size: CGSize) {}
     
-    func draw(commandBuffer:  MTLCommandBuffer, scene: GameScene, uniforms: Uniforms, params: Params) {
+    func draw(in view: MTKView, commandBuffer:  MTLCommandBuffer, scene: GameScene, uniforms: Uniforms, params: Params) {
+        
+        descriptor?.depthAttachment.texture = view.depthStencilTexture
+        descriptor?.stencilAttachment.texture = view.depthStencilTexture
         
         guard let descriptor = descriptor,
               let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: descriptor) else {return}
@@ -46,13 +49,16 @@ struct DirectionalLightRenderPass: RenderPass
         
         var uniforms = uniforms
         
+        //unniforms buffer
+        renderEncoder.setVertexBytes(&uniforms, length: MemoryLayout<Uniforms>.stride, index: BufferIndex.uniforms.rawValue)
         renderEncoder.setFragmentBytes(&uniforms, length: MemoryLayout<Uniforms>.stride, index: BufferIndex.uniforms.rawValue)
         
+        //SET GBUFFER TEXTURES
         renderEncoder.setFragmentTexture(albedoShadowTexture, index: TextureIndex.color.rawValue)
         
         renderEncoder.setFragmentTexture(normalRoughtnessMetallicTexture, index: TextureIndex.additional.rawValue)
         renderEncoder.setFragmentTexture(emissionTeexture, index: TextureIndex.emission.rawValue)
-      //depth?
+        renderEncoder.setFragmentTexture(depthTexture, index: TextureIndex.depth.rawValue)
         
         renderEncoder.pushDebugGroup("Directional Light Pass")
         renderEncoder.setRenderPipelineState(pipelineState)

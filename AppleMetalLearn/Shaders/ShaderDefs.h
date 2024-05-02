@@ -23,6 +23,7 @@ typedef struct{
 typedef struct{
     float4 positionCS [[position]];
     float3 positionWS;
+    float3 positionVS;
     float2 texCoord ;
     half3 normalWS;
     half3 tangentWS;
@@ -34,6 +35,7 @@ typedef struct{
 
 typedef struct{
     float4 positionCS [[position]];
+    float3 positionVS;
 } VaryingsSimpeQuad;
 
 

@@ -9,6 +9,7 @@ import MetalKit
 
 struct DirectionalShadowRenderPass: RenderPass
 {
+    
 
     let name: String = "Shadow Render Pass"
     
@@ -31,7 +32,7 @@ struct DirectionalShadowRenderPass: RenderPass
         
     }
     
-    func draw(commandBuffer: any MTLCommandBuffer, scene: GameScene, uniforms: Uniforms, params: Params)
+    func draw(in view: MTKView, commandBuffer: any MTLCommandBuffer, scene: GameScene, uniforms: Uniforms, params: Params)
     {
         guard let descriptor = descriptor else {return}
        

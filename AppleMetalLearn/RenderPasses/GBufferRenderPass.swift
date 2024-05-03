@@ -29,6 +29,17 @@ struct GBufferRenderPass: RenderPass{
         descriptor = MTLRenderPassDescriptor()
     }
     
+    static func buildDepthStencilState() -> MTLDepthStencilState?{
+        let deescriptor = MTLDepthStencilDescriptor()
+        let stencilDescriptor = MTLStencilDescriptor()
+        stencilDescriptor.depthStencilPassOperation = .replace
+        deescriptor.frontFaceStencil = stencilDescriptor
+        deescriptor.backFaceStencil = stencilDescriptor
+        deescriptor.depthCompareFunction = .less
+        deescriptor.isDepthWriteEnabled = true
+        return Renderer.device.makeDepthStencilState(descriptor: deescriptor)
+    }
+    
     mutating func resize(view: MTKView, size: CGSize) {
         albedoTexture = Self.makeTexture(size: size, pixelFormat: PixelFormats.albedo, name: "Albedo-Shadow texture")
         normalRoughtnessTexture = Self.makeTexture(size: size, pixelFormat: PixelFormats.normal, name: "Normal-Roughtness texture")
@@ -55,6 +66,20 @@ struct GBufferRenderPass: RenderPass{
         descriptor?.colorAttachments[RenderTargetIndex.normalRoughtness.rawValue].texture = normalRoughtnessTexture
         descriptor?.colorAttachments[RenderTargetIndex.emissionMetallic.rawValue].texture = emissionTexture
         descriptor?.colorAttachments[RenderTargetIndex.depth.rawValue].texture = GBufferDepthTexture
+        
+        let clarColor:MTLClearColor = MTLClearColor(red: 0.73, green: 0.92, blue: 1, alpha: 1)
+        descriptor?.colorAttachments[RenderTargetIndex.albedoShadow.rawValue].loadAction = .clear
+        descriptor?.colorAttachments[RenderTargetIndex.albedoShadow.rawValue].storeAction = .store
+        descriptor?.colorAttachments[RenderTargetIndex.albedoShadow.rawValue].clearColor = clarColor
+        descriptor?.colorAttachments[RenderTargetIndex.normalRoughtness.rawValue].loadAction = .clear
+        descriptor?.colorAttachments[RenderTargetIndex.normalRoughtness.rawValue].storeAction = .store
+        descriptor?.colorAttachments[RenderTargetIndex.normalRoughtness.rawValue].clearColor = clarColor
+        descriptor?.colorAttachments[RenderTargetIndex.emissionMetallic.rawValue].loadAction = .clear
+        descriptor?.colorAttachments[RenderTargetIndex.emissionMetallic.rawValue].storeAction = .store
+        descriptor?.colorAttachments[RenderTargetIndex.emissionMetallic.rawValue].clearColor = clarColor
+        
+        
+        
         
         
         descriptor?.depthAttachment.texture = view.depthStencilTexture

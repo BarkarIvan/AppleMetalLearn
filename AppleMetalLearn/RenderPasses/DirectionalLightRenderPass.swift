@@ -22,16 +22,22 @@ struct DirectionalLightRenderPass: RenderPass
     
     init(view: MTKView)
     {
-        pipelineState = PipelineStates.createeDirectionalLightPipelineState(vertexFunctionName: "vertex_quad", fragmentFunctionName: "deffered_directional_light_traditional", colorPixelFormat: view.colorPixelFormat)
+        pipelineState = PipelineStates.createeDirectionalLightPipelineState(vertexFunctionName: "vertex_quad", fragmentFunctionName: "deffered_directional_light_traditional", colorPixelFormat: .bgra8Unorm_srgb);// view.colorPixelFormat)
         depthStencilState = Self.buildDepthStencilState()
         
     }
     
-    static func buildDepthStencilState() -> MTLDepthStencilState?
-    {
-        let descriptor = MTLDepthStencilDescriptor()
-        descriptor.isDepthWriteEnabled = false
-        return Renderer.device.makeDepthStencilState(descriptor: descriptor)
+    static func buildDepthStencilState() -> MTLDepthStencilState?{
+        let deescriptor = MTLDepthStencilDescriptor()
+        let stencilDescriptor = MTLStencilDescriptor()
+        stencilDescriptor.stencilCompareFunction = .equal
+        stencilDescriptor.readMask = 0xFF
+        stencilDescriptor.writeMask = 0x0
+        deescriptor.frontFaceStencil = stencilDescriptor
+        deescriptor.backFaceStencil = stencilDescriptor
+        //deescriptor.depthCompareFunction = .less
+       // deescriptor.isDepthWriteEnabled = true
+        return Renderer.device.makeDepthStencilState(descriptor: deescriptor)
     }
     
     mutating func resize(view: MTKView, size: CGSize) {}

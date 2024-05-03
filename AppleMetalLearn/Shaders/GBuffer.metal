@@ -21,7 +21,7 @@ using namespace metal;
 struct GBufferOut{
     half4 albedo [[color(RenderTargetAlbedoShadow)]];
     half4 normal [[color(RenderTargetNormalRoughtness)]];
-    float4 emission [[color(RenderTargetEmissionMetallic)]];
+    half4 emission [[color(RenderTargetEmissionMetallic)]];
     float depth [[color(RenderTargetDepth)]];
 };
 
@@ -31,7 +31,8 @@ fragment GBufferOut fragment_GBuffer(
                     constant Uniforms &uniforms [[buffer(BufferIndexUniforms)]],
                     constant MaterialProperties &materialProperties [[buffer(BufferIndexMaterial)]],
                     texture2d<half> albedo[[texture(TextureIndexColor)]],
-                    texture2d<half> NormRoughMetallic[[texture(TextureIndexAdditional)]],
+                    texture2d<half> normRoughMetallic[[texture(TextureIndexAdditional)]],
+                    texture2d<half> emission[[texture(TextureIndexEmission)]],
                     depth2d<float>  shadowMap[[texture(TextureIndexShadowMap)]])
 {
     GBufferOut OUT;
@@ -40,7 +41,7 @@ fragment GBufferOut fragment_GBuffer(
                                     min_filter::linear,
                                     address::repeat);
     
-    half4 normRoughMetSample = NormRoughMetallic.sample(linearSampler, IN.texCoord);
+    half4 normRoughMetSample = normRoughMetallic.sample(linearSampler, IN.texCoord);
     
     half3 normalTS = reconstruct_normal(half2(normRoughMetSample.x, normRoughMetSample.y));
     normalTS = normalize(normalTS);
@@ -61,7 +62,7 @@ fragment GBufferOut fragment_GBuffer(
     OUT.normal.z = normalWS.z;//normRoughMetSample.z;
     OUT.normal.a = normRoughMetSample.w;
     
-    OUT.emission = float4(0.0, 0.0, 0.0,1.0);
+    OUT.emission = emission.sample(linearSampler, IN.texCoord);
     OUT.depth  = IN.positionVS.z;
     return OUT;
 }

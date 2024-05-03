@@ -38,6 +38,9 @@ typedef struct{
     float3 positionVS;
 } VaryingsSimpeQuad;
 
+typedef struct{
+    float4 postitio [[position]];
+} InOutLightMask;
 
 
 

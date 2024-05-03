@@ -65,3 +65,19 @@ vertex VaryingsSimpeQuad vertex_quad(uint vertexID [[vertex_id]],
     return OUT;
 }
 
+vertex InOutLightMask vertex_light_mask (const device float4 * postions     [[buffer(BufferIndexMeshPositions)]],
+                                        const device Light   *lights        [[buffer(BufferIndexLights)]],
+                                        constant Uniforms    &uniforms      [[buffer(BufferIndexUniforms)]],
+                                         uint                instanceID     [[instance_id]],
+                                         uint                vertexID       [[vertex_id]])
+{
+    InOutLightMask OUT;
+    
+    float4 pos = 0;
+    Light light = lights[instanceID];
+    float4 positioVS = float4(postions[vertexID].xyz * light.radius + light.position.xyz, 1.0);
+    OUT.postitio = uniforms.projectionMatrix * positioVS;
+    
+    return OUT;
+}
+

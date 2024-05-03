@@ -15,7 +15,7 @@ struct GBufferRenderPass: RenderPass{
     let depthStencilState: MTLDepthStencilState?
     weak var shadowMap: MTLTexture?
     
-    //RENAME!!!
+
     var albedoTexture: MTLTexture?
     var normalRoughtnessTexture: MTLTexture?
     var emissionTexture: MTLTexture?
@@ -45,7 +45,7 @@ struct GBufferRenderPass: RenderPass{
         normalRoughtnessTexture = Self.makeTexture(size: size, pixelFormat: PixelFormats.normal, name: "Normal-Roughtness texture")
         emissionTexture = Self.makeTexture(size: size, pixelFormat: PixelFormats.roughMetallic, name: "Emission-Metallic Texture")
         GBufferDepthTexture = Self.makeTexture(size: size, pixelFormat: PixelFormats.depth, name: "GBUffer Depth Texture" )
-       // depthTexture = Self.makeTexture(size: size, pixelFormat: .depth32Float, name: "Depth texture Texture")
+      
     }
     
     func draw(in view: MTKView, commandBuffer: MTLCommandBuffer, scene: GameScene, uniforms: Uniforms, params: Params) {
@@ -61,13 +61,13 @@ struct GBufferRenderPass: RenderPass{
             attachment?.clearColor = MTLClearColor(red: 0, green: 0.0, blue: 0.0, alpha: 0.0)
         }
          */
-        
+        //TODO CYCLE
         descriptor?.colorAttachments[RenderTargetIndex.albedoShadow.rawValue].texture = albedoTexture
         descriptor?.colorAttachments[RenderTargetIndex.normalRoughtness.rawValue].texture = normalRoughtnessTexture
         descriptor?.colorAttachments[RenderTargetIndex.emissionMetallic.rawValue].texture = emissionTexture
         descriptor?.colorAttachments[RenderTargetIndex.depth.rawValue].texture = GBufferDepthTexture
         
-        let clarColor:MTLClearColor = MTLClearColor(red: 0.73, green: 0.92, blue: 1, alpha: 1)
+        let clarColor:MTLClearColor = MTLClearColor(red: 0, green: 0, blue: 0, alpha: 1)
         descriptor?.colorAttachments[RenderTargetIndex.albedoShadow.rawValue].loadAction = .clear
         descriptor?.colorAttachments[RenderTargetIndex.albedoShadow.rawValue].storeAction = .store
         descriptor?.colorAttachments[RenderTargetIndex.albedoShadow.rawValue].clearColor = clarColor
@@ -77,10 +77,9 @@ struct GBufferRenderPass: RenderPass{
         descriptor?.colorAttachments[RenderTargetIndex.emissionMetallic.rawValue].loadAction = .clear
         descriptor?.colorAttachments[RenderTargetIndex.emissionMetallic.rawValue].storeAction = .store
         descriptor?.colorAttachments[RenderTargetIndex.emissionMetallic.rawValue].clearColor = clarColor
-        
-        
-        
-        
+        descriptor?.colorAttachments[RenderTargetIndex.depth.rawValue].loadAction = .clear
+        descriptor?.colorAttachments[RenderTargetIndex.depth.rawValue].storeAction = .store
+        descriptor?.colorAttachments[RenderTargetIndex.depth.rawValue].clearColor = clarColor
         
         descriptor?.depthAttachment.texture = view.depthStencilTexture
         descriptor?.stencilAttachment.texture = view.depthStencilTexture
@@ -109,7 +108,7 @@ struct GBufferRenderPass: RenderPass{
             renderEncoder.popDebugGroup()
         }
         renderEncoder.popDebugGroup()
-
+        
         renderEncoder.endEncoding()
     }
     

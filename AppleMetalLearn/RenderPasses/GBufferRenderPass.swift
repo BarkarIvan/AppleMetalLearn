@@ -96,6 +96,7 @@ struct GBufferRenderPass: RenderPass{
         renderEncoder.label = name
         renderEncoder.setDepthStencilState(depthStencilState)
         renderEncoder.setRenderPipelineState(pipelineState)
+        renderEncoder.setStencilReferenceValue(128)
         
         renderEncoder.popDebugGroup()
 

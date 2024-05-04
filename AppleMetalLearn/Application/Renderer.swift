@@ -25,7 +25,8 @@ class Renderer: NSObject{
     
     var shadowRenderPass: DirectionalShadowRenderPass
     var gBufferRenderPass: GBufferRenderPass
-    var directionalLightRenderPass: DirectionalLightRenderPass
+    var directionalLightRenderPass: LightingRenderPass
+    var lightMaskReenderPass: LightMaskRenderPass
     
     var shadowCamera = OrthographicCamera()
     
@@ -43,8 +44,9 @@ class Renderer: NSObject{
         
         shadowRenderPass = DirectionalShadowRenderPass()
         gBufferRenderPass = GBufferRenderPass(view: metalView)
-        
-        directionalLightRenderPass = DirectionalLightRenderPass(view: metalView)
+        directionalLightRenderPass = LightingRenderPass(view: metalView)
+        lightMaskReenderPass = LightMaskRenderPass(view: metalView)
+
         
         super.init()
         //set view colors
@@ -93,7 +95,6 @@ extension Renderer {
             let descriptor = view.currentRenderPassDescriptor   else {return}
         
         updateUniforms(scene: scene)
-        
         //shadowpass
         shadowRenderPass.draw(in: view, commandBuffer: commandBuffer, scene: scene, uniforms: uniforms, params: params)
         
@@ -109,7 +110,9 @@ extension Renderer {
         
         directionalLightRenderPass.descriptor = descriptor
         directionalLightRenderPass.draw(in: view, commandBuffer: commandBuffer, scene: scene, uniforms: uniforms, params: params)
-        
+        //lightmask
+        lightMaskReenderPass.descriptor = descriptor
+        lightMaskReenderPass.draw(in: view, commandBuffer: commandBuffer, scene: scene, uniforms: uniforms, params: params)
         //point lights
         
         //forward transparent

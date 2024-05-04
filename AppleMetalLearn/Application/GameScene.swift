@@ -10,8 +10,8 @@ import MetalKit
 struct GameScene{
     
     //lazy var testModel: Model = {
-      //  Model(name: "RubberToy.usdz")
-   // }()
+    //  Model(name: "RubberToy.usdz")
+    // }()
     
     var models: [Model] = []
     var camera = FPCamera()
@@ -23,9 +23,10 @@ struct GameScene{
     }
     
     var lighting = SceneLighting()
+    //icosaherof meesh for point lights
+    var icosahedron : Model?
     
     init(){
-        
         camera.far = 10
         camera.transform = defaultview
         
@@ -49,9 +50,49 @@ struct GameScene{
         platonic.rotation = [45, 45, 45]
         models = [testModel, platonic]
         
-        //lighting.allLightsArray[0].position = camera.transform.position
+        for _ in 1...20
+        {
+            let d: Float = Float(2)
+            let position = simd_float3(
+                .random(in: -d...d),
+                .random(in: -d...d),
+                .random(in: -d...d)
+            )
+            let color = simd_float3(
+                .random(in: 0...1),
+                .random(in: 0...1),
+                .random(in: 0...1)
+            )
+            let attenuation = simd_float3(
+                .random(in: 0.5...1),
+                .random(in: 0.5...1),
+                .random(in: 0.5...1)
+            )
+            
+            lighting.addPointLight(position: testModel.position + position, color: color, radius: 0.5, attenuation: attenuation)
+        }
         
-        
+        do {
+            let bufferAllocator = MTKMeshBufferAllocator(device: Renderer.device)
+            //scale coeff for unit sphere
+            let unitIncribe = sqrt(3.0) / 12.0 * (3.0 + sqrt(5.0))
+            let icosahedronMDLMesh = MDLMesh.newIcosahedron(withRadius: Float(1.0 / unitIncribe), inwardNormals: false, allocator: bufferAllocator)
+            
+            let icosahedronDescriptor = MDLVertexDescriptor()
+            icosahedronDescriptor.attributes[VertexAttribute.position.rawValue] = MDLVertexAttribute(
+                name: MDLVertexAttributePosition, format: .float4, offset: 0, bufferIndex: BufferIndex.meshPositions.rawValue)
+            
+            icosahedronDescriptor.layouts[BufferIndex.meshPositions.rawValue] = MDLVertexBufferLayout(stride: MemoryLayout<SIMD3<Float>>.stride)
+            
+            icosahedronMDLMesh.vertexDescriptor = icosahedronDescriptor
+            
+            do{
+                let mtkMesh = try MTKMesh(mesh: icosahedronMDLMesh, device: Renderer.device)
+                icosahedron = Model(name: "icosahedron", mdlMesh: icosahedronMDLMesh, mtkMesh: mtkMesh)
+            }catch{
+                fatalError("Failed to create icosahedron MTKMesh: \(error.localizedDescription)")
+            }
+        }
     }
     
     mutating func update(size: CGSize){

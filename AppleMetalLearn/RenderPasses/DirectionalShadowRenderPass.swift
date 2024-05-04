@@ -28,9 +28,7 @@ struct DirectionalShadowRenderPass: RenderPass
     }
     
     
-    mutating func resize(view: MTKView, size: CGSize) {
-        
-    }
+    mutating func resize(view: MTKView, size: CGSize) {}
     
     func draw(in view: MTKView, commandBuffer: any MTLCommandBuffer, scene: GameScene, uniforms: Uniforms, params: Params)
     {

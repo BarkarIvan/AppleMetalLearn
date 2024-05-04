@@ -47,12 +47,13 @@ class SceneLighting{
         return allLightsArray[0]
     }
     
-    func addPointLight(position: simd_float3, color: simd_float3, attenuation: simd_float3){
+    func addPointLight(position: simd_float3, color: simd_float3, radius: simd_float1 = 1, attenuation: simd_float3){
         
         var light = buildDefaultLight()
         light.position = position
         light.color = color
         light.attenuation = attenuation
+        light.radius = radius
         light.type = pointLightType
         
         allLightsArray.append(light)

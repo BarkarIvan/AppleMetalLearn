@@ -25,6 +25,7 @@
 		627E06712BDD54F1005FF89D /* toy.obj in Resources */ = {isa = PBXBuildFile; fileRef = 627E06702BDD54F1005FF89D /* toy.obj */; };
 		627E06752BDD8614005FF89D /* VertexDescriptors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 627E06742BDD8614005FF89D /* VertexDescriptors.swift */; };
 		6280A9592BD9A645009901FD /* PixelFormats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6280A9582BD9A645009901FD /* PixelFormats.swift */; };
+		6288C8A42BE6243700257F7B /* LightMaskRenderPass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6288C8A32BE6243700257F7B /* LightMaskRenderPass.swift */; };
 		628AE5B22BCBC2240094CAD7 /* SceneLighting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 628AE5B12BCBC2240094CAD7 /* SceneLighting.swift */; };
 		628DC6962BDE654C00189491 /* brick-normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 628DC6952BDE654C00189491 /* brick-normal.png */; };
 		628DC69C2BDE879A00189491 /* normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 628DC69B2BDE879A00189491 /* normal.png */; };
@@ -43,7 +44,7 @@
 		62C631272BC9D8AA00F90378 /* Camera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62C631262BC9D8AA00F90378 /* Camera.swift */; };
 		62C6312A2BC9DE2300F90378 /* Movement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62C631292BC9DE2300F90378 /* Movement.swift */; };
 		62CCE37E2BE0F34700FFD1E2 /* CGTools.metal in Sources */ = {isa = PBXBuildFile; fileRef = 62CCE37D2BE0F34700FFD1E2 /* CGTools.metal */; };
-		62CCE3802BE104F800FFD1E2 /* DirectionalLightRenderPass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62CCE37F2BE104F800FFD1E2 /* DirectionalLightRenderPass.swift */; };
+		62CCE3802BE104F800FFD1E2 /* LightingRenderPass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62CCE37F2BE104F800FFD1E2 /* LightingRenderPass.swift */; };
 		62D0EFE62BC728D5004BFD58 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62D0EFE52BC728D5004BFD58 /* Model.swift */; };
 		62D0EFE82BC72925004BFD58 /* Mesh.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62D0EFE72BC72925004BFD58 /* Mesh.swift */; };
 		62D0EFEA2BC729AA004BFD58 /* Submesh.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62D0EFE92BC729AA004BFD58 /* Submesh.swift */; };
@@ -80,6 +81,7 @@
 		627E06702BDD54F1005FF89D /* toy.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = toy.obj; sourceTree = "<group>"; };
 		627E06742BDD8614005FF89D /* VertexDescriptors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VertexDescriptors.swift; sourceTree = "<group>"; };
 		6280A9582BD9A645009901FD /* PixelFormats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PixelFormats.swift; sourceTree = "<group>"; };
+		6288C8A32BE6243700257F7B /* LightMaskRenderPass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightMaskRenderPass.swift; sourceTree = "<group>"; };
 		628AE5B12BCBC2240094CAD7 /* SceneLighting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneLighting.swift; sourceTree = "<group>"; };
 		628DC6952BDE654C00189491 /* brick-normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "brick-normal.png"; sourceTree = "<group>"; };
 		628DC69B2BDE879A00189491 /* normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = normal.png; sourceTree = "<group>"; };
@@ -99,7 +101,7 @@
 		62C631262BC9D8AA00F90378 /* Camera.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Camera.swift; sourceTree = "<group>"; };
 		62C631292BC9DE2300F90378 /* Movement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Movement.swift; sourceTree = "<group>"; };
 		62CCE37D2BE0F34700FFD1E2 /* CGTools.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = CGTools.metal; sourceTree = "<group>"; };
-		62CCE37F2BE104F800FFD1E2 /* DirectionalLightRenderPass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionalLightRenderPass.swift; sourceTree = "<group>"; };
+		62CCE37F2BE104F800FFD1E2 /* LightingRenderPass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightingRenderPass.swift; sourceTree = "<group>"; };
 		62CCE3812BE12B4E00FFD1E2 /* CGTools.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CGTools.h; sourceTree = "<group>"; };
 		62D0EFE52BC728D5004BFD58 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		62D0EFE72BC72925004BFD58 /* Mesh.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mesh.swift; sourceTree = "<group>"; };
@@ -174,8 +176,9 @@
 				62986BB82BCC430200B7DF50 /* GBufferRenderPass.swift */,
 				62986BBA2BCC432E00B7DF50 /* RenderPass.swift */,
 				62986BBC2BCC4D4600B7DF50 /* PipelineStates.swift */,
-				62CCE37F2BE104F800FFD1E2 /* DirectionalLightRenderPass.swift */,
+				62CCE37F2BE104F800FFD1E2 /* LightingRenderPass.swift */,
 				627014702BE3A83A006AF678 /* DeepthStencilStates.swift */,
+				6288C8A32BE6243700257F7B /* LightMaskRenderPass.swift */,
 			);
 			path = RenderPasses;
 			sourceTree = "<group>";
@@ -391,6 +394,7 @@
 				6278D0A22BD56ADD00A29602 /* MaterialController.swift in Sources */,
 				627C81912BE281F5000F4665 /* DirectionalShadowRenderPass.swift in Sources */,
 				627657A42BDA8B490088F551 /* Lighting.metal in Sources */,
+				6288C8A42BE6243700257F7B /* LightMaskRenderPass.swift in Sources */,
 				62E3A62F2BD813560012E530 /* ShadowCamera.swift in Sources */,
 				62D9D61A2BCB07AE00EE9691 /* GameScene.swift in Sources */,
 				62D9D6142BCA68E200EE9691 /* InputController.swift in Sources */,
@@ -409,7 +413,7 @@
 				62D0EFE82BC72925004BFD58 /* Mesh.swift in Sources */,
 				627E06752BDD8614005FF89D /* VertexDescriptors.swift in Sources */,
 				622167482BCDCF7E0067269F /* MetalView.swift in Sources */,
-				62CCE3802BE104F800FFD1E2 /* DirectionalLightRenderPass.swift in Sources */,
+				62CCE3802BE104F800FFD1E2 /* LightingRenderPass.swift in Sources */,
 				62CCE37E2BE0F34700FFD1E2 /* CGTools.metal in Sources */,
 				62C631272BC9D8AA00F90378 /* Camera.swift in Sources */,
 				62986BBB2BCC432E00B7DF50 /* RenderPass.swift in Sources */,

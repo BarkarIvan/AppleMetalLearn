@@ -7,12 +7,13 @@
 
 import MetalKit
 
-struct DirectionalLightRenderPass: RenderPass
+struct LightingRenderPass: RenderPass
 {
     let name = "Directional light Pass"
     var descriptor: MTLRenderPassDescriptor?
     
     var pipelineState: MTLRenderPipelineState
+
     let depthStencilState: MTLDepthStencilState?
     
     weak var albedoShadowTexture: MTLTexture?
@@ -46,12 +47,21 @@ struct DirectionalLightRenderPass: RenderPass
         
         descriptor?.depthAttachment.texture = view.depthStencilTexture
         descriptor?.stencilAttachment.texture = view.depthStencilTexture
+       
+        descriptor?.depthAttachment.loadAction = .load
+        descriptor?.stencilAttachment.loadAction = .load
+        descriptor?.depthAttachment.storeAction = .store
+        descriptor?.stencilAttachment.storeAction = .store
+        
+        descriptor?.depthAttachment.texture = view.depthStencilTexture
+        descriptor?.stencilAttachment.texture = view.depthStencilTexture
         
         guard let descriptor = descriptor,
               let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: descriptor) else {return}
         
         renderEncoder.label = name
         renderEncoder.setDepthStencilState(depthStencilState)
+        renderEncoder.setStencilReferenceValue(128)
         
         var uniforms = uniforms
         

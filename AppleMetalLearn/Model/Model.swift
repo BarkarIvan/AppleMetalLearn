@@ -16,6 +16,14 @@ class Model: Transformable{
     
     init(){}
     
+    
+    init(name: String, mdlMesh: MDLMesh, mtkMesh: MTKMesh){
+        
+        self.meshes = [Mesh(mdlMesh: mdlMesh, mtkMesh: mtkMesh)]
+        self.name = name
+        
+    }
+    
     init(name: String, materials: [Material]){
         guard let assetURL = Bundle.main.url(forResource: name, withExtension: nil) else{
             fatalError("Model /(name) not found")
@@ -59,7 +67,7 @@ class Model: Transformable{
     
     
     //нужен ли материал
-    func render ( encoder: MTLRenderCommandEncoder, uniforms vertex: Uniforms, params fragment: Params){
+    func render ( encoder: MTLRenderCommandEncoder, uniforms vertex: Uniforms, params fragment: Params, needMaterial: Bool = true){
         
         var uniforms = vertex
         var params = fragment
@@ -80,19 +88,20 @@ class Model: Transformable{
             }
             
             for (index,submeshe) in mesh.submeshes.enumerated() {
-                let material = materials[index % materials.count]
-                var materialProps = material.properties
-                encoder.setFragmentBytes(&materialProps, length: MemoryLayout<MaterialProperties>.stride, index: BufferIndex.material.rawValue)
                 
-                
-                //TODO: refactor
-                encoder.setFragmentTexture(material.baseColorTexture, index: TextureIndex.color.rawValue)
-                
-                encoder.setFragmentTexture(material.normalXYRoughMetallic, index: TextureIndex.additional.rawValue)
-                
-                encoder.setFragmentTexture(material.emissionTexture, index: TextureIndex.emission.rawValue)
-                
-                //TODO: BRUSH TEXTURE
+                if needMaterial{
+                    let material = materials[index % materials.count]
+                    var materialProps = material.properties
+                    encoder.setFragmentBytes(&materialProps, length: MemoryLayout<MaterialProperties>.stride, index: BufferIndex.material.rawValue)
+                    
+                    
+                    //TODO: refactor
+                    encoder.setFragmentTexture(material.baseColorTexture, index: TextureIndex.color.rawValue)
+                    
+                    encoder.setFragmentTexture(material.normalXYRoughMetallic, index: TextureIndex.additional.rawValue)
+                    
+                    encoder.setFragmentTexture(material.emissionTexture, index: TextureIndex.emission.rawValue)
+                }
                 
                 encoder.drawIndexedPrimitives(type: .triangle, indexCount: submeshe.indexCount,
                                               indexType: submeshe.indexType, 

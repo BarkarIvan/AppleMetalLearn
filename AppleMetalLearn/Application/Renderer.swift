@@ -25,8 +25,8 @@ class Renderer: NSObject{
     
     var shadowRenderPass: DirectionalShadowRenderPass
     var gBufferRenderPass: GBufferRenderPass
-    var directionalLightRenderPass: LightingRenderPass
-    var lightMaskReenderPass: LightMaskRenderPass
+    var lightingRenderPass: LightingRenderPass
+   // var lightMaskReenderPass: LightMaskRenderPass
     
     var shadowCamera = OrthographicCamera()
     
@@ -44,8 +44,8 @@ class Renderer: NSObject{
         
         shadowRenderPass = DirectionalShadowRenderPass()
         gBufferRenderPass = GBufferRenderPass(view: metalView)
-        directionalLightRenderPass = LightingRenderPass(view: metalView)
-        lightMaskReenderPass = LightMaskRenderPass(view: metalView)
+        lightingRenderPass = LightingRenderPass(view: metalView)
+       // lightMaskReenderPass = LightMaskRenderPass(view: metalView)
 
         
         super.init()
@@ -103,17 +103,25 @@ extension Renderer {
         gBufferRenderPass.draw(in: view, commandBuffer: commandBuffer, scene: scene, uniforms: uniforms, params: params)
         
         //directional light pass
-        directionalLightRenderPass.albedoShadowTexture = gBufferRenderPass.albedoTexture
-        directionalLightRenderPass.normalRoughtnessMetallicTexture = gBufferRenderPass.normalRoughtnessTexture
-        directionalLightRenderPass.emissionTeexture = gBufferRenderPass.emissionTexture
+        lightingRenderPass.albedoShadowTexture = gBufferRenderPass.albedoTexture
+        lightingRenderPass.normalRoughtnessMetallicTexture = gBufferRenderPass.normalRoughtnessTexture
+        lightingRenderPass.emissionTeexture = gBufferRenderPass.emissionTexture
         //directionalLightRenderPass.depthTexture = gBufferRenderPass.depthTexture
         
-        directionalLightRenderPass.descriptor = descriptor
-        directionalLightRenderPass.draw(in: view, commandBuffer: commandBuffer, scene: scene, uniforms: uniforms, params: params)
+       // lightingRenderPass.descriptor = descriptor
+        //ВЫНЕСТИ
+        lightingRenderPass.descriptor?.depthAttachment.texture = view.depthStencilTexture
+        lightingRenderPass.descriptor?.stencilAttachment.texture = view.depthStencilTexture
+        lightingRenderPass.descriptor?.colorAttachments[0].texture = view.currentDrawable?.texture
+        lightingRenderPass.descriptor?.colorAttachments[0].loadAction = .clear
+        
+        
+        lightingRenderPass.draw(in: view, commandBuffer: commandBuffer, scene: scene, uniforms: uniforms, params: params)
         //lightmask
-        lightMaskReenderPass.descriptor = descriptor
-        lightMaskReenderPass.draw(in: view, commandBuffer: commandBuffer, scene: scene, uniforms: uniforms, params: params)
-        //point lights
+        //lightingRenderPass.descriptor?.colorAttachments[0].loadAction = .load
+        
+        //lightMaskReenderPass.descriptor = lightingRenderPass.descriptor
+       // lightMaskReenderPass.draw(in: view, commandBuffer: commandBuffer, scene: scene, uniforms: uniforms, params: params)
         
         //forward transparent
         

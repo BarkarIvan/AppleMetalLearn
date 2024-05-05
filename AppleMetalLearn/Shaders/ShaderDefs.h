@@ -39,9 +39,14 @@ typedef struct{
 } VaryingsSimpeQuad;
 
 typedef struct{
-    float4 postitio [[position]];
+    float4 postition [[position]];
 } InOutLightMask;
 
+typedef struct{
+    float4 position [[position]];
+    float3 positionVS;
+    uint instanceID [[flat]];
+} PointLightInOut;
 
 
 #endif /* ShaderDefs_h */

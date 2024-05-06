@@ -73,6 +73,19 @@ enum PipelineStates{
         return createPipelineState(descriptor: pipelineDscriptor)
     }
     
+    static func createPointLightPipelineState(vertexFunctionName: String, fragmentFunctionName: String, colorPixelFormat: MTLPixelFormat) -> MTLRenderPipelineState
+    {
+        let vertexFunnction = Renderer.library?.makeFunction(name: vertexFunctionName);
+        let fragmetFunction = Renderer.library?.makeFunction(name: fragmentFunctionName);
+        let pipelineDdescriptor = MTLRenderPipelineDescriptor()
+        pipelineDdescriptor.vertexFunction = vertexFunnction;
+        pipelineDdescriptor.fragmentFunction = fragmetFunction;
+        pipelineDdescriptor.depthAttachmentPixelFormat = .depth32Float_stencil8
+        pipelineDdescriptor.stencilAttachmentPixelFormat = .depth32Float_stencil8
+        pipelineDdescriptor.colorAttachments[0].pixelFormat = .bgra8Unorm_srgb
+        return createPipelineState(descriptor: pipelineDdescriptor)
+    }
+    
     static func createShadowPipelineState() -> MTLRenderPipelineState{
         let vertexFunction = Renderer.library?.makeFunction(name: "vertex_depth")
           let pipelineDescriptor = MTLRenderPipelineDescriptor()

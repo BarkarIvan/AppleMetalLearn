@@ -106,7 +106,7 @@ extension Renderer {
         lightingRenderPass.albedoShadowTexture = gBufferRenderPass.albedoTexture
         lightingRenderPass.normalRoughtnessMetallicTexture = gBufferRenderPass.normalRoughtnessTexture
         lightingRenderPass.emissionTeexture = gBufferRenderPass.emissionTexture
-        //directionalLightRenderPass.depthTexture = gBufferRenderPass.depthTexture
+        lightingRenderPass.depthTexture = gBufferRenderPass.GBufferDepthTexture
         
        // lightingRenderPass.descriptor = descriptor
         //ВЫНЕСТИ

@@ -14,9 +14,11 @@ struct LightingRenderPass: RenderPass
     
     var directionalLightPassRenderPipelineState: MTLRenderPipelineState
     var lightMaskPipelineState: MTLRenderPipelineState
+    var pointLightsRenderPipelineState: MTLRenderPipelineState
 
     let directionalLightPassDepthStencilState: MTLDepthStencilState?
     let lightMaskDepthStencilState: MTLDepthStencilState?
+    let pointLightsDepthStencilState: MTLDepthStencilState?
     
     weak var albedoShadowTexture: MTLTexture?
     weak var normalRoughtnessMetallicTexture: MTLTexture?
@@ -27,14 +29,16 @@ struct LightingRenderPass: RenderPass
     {
         descriptor = MTLRenderPassDescriptor()
         
-        //create in renderr?
         directionalLightPassRenderPipelineState = PipelineStates.createeDirectionalLightPipelineState(vertexFunctionName: "vertex_quad", fragmentFunctionName: "deffered_directional_light_traditional", colorPixelFormat: .bgra8Unorm_srgb);// view.colorPixelFormat)
         directionalLightPassDepthStencilState = Self.buildDirectionalLightDepthStencilState()
         
         lightMaskPipelineState = PipelineStates.createLightMaskPipelieState(vertexFunctionName: "vertex_light_mask", colorPixelFormat: view.colorPixelFormat)
         lightMaskDepthStencilState = Self.buildLightMaskDepthStencilState()
         
+        pointLightsRenderPipelineState = PipelineStates.createPointLightPipelineState(vertexFunctionName: "deferred_point_light_vertex", fragmentFunctionName: "deffered_point_light_fragment", colorPixelFormat: view.colorPixelFormat)
+        pointLightsDepthStencilState = Self.buildPointLightsDepthStencilState()
     }
+    
     //to depth states
     static func buildDirectionalLightDepthStencilState() -> MTLDepthStencilState?{
         let deescriptor = MTLDepthStencilDescriptor()
@@ -58,6 +62,22 @@ struct LightingRenderPass: RenderPass
        
         return Renderer.device.makeDepthStencilState(descriptor: descriptor)
     }
+    
+    static func buildPointLightsDepthStencilState() -> MTLDepthStencilState?
+    {
+        let  stencilStateDeescriptor = MTLStencilDescriptor()
+        stencilStateDeescriptor.stencilCompareFunction = .less
+        stencilStateDeescriptor.writeMask = 0x0
+        stencilStateDeescriptor.readMask = 0xFF
+        
+        let descriptor = MTLDepthStencilDescriptor()
+        descriptor.depthCompareFunction = .lessEqual
+        descriptor.frontFaceStencil = stencilStateDeescriptor
+        descriptor.backFaceStencil = stencilStateDeescriptor
+        return Renderer.device.makeDepthStencilState(descriptor: descriptor)
+    }
+    
+
     
     
     mutating func resize(view: MTKView, size: CGSize) {}
@@ -86,7 +106,6 @@ struct LightingRenderPass: RenderPass
         
         //SET GBUFFER TEXTURES
         renderEncoder.setFragmentTexture(albedoShadowTexture, index: TextureIndex.color.rawValue)
-        
         renderEncoder.setFragmentTexture(normalRoughtnessMetallicTexture, index: TextureIndex.additional.rawValue)
         renderEncoder.setFragmentTexture(emissionTeexture, index: TextureIndex.emission.rawValue)
         renderEncoder.setFragmentTexture(depthTexture, index: TextureIndex.depth.rawValue)
@@ -118,6 +137,32 @@ struct LightingRenderPass: RenderPass
         for (index, vertexBuffer) in mesh.vertexBuffers.enumerated() {
             renderEncoder.setVertexBuffer(vertexBuffer, offset: 0, index: index)
         }
+        renderEncoder.drawIndexedPrimitives(type: .triangle, indexCount: submesh.indexCount, indexType: submesh.indexType, indexBuffer: submesh.indexBuffer, indexBufferOffset: submesh.indexBufferOffset,
+                                            instanceCount: scene.lighting.pointLightsArray.count)
+        
+        renderEncoder.popDebugGroup()
+        renderEncoder.popDebugGroup()
+        
+        ///POINT LIGHTS PASS
+        renderEncoder.setRenderPipelineState(pointLightsRenderPipelineState)
+        renderEncoder.setDepthStencilState(pointLightsDepthStencilState)
+        renderEncoder.setStencilReferenceValue(128)
+        renderEncoder.setCullMode(.back)
+
+        
+       // renderEncoder.setVertexBuffer(scene.lighting.pointsLightsBuffer, offset: 0, index: BufferIndex.lights.rawValue)
+        renderEncoder.setFragmentBuffer(scene.lighting.pointsLightsBuffer, offset: 0, index: BufferIndex.lights.rawValue)
+        
+        
+        renderEncoder.pushDebugGroup("point lights Pass")
+        
+        guard let mesh = scene.icosahedron?.meshes.first,
+              let submesh = mesh.submeshes.first else{
+            
+            return}
+       // for (index, vertexBuffer) in mesh.vertexBuffers.enumerated() {
+           // renderEncoder.setVertexBuffer(vertexBuffer, offset: 0, index: index)
+      //  }
         renderEncoder.drawIndexedPrimitives(type: .triangle, indexCount: submesh.indexCount, indexType: submesh.indexType, indexBuffer: submesh.indexBuffer, indexBufferOffset: submesh.indexBufferOffset,
                                             instanceCount: scene.lighting.pointLightsArray.count)
         

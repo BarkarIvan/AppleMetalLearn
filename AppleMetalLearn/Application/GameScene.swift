@@ -30,7 +30,7 @@ struct GameScene{
         camera.far = 10
         camera.transform = defaultview
         
-        let testMaterial = MaterialController.createMaterial(materialName: "Default", albedoTextureName: "Albedo.tga", additioanTextureNamee: "NRM.png", emissionTextureName: "Emission.tga", baseColor: [1,1,1], roughtness: 1.0, metallic: 1.0, emissionColor: [1,1,1])
+        let testMaterial = MaterialController.createMaterial(materialName: "Default", albedoTextureName: "Albedo.png", additioanTextureNamee: "NRM.png", emissionTextureName: "Emission.tga", baseColor: [1,1,1], roughtness: 1.0, metallic: 1.0, emissionColor: [1,1,1])
         
         var testModel: Model = {
             Model(name: "toy.obj", materials: [testMaterial])
@@ -50,23 +50,23 @@ struct GameScene{
         platonic.rotation = [45, 45, 45]
         models = [testModel, platonic]
         
-        for _ in 1...20
+        for _ in 1...35
         {
-            let d: Float = Float(2)
+            let d: Float = Float(1)
             let position = simd_float3(
                 .random(in: -d...d),
                 .random(in: -d...d),
                 .random(in: -d...d)
             )
             let color = simd_float3(
-                .random(in: 0...1),
-                .random(in: 0...1),
-                .random(in: 0...1)
+                .random(in: 0.1...1.0),
+                .random(in: 0.1...1.0),
+                .random(in: 0.1...1.0)
             )
             let attenuation = simd_float3(
-                .random(in: 0.5...1),
-                .random(in: 0.5...1),
-                .random(in: 0.5...1)
+                .random(in: 0.5...1.0),
+                .random(in: 0.5...1.0),
+                .random(in: 0.5...1.0)
             )
             
             lighting.addPointLight(position: testModel.position + position, color: color, radius: 0.5, attenuation: attenuation)
@@ -102,6 +102,9 @@ struct GameScene{
     mutating func update(deltaTime: Float){
         updateInput()
         camera.update(deltaTime: deltaTime)
+        models[0].transform.rotation.y += 1*deltaTime;
+        models[1].transform.rotation.x += 1 * deltaTime;
+    
     }
     
     mutating func updateInput(){

@@ -28,6 +28,7 @@ half4 calculate_deffered_directional_light(VaryingsSimpeQuad IN,
     
    //colors?
     half4 color = NdotL * albedo_shadow.a;
+    color.xyz = albedo_shadow.rgb * color.rgb;
     color.a = 1.0;
     return color;
 }
@@ -44,7 +45,7 @@ fragment half4 deffered_directional_light_traditional(
 {
     uint2 position = uint2(IN.positionCS.xy);
     float depth = depthGBuffer.read(position.xy).x;
-    float3 viewDir = normalize(IN.positionVS)* depth;
+    //float3 viewDir = normalize(IN.positionVS)* depth;
    
     half4 albedo_shadow = albedoShadow.read(position.xy);
     half4 normRgMt = normal.read(position.xy);

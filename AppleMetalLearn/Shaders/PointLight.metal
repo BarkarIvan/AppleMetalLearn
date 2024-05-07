@@ -27,25 +27,25 @@ half4 deffered_point_light_common(PointLightInOut IN,
     float lightDist = length(lightPos - positionVS);
     float lightRadius = lights[IN.instanceID].radius;
     
-    if(lightDist < lightRadius)
-    {
+    //if(lightDist < lightRadius)
+    //{
         float4 lightPosVS = float4(lightPos, 1.0);
         float3 fragmentPosVSToLightPosVS = lightPosVS.xyz - positionVS;
         float3 lightDir = normalize(fragmentPosVSToLightPosVS);
         
-        half3 lightColor = half3(lights[IN.instanceID].color);
+        half4 lightColor = half4(half3(lights[IN.instanceID].color), 1.0);
         //diffuse contrib
-        half NdotL = max(dot(float3(normalRoughtness.xyz), lightDir), 0.0f);
+        half NdotL = max(dot(normalRoughtness.xyz, half3(lightDir)), 0.0h);
         
-        half4 diffuseConntributio = half4(albedoShadow.xyz * NdotL * lightColor, 1.0);
+    half4 diffuseConntributio = NdotL * lightColor * half4(albedoShadow.xyz,1.0);//half4(albedoShadow * NdotL * lightColor, 1.0);
         //specularContrrib
        // half3 specularContributionn =
         float attenuation = 1.0 - (lightDist / lightRadius);
-        attenuation *= attenuation;
+        //attenuation *= attenuation;
         
-        lighting += (diffuseConntributio + half4(lightColor,0)) * attenuation;
-    }
-    return lighting;
+    lighting += ((diffuseConntributio) * attenuation);// * attenuation;
+    //}
+    return lighting;//// lighting; //half4(diffuseConntributio);
 }
 
 
@@ -53,10 +53,10 @@ fragment half4 deffered_point_light_fragment(
                                              PointLightInOut IN [[stage_in]],
                                              constant Uniforms &uniforms [[buffer(BufferIndexUniforms)]],
                                              device Light *lights  [[buffer(BufferIndexLights)]],
-                                             texture2d<half> albedoShadowTexture [[texture(RenderTargetAlbedoShadow)]],
-                                             texture2d<half> normalRoughtnessTexture [[texture(RenderTargetNormalRoughtness)]],
-                                             texture2d<half> emissionMettalicTexture [[texture(RenderTargetEmissionMetallic)]],
-                                             texture2d<float> gBufferDepthTexture [[texture(RenderTargetDepth)]])
+                                             texture2d<half> albedoShadowTexture [[texture(TextureIndexColor)]],
+                                             texture2d<half> normalRoughtnessTexture [[texture(TextureIndexAdditional)]],
+                                             texture2d<half> emissionMettalicTexture [[texture(TextureIndexEmission)]],
+                                             texture2d<float> gBufferDepthTexture [[texture(TextureIndexDepth)]])
 {
     uint2 position = uint2(IN.position.xy);
     half4 lighting = half4(0);//emission?
@@ -65,5 +65,9 @@ fragment half4 deffered_point_light_fragment(
     half4 albedoShadow = albedoShadowTexture.read(position.xy);
     half4 emissionMetallic = emissionMettalicTexture.read(position.xy);
     
-    return deffered_point_light_common(IN, lights, uniforms, lighting, depth, normalRoughtness, emissionMetallic, albedoShadow);
+    
+    Light l = lights[IN.instanceID];
+    half3 color = (half3)l.color;
+    
+    return  deffered_point_light_common(IN, lights, uniforms, lighting, depth, normalRoughtness, emissionMetallic, albedoShadow);
 }

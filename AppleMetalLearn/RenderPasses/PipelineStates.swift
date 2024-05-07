@@ -83,6 +83,9 @@ enum PipelineStates{
         pipelineDdescriptor.depthAttachmentPixelFormat = .depth32Float_stencil8
         pipelineDdescriptor.stencilAttachmentPixelFormat = .depth32Float_stencil8
         pipelineDdescriptor.colorAttachments[0].pixelFormat = .bgra8Unorm_srgb
+        pipelineDdescriptor.colorAttachments[0].isBlendingEnabled = true
+        pipelineDdescriptor.colorAttachments[0].destinationRGBBlendFactor = .one
+        pipelineDdescriptor.colorAttachments[0].destinationAlphaBlendFactor = .one
         return createPipelineState(descriptor: pipelineDdescriptor)
     }
     

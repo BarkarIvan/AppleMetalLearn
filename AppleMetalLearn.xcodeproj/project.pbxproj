@@ -41,6 +41,7 @@
 		629D84102BC1313F00677998 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 629D840F2BC1313F00677998 /* Preview Assets.xcassets */; };
 		629D84122BC1313F00677998 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 629D84112BC1313F00677998 /* Persistence.swift */; };
 		629D84152BC1313F00677998 /* AppleMetalLearn.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 629D84132BC1313F00677998 /* AppleMetalLearn.xcdatamodeld */; };
+		62A58F3D2BEADB5700D27C79 /* Albedo.png in Resources */ = {isa = PBXBuildFile; fileRef = 62A58F3C2BEADB5700D27C79 /* Albedo.png */; };
 		62BE7FB22BE031CE0059847E /* DirectionalLight.metal in Sources */ = {isa = PBXBuildFile; fileRef = 62BE7FB12BE031CE0059847E /* DirectionalLight.metal */; };
 		62C631272BC9D8AA00F90378 /* Camera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62C631262BC9D8AA00F90378 /* Camera.swift */; };
 		62C6312A2BC9DE2300F90378 /* Movement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62C631292BC9DE2300F90378 /* Movement.swift */; };
@@ -99,6 +100,7 @@
 		629D840F2BC1313F00677998 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		629D84112BC1313F00677998 /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		629D84142BC1313F00677998 /* AppleMetalLearn.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AppleMetalLearn.xcdatamodel; sourceTree = "<group>"; };
+		62A58F3C2BEADB5700D27C79 /* Albedo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Albedo.png; sourceTree = "<group>"; };
 		62BE7FB12BE031CE0059847E /* DirectionalLight.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = DirectionalLight.metal; sourceTree = "<group>"; };
 		62C631262BC9D8AA00F90378 /* Camera.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Camera.swift; sourceTree = "<group>"; };
 		62C631292BC9DE2300F90378 /* Movement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Movement.swift; sourceTree = "<group>"; };
@@ -158,6 +160,7 @@
 				6278D09F2BD566E600A29602 /* Emission.tga */,
 				628DC6952BDE654C00189491 /* brick-normal.png */,
 				6278D09B2BD54F9C00A29602 /* Albedo.tga */,
+				62A58F3C2BEADB5700D27C79 /* Albedo.png */,
 				6278D0992BD511D300A29602 /* testBaseColor.tga */,
 			);
 			path = Textures;
@@ -373,6 +376,7 @@
 				628DC69C2BDE879A00189491 /* normal.png in Resources */,
 				628DC69E2BDEC99900189491 /* NRM.png in Resources */,
 				628DC6962BDE654C00189491 /* brick-normal.png in Resources */,
+				62A58F3D2BEADB5700D27C79 /* Albedo.png in Resources */,
 				62D5B7FB2BD7852B00F5C0E3 /* sphere.obj in Resources */,
 				6278D09D2BD54F9C00A29602 /* Albedo.tga in Resources */,
 				629D840D2BC1313F00677998 /* Assets.xcassets in Resources */,

@@ -40,7 +40,7 @@ extension Transformable{
     }
     
     var scale: simd_float3{
-        get{ transform.scale}
+        get{transform.scale}
         set{transform.scale = newValue}
     }
     

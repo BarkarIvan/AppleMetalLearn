@@ -53,20 +53,16 @@ class Model: Transformable{
             
            mdlMesh.vertexDescriptor = mdlVertexDescriptor
 
-            mtkMeshes.append(try! MTKMesh(mesh: mdlMesh, device: Renderer.device))
+           mtkMeshes.append(try! MTKMesh(mesh: mdlMesh, device: Renderer.device))
         }
         
         meshes = zip(mdlMeshes, mtkMeshes).map { Mesh(mdlMesh: $0.0, mtkMesh: $0.1)
         }
-        
         self.materials = materials
         self.name = name
     }
     
-    
-    
-    
-    //нужен ли материал
+
     func render ( encoder: MTLRenderCommandEncoder, uniforms vertex: Uniforms, params fragment: Params, needMaterial: Bool = true){
         
         var uniforms = vertex
@@ -76,9 +72,9 @@ class Model: Transformable{
         uniforms.modelMatrix = transform.modelMatrix
         uniforms.normalMatrix = transform.modelMatrix.upperLeft
         
-        encoder.pushDebugGroup("Set veertex and fragment bytes")
+        encoder.pushDebugGroup("Set vertex and fragment bytes")
+        //exclude
         encoder.setVertexBytes(&uniforms, length: MemoryLayout<Uniforms>.stride, index: BufferIndex.uniforms.rawValue)
-        encoder.setFragmentBytes(&params, length: MemoryLayout<Params>.stride , index: BufferIndex.params.rawValue)
         encoder.setFragmentBytes(&uniforms, length: MemoryLayout<Uniforms>.stride, index: BufferIndex.uniforms.rawValue)
         encoder.popDebugGroup()
         

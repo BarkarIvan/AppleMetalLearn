@@ -18,12 +18,7 @@ protocol RenderPass{
 }
 
 extension RenderPass{
-    static func buildDepthStencilState() -> MTLDepthStencilState?{
-        let deescriptor = MTLDepthStencilDescriptor()
-        deescriptor.depthCompareFunction = .less
-        deescriptor.isDepthWriteEnabled = true
-        return Renderer.device.makeDepthStencilState(descriptor: deescriptor)
-    }
+   
     
     static func makeTexture(size:CGSize, pixelFormat: MTLPixelFormat, name: String, storageMode: MTLStorageMode = .private, usage: MTLTextureUsage = [.shaderRead, .renderTarget]) -> MTLTexture?
     {

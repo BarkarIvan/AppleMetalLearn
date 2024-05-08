@@ -75,7 +75,7 @@ vertex InOutLightMask vertex_light_mask (const device float4 * postions     [[bu
     
     Light light = lights[instanceID];
     float4 positioVS = float4(postions[vertexID].xyz * light.radius + light.position.xyz, 1.0);
-    OUT.postition = uniforms.projectionMatrix * positioVS;
+    OUT.postition = uniforms.projectionMatrix * uniforms.viewMatrix * positioVS;
     
     return OUT;
 }
@@ -92,7 +92,7 @@ vertex PointLightInOut deferred_point_light_vertex(const device float4 *vertices
     Light light = lights[ instance_ID];
     OUT.instanceID = instance_ID;
     OUT.positionVS = vertices[vertex_ID].xyz * light.radius + light.position.xyz;
-    OUT.position = uniforms.projectionMatrix * float4(OUT.positionVS.xyz, 1.0);
+    OUT.position = uniforms.projectionMatrix * uniforms.viewMatrix * float4(OUT.positionVS.xyz, 1.0);
    
     return OUT;
 }

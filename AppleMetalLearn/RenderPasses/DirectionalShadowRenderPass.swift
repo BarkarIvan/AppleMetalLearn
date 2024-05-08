@@ -1,20 +1,12 @@
-//
-//  ShadowRenderPass.swift
-//  AppleMetalLearn
-//
-//  Created by barkar on 23.04.2024.
-//
 
 import MetalKit
 
 struct DirectionalShadowRenderPass: RenderPass
 {
-    
-
     let name: String = "Shadow Render Pass"
     
     var descriptor: MTLRenderPassDescriptor? = MTLRenderPassDescriptor()
-    var depthStencilState: MTLDepthStencilState? = Self.buildDepthStencilState()
+    var depthStencilState: MTLDepthStencilState? = DepthStensilPipelineStates.buildCommonDepthStencilState()
     var pipelineState: MTLRenderPipelineState
     var destinationTexture: MTLTexture?
     var debugTexture: MTLTexture?
@@ -38,20 +30,19 @@ struct DirectionalShadowRenderPass: RenderPass
         descriptor.depthAttachment.loadAction = .clear
         descriptor.depthAttachment.storeAction = .store
         
-        guard let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: descriptor) else{ return}
+        guard let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: descriptor)
+        else{return}
         
         renderEncoder.label = "Shadow pass command buffer"
         renderEncoder.setDepthStencilState(depthStencilState)
         renderEncoder.setRenderPipelineState(pipelineState)
-        renderEncoder.setDepthBias(0.05, slopeScale: 7, clamp: 0.2)
+        renderEncoder.setDepthBias(0.05, slopeScale: 7, clamp: 0.1)
         
         for model in scene.models
         {
             renderEncoder.pushDebugGroup(model.name)
-            //TODO: материал не нужен
-            model.render(encoder: renderEncoder, uniforms: uniforms, params: params)
+            model.render(encoder: renderEncoder, uniforms: uniforms, params: params, needMaterial: false)
             renderEncoder.popDebugGroup()
-            
         }
         renderEncoder.endEncoding()
     }

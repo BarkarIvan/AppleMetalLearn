@@ -20,9 +20,7 @@ extension Camera
 {
     static func createShadowCamera ( using camera: FPCamera, lightPositionn: simd_float3) -> OrthographicCamera
     {
-       // guard let camera = camera as? ArcBallCamera else {
-         //   return OrthographicCamera()}//??
-        
+       
         let nearPoints = calculatePlane(camera: camera, distance: camera.near)
         let farPoints = calculatePlane(camera: camera, distance: camera.far)
         

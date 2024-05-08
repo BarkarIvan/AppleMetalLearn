@@ -45,15 +45,9 @@ class Renderer: NSObject{
         shadowRenderPass = DirectionalShadowRenderPass()
         gBufferRenderPass = GBufferRenderPass(view: metalView)
         lightingRenderPass = LightingRenderPass(view: metalView)
-       // lightMaskReenderPass = LightMaskRenderPass(view: metalView)
 
         
-        super.init()
-        //set view colors
-        metalView.clearColor = MTLClearColor(red: 0.5, green: 0.5, blue: 0.0, alpha: 1)
-        metalView.depthStencilPixelFormat = .depth32Float_stencil8
-        metalView.colorPixelFormat = .bgra8Unorm_srgb
-        
+        super.init()        
         mtkView(metalView, drawableSizeWillChange: metalView.drawableSize)
         
         params.scaleFactor = Float(UIScreen.main.scale)
@@ -77,15 +71,13 @@ extension Renderer {
         params.cameraPosition = scene.camera.position
         
 
-        //lightung
+        //lighting
         let directionalLight = scene.lighting.getMainLighht()
         shadowCamera = OrthographicCamera.createShadowCamera(using: scene.camera, lightPositionn: directionalLight.position)
         let shadowViewMatrix: float4x4 = float4x4(eye: shadowCamera.position, center: shadowCamera.center, up: [0,1,0])
         uniforms.shadowProjectionMatrix = shadowCamera.projectionMatrix
         uniforms.shadowViewMatrix = shadowViewMatrix
         uniforms.mainLighWorldPos = directionalLight.position
-
-        //let directional = scene.lighting.lights[0]
         
     }
     
@@ -103,7 +95,7 @@ extension Renderer {
         gBufferRenderPass.draw(in: view, commandBuffer: commandBuffer, scene: scene, uniforms: uniforms, params: params)
         
         //directional light pass
-        lightingRenderPass.albedoShadowTexture = gBufferRenderPass.albedoTexture
+        lightingRenderPass.albedoShadowTexture = gBufferRenderPass.albedoShadowTexture
         lightingRenderPass.normalRoughtnessMetallicTexture = gBufferRenderPass.normalRoughtnessTexture
         lightingRenderPass.emissionTeexture = gBufferRenderPass.emissionTexture
         lightingRenderPass.depthTexture = gBufferRenderPass.GBufferDepthTexture

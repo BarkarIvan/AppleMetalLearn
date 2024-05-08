@@ -16,7 +16,7 @@ struct Mesh{
 extension Mesh {
     init(mdlMesh: MDLMesh, mtkMesh: MTKMesh) {
      
-        var vertexBuffers: [MTLBuffer] = []
+      var vertexBuffers: [MTLBuffer] = []
       for mtkMeshBuffer in mtkMesh.vertexBuffers {
         vertexBuffers.append(mtkMeshBuffer.buffer)
       }

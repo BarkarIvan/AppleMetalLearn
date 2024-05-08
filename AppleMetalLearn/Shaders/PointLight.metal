@@ -27,8 +27,8 @@ half4 deffered_point_light_common(PointLightInOut IN,
     float lightDist = length(lightPos - positionVS);
     float lightRadius = lights[IN.instanceID].radius;
     
-    //if(lightDist < lightRadius)
-    //{
+    if(lightDist < lightRadius)
+    {
         float4 lightPosVS = float4(lightPos, 1.0);
         float3 fragmentPosVSToLightPosVS = lightPosVS.xyz - positionVS;
         float3 lightDir = normalize(fragmentPosVSToLightPosVS);
@@ -44,7 +44,7 @@ half4 deffered_point_light_common(PointLightInOut IN,
         //attenuation *= attenuation;
         
     lighting += ((diffuseConntributio) * attenuation);// * attenuation;
-    //}
+    }
     return lighting;//// lighting; //half4(diffuseConntributio);
 }
 

@@ -9,7 +9,7 @@ import MetalKit
 
 class SceneLighting{
     
-    static let shared  = SceneLighting()//синглтон?
+    static let shared  = SceneLighting()
     
     var allLightsArray: [Light] = []
     var directionalLightsArray: [Light] = []
@@ -83,7 +83,6 @@ class SceneLighting{
         }
     }
 
-    
     
     private func createBuffer(lightsArray: [Light]) -> MTLBuffer{
         

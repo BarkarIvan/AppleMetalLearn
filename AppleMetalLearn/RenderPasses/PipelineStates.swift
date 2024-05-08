@@ -34,14 +34,14 @@ enum PipelineStates{
         //RENDER TARGET PIXEL FORMAT
         pipelineDescriptor.colorAttachments[0].pixelFormat = .invalid
         
-        pipelineDescriptor.colorAttachments[RenderTargetIndex.albedoShadow.rawValue].pixelFormat = PixelFormats.albedo
-        pipelineDescriptor.colorAttachments[RenderTargetIndex.normalRoughtness.rawValue].pixelFormat = PixelFormats.normal
-        pipelineDescriptor.colorAttachments[RenderTargetIndex.emissionMetallic.rawValue].pixelFormat = PixelFormats.roughMetallic
-        pipelineDescriptor.colorAttachments[RenderTargetIndex.depth.rawValue].pixelFormat = .r32Float
+        pipelineDescriptor.colorAttachments[RenderTargetIndex.albedoShadow.rawValue].pixelFormat = PixelFormats.gBufferAlbedoShadow
+        pipelineDescriptor.colorAttachments[RenderTargetIndex.normalRoughtness.rawValue].pixelFormat = PixelFormats.gbufferNormalRoughtess
+        pipelineDescriptor.colorAttachments[RenderTargetIndex.emissionMetallic.rawValue].pixelFormat = PixelFormats.gBufferEmissionMetallic
+        pipelineDescriptor.colorAttachments[RenderTargetIndex.depth.rawValue].pixelFormat = PixelFormats.gBufferDepth
 
         //ATTACHMENT PIXEL FORMATS
-        pipelineDescriptor.depthAttachmentPixelFormat = .depth32Float_stencil8
-        pipelineDescriptor.stencilAttachmentPixelFormat = .depth32Float_stencil8
+        pipelineDescriptor.depthAttachmentPixelFormat = PixelFormats.depthStencil
+        pipelineDescriptor.stencilAttachmentPixelFormat = PixelFormats.depthStencil
         
         //VERTEX DESCRIPTOR
         pipelineDescriptor.vertexDescriptor = VertexDescriptors().basic
@@ -56,8 +56,8 @@ enum PipelineStates{
         pipelineDescriptor.vertexFunction = vertexFunction
         pipelineDescriptor.fragmentFunction = fragmentFunction
         pipelineDescriptor.colorAttachments[0].pixelFormat =  colorPixelFormat
-        pipelineDescriptor.depthAttachmentPixelFormat = .depth32Float_stencil8
-        pipelineDescriptor.stencilAttachmentPixelFormat = .depth32Float_stencil8
+        pipelineDescriptor.depthAttachmentPixelFormat = PixelFormats.depthStencil
+        pipelineDescriptor.stencilAttachmentPixelFormat = PixelFormats.depthStencil
         return createPipelineState(descriptor: pipelineDescriptor)
     }
     
@@ -66,9 +66,9 @@ enum PipelineStates{
         let vertexFunction = Renderer.library?.makeFunction(name: vertexFunctionName)
         let pipelineDscriptor = MTLRenderPipelineDescriptor()
         pipelineDscriptor.vertexFunction = vertexFunction
-        pipelineDscriptor.depthAttachmentPixelFormat = .depth32Float_stencil8
-        pipelineDscriptor.stencilAttachmentPixelFormat = .depth32Float_stencil8
-        pipelineDscriptor.colorAttachments[0].pixelFormat = .bgra8Unorm_srgb
+        pipelineDscriptor.depthAttachmentPixelFormat = PixelFormats.depthStencil
+        pipelineDscriptor.stencilAttachmentPixelFormat = PixelFormats.depthStencil
+        pipelineDscriptor.colorAttachments[0].pixelFormat = colorPixelFormat
         
         return createPipelineState(descriptor: pipelineDscriptor)
     }
@@ -80,9 +80,9 @@ enum PipelineStates{
         let pipelineDdescriptor = MTLRenderPipelineDescriptor()
         pipelineDdescriptor.vertexFunction = vertexFunnction;
         pipelineDdescriptor.fragmentFunction = fragmetFunction;
-        pipelineDdescriptor.depthAttachmentPixelFormat = .depth32Float_stencil8
-        pipelineDdescriptor.stencilAttachmentPixelFormat = .depth32Float_stencil8
-        pipelineDdescriptor.colorAttachments[0].pixelFormat = .bgra8Unorm_srgb
+        pipelineDdescriptor.depthAttachmentPixelFormat = PixelFormats.depthStencil
+        pipelineDdescriptor.stencilAttachmentPixelFormat = PixelFormats.depthStencil
+        pipelineDdescriptor.colorAttachments[0].pixelFormat = colorPixelFormat
         pipelineDdescriptor.colorAttachments[0].isBlendingEnabled = true
         pipelineDdescriptor.colorAttachments[0].destinationRGBBlendFactor = .one
         pipelineDdescriptor.colorAttachments[0].destinationAlphaBlendFactor = .one
@@ -95,7 +95,7 @@ enum PipelineStates{
         
         pipelineDescriptor.vertexFunction = vertexFunction
         pipelineDescriptor.colorAttachments[0].pixelFormat = .invalid
-        pipelineDescriptor.depthAttachmentPixelFormat = .depth32Float
+        pipelineDescriptor.depthAttachmentPixelFormat = .depth32Float // PixelFormats.gBufferDepth
         pipelineDescriptor.vertexDescriptor = VertexDescriptors().depthOnly
         return createPipelineState(descriptor: pipelineDescriptor)
     }

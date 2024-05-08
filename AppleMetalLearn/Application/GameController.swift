@@ -16,10 +16,17 @@ class GameController: NSObject{
     
     init(metalView: MTKView)
     {
+        //set pixel formats
+        metalView.clearColor = MTLClearColor(red: 0.5, green: 0.5, blue: 0.0, alpha: 1)
+        metalView.depthStencilPixelFormat = .depth32Float_stencil8
+        metalView.colorPixelFormat = .bgra8Unorm_srgb
+        
         renderer = Renderer(metalView: metalView)
         scene = GameScene()
+       
         super.init()
         metalView.delegate = self
+      
         fps = Double(metalView.preferredFramesPerSecond)
         mtkView(metalView, drawableSizeWillChange: metalView.drawableSize)
     }

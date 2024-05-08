@@ -23,8 +23,6 @@ extension Submesh{
         indexType = mtkSubmesh.indexType
         indexBuffer = mtkSubmesh.indexBuffer.buffer
         indexBufferOffset = mtkSubmesh.indexBuffer.offset
-       
-    
     }
 }
 

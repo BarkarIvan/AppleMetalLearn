@@ -18,8 +18,6 @@ protocol RenderPass{
 }
 
 extension RenderPass{
-   
-    
     static func makeTexture(size:CGSize, pixelFormat: MTLPixelFormat, name: String, storageMode: MTLStorageMode = .private, usage: MTLTextureUsage = [.shaderRead, .renderTarget]) -> MTLTexture?
     {
         let width = Int(size.width)

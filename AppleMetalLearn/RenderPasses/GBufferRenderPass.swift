@@ -84,9 +84,6 @@ struct GBufferRenderPass: RenderPass{
             renderEncoder.popDebugGroup()
         }
         renderEncoder.popDebugGroup()
-        
         renderEncoder.endEncoding()
     }
-    
-    
 }

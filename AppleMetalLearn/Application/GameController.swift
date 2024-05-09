@@ -21,7 +21,7 @@ class GameController: NSObject{
         metalView.depthStencilPixelFormat = .depth32Float_stencil8
         metalView.colorPixelFormat = .bgra8Unorm_srgb
         
-        renderer = Renderer(metalView: metalView)
+        renderer = Renderer(metalView: metalView, didFrameStart: {})
         scene = GameScene()
        
         super.init()
@@ -34,6 +34,7 @@ class GameController: NSObject{
     
     extension GameController: MTKViewDelegate{
         func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize){
+            
             scene.update(size: size)
             renderer.mtkView(view, drawableSizeWillChange: size)
         }

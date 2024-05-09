@@ -15,7 +15,8 @@ let alignedUniformsSize = (MemoryLayout<Uniforms>.size + 0x3F) & -0x40
 let maxBuffersInFlight = 3
 
 
-class Renderer: NSObject{
+class Renderer: NSObject
+{
     static var device: MTLDevice!
     static var commandQueue: MTLCommandQueue!
     static var library: MTLLibrary!
@@ -26,11 +27,13 @@ class Renderer: NSObject{
     var shadowRenderPass: DirectionalShadowRenderPass
     var gBufferRenderPass: GBufferRenderPass
     var lightingRenderPass: LightingRenderPass
-   // var lightMaskReenderPass: LightMaskRenderPass
+
+    private let inFlightSemaphore: DispatchSemaphore
+    private let didFrameStart: () -> Void
     
     var shadowCamera = OrthographicCamera()
     
-    init (metalView: MTKView){
+    init (metalView: MTKView, didFrameStart: @escaping() -> Void){
         guard
             let device = MTLCreateSystemDefaultDevice(),
             let commandQueue = device.makeCommandQueue() else {
@@ -45,14 +48,49 @@ class Renderer: NSObject{
         shadowRenderPass = DirectionalShadowRenderPass()
         gBufferRenderPass = GBufferRenderPass(view: metalView)
         lightingRenderPass = LightingRenderPass(view: metalView)
-
         
-        super.init()        
+        
+        //max frames in flight
+        inFlightSemaphore = DispatchSemaphore(value: 3)
+        self.didFrameStart = didFrameStart
+        super.init()
         mtkView(metalView, drawableSizeWillChange: metalView.drawableSize)
         
         params.scaleFactor = Float(UIScreen.main.scale)
     }
+    
+    func frameInitialCommangBuffer () -> MTLCommandBuffer
+    {
+        inFlightSemaphore.wait()
+        guard let commandBuffer = Self.commandQueue.makeCommandBuffer()
+                else
+        {fatalError("Failde to create new cmd")}
+        
+        didFrameStart()
+        return commandBuffer
+    }
+    
+    func toDrawableCommandBuffer() -> MTLCommandBuffer
+    {
+        guard let commandBuffer = Self.commandQueue.makeCommandBuffer()
+        else{
+            fatalError("Failde to create  command buffer for drawable")
+        }
+        commandBuffer.addCompletedHandler{[weak self] _ in self?.inFlightSemaphore.signal()
+        }
+        return commandBuffer
+    }
+    
+    
+    func frameEnd (_ commandBuffer: MTLCommandBuffer, view: MTKView){
+        if let drawable = view.currentDrawable {
+            commandBuffer.present(drawable)
+        }
+        commandBuffer.commit()
+    }
 }
+
+
 
 extension Renderer {
     func mtkView(
@@ -82,46 +120,47 @@ extension Renderer {
     }
     
     func draw(scene: GameScene, in view: MTKView){
-        guard
-            let commandBuffer = Self.commandQueue.makeCommandBuffer(),
-            let descriptor = view.currentRenderPassDescriptor   else {return}
+        //guard
+            var commandBuffer = frameInitialCommangBuffer()
+           
+        
+        commandBuffer.label = "Shadow and GBUffer Commands"
         
         updateUniforms(scene: scene)
         //shadowpass
         shadowRenderPass.draw(in: view, commandBuffer: commandBuffer, scene: scene, uniforms: uniforms, params: params)
-        
+      
         //gbuffer pass
         gBufferRenderPass.shadowMap = shadowRenderPass.destinationTexture
         gBufferRenderPass.draw(in: view, commandBuffer: commandBuffer, scene: scene, uniforms: uniforms, params: params)
+        //run non non-drawable commads
+        commandBuffer.commit()
         
+        commandBuffer = toDrawableCommandBuffer()
+        commandBuffer.label = "Lighting CommandBuffer"
         //directional light pass
         lightingRenderPass.albedoShadowTexture = gBufferRenderPass.albedoShadowTexture
         lightingRenderPass.normalRoughtnessMetallicTexture = gBufferRenderPass.normalRoughtnessTexture
         lightingRenderPass.emissionTeexture = gBufferRenderPass.emissionTexture
         lightingRenderPass.depthTexture = gBufferRenderPass.GBufferDepthTexture
         
-       // lightingRenderPass.descriptor = descriptor
         //ВЫНЕСТИ
-        lightingRenderPass.descriptor?.depthAttachment.texture = view.depthStencilTexture
-        lightingRenderPass.descriptor?.stencilAttachment.texture = view.depthStencilTexture
-        lightingRenderPass.descriptor?.colorAttachments[0].texture = view.currentDrawable?.texture
-        lightingRenderPass.descriptor?.colorAttachments[0].loadAction = .clear
-        
-        
-        lightingRenderPass.draw(in: view, commandBuffer: commandBuffer, scene: scene, uniforms: uniforms, params: params)
-        //lightmask
-        //lightingRenderPass.descriptor?.colorAttachments[0].loadAction = .load
-        
-        //lightMaskReenderPass.descriptor = lightingRenderPass.descriptor
-       // lightMaskReenderPass.draw(in: view, commandBuffer: commandBuffer, scene: scene, uniforms: uniforms, params: params)
-        
-        //forward transparent
-        
-        //opacity
-        guard let drawable = view.currentDrawable else {return}
-        commandBuffer.present(drawable)
-        commandBuffer.commit()
+        //if drawable is available
+        if let drawableTexture = view.currentDrawable?.texture{
+            lightingRenderPass.descriptor?.depthAttachment.texture = view.depthStencilTexture
+            lightingRenderPass.descriptor?.stencilAttachment.texture = view.depthStencilTexture
+            lightingRenderPass.descriptor?.colorAttachments[0].texture = drawableTexture
+            lightingRenderPass.descriptor?.colorAttachments[0].loadAction = .clear
+            
+            
+            lightingRenderPass.draw(in: view, commandBuffer: commandBuffer, scene: scene, uniforms: uniforms, params: params)
+        }
+        //present and commit cmd
+        frameEnd(commandBuffer, view: view)
+
         
     }
+    
+   
     
 }

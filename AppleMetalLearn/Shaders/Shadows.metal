@@ -18,7 +18,7 @@ struct VertexIn
 
 
 vertex float4 vertex_depth (const VertexIn in [[stage_in]],
-                            constant Uniforms &uniforms [[buffer(BufferIndexUniforms)]])
+                            constant FrameData &uniforms [[buffer(BufferIndexFrameData)]])
 {
     matrix_float4x4 modelViewProjectionMatrix = uniforms.shadowProjectionMatrix  * uniforms.shadowViewMatrix *  uniforms.modelMatrix;
     float4 position = float4( in.position.xyz,1.0);

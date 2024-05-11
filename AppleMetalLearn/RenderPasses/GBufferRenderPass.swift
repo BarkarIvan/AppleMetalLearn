@@ -39,7 +39,7 @@ struct GBufferRenderPass: RenderPass{
       
     }
     
-    func draw(in view: MTKView, commandBuffer: MTLCommandBuffer, scene: GameScene, uniforms: Uniforms, params: Params) {
+    func draw(in view: MTKView, commandBuffer: MTLCommandBuffer, scene: GameScene, frameData: FrameData, params: Params) {
         //TODO CYCLE
         descriptor?.colorAttachments[RenderTargetIndex.albedoShadow.rawValue].texture = albedoShadowTexture
         descriptor?.colorAttachments[RenderTargetIndex.normalRoughtness.rawValue].texture = normalRoughtnessTexture
@@ -80,7 +80,7 @@ struct GBufferRenderPass: RenderPass{
         
         for model in scene.models{
             renderEncoder.pushDebugGroup(model.name)
-            model.render(encoder: renderEncoder, uniforms: uniforms, params: params)
+            model.render(encoder: renderEncoder, frameData: frameData, params: params)
             renderEncoder.popDebugGroup()
         }
         renderEncoder.popDebugGroup()

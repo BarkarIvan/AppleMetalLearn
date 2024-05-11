@@ -63,19 +63,19 @@ class Model: Transformable{
     }
     
 
-    func render ( encoder: MTLRenderCommandEncoder, uniforms vertex: Uniforms, params fragment: Params, needMaterial: Bool = true){
+    func render ( encoder: MTLRenderCommandEncoder, frameData vertex: FrameData, params fragment: Params, needMaterial: Bool = true){
         
-        var uniforms = vertex
+        var frameData = vertex
         var params = fragment
         params.tiling = tiling
         
-        uniforms.modelMatrix = transform.modelMatrix
-        uniforms.normalMatrix = transform.modelMatrix.upperLeft
+        frameData.modelMatrix = transform.modelMatrix
+        frameData.normalMatrix = transform.modelMatrix.upperLeft
         
         encoder.pushDebugGroup("Set vertex and fragment bytes")
         //exclude
-        encoder.setVertexBytes(&uniforms, length: MemoryLayout<Uniforms>.stride, index: BufferIndex.uniforms.rawValue)
-        encoder.setFragmentBytes(&uniforms, length: MemoryLayout<Uniforms>.stride, index: BufferIndex.uniforms.rawValue)
+        encoder.setVertexBytes(&frameData, length: MemoryLayout<FrameData>.stride, index: BufferIndex.frameData.rawValue)
+        encoder.setFragmentBytes(&frameData, length: MemoryLayout<FrameData>.stride, index: BufferIndex.frameData.rawValue)
         encoder.popDebugGroup()
         
         for mesh in meshes {

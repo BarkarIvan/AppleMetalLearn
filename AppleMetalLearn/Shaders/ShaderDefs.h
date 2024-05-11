@@ -16,7 +16,6 @@ typedef struct{
     float2 texCoord     [[attribute(VertexAttributeTexcoord)]];
     half3 normalOS      [[attribute(VertexAttributeNormal)]];
     half4 tangentOS     [[attribute(VertexAttributeTangent)]];
-    //half4 bitangentOS   [[attribute(VertexAttributeBitangent)]];
 } Attributes;
 
 
@@ -24,12 +23,12 @@ typedef struct{
     float4 positionCS [[position]];
     float3 positionWS;
     float3 positionVS;
+    float3 shadowCoord;
     float2 texCoord ;
     half3 normalWS;
     half3 tangentWS;
     half3 bitangentWS;
     half4 color;
-    float3 shadowCoord; 
 } Varyings;
 
 
@@ -38,9 +37,11 @@ typedef struct{
     float3 positionVS;
 } VaryingsSimpeQuad;
 
+
 typedef struct{
     float4 postition [[position]];
 } InOutLightMask;
+
 
 typedef struct{
     float4 position [[position]];

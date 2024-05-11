@@ -21,12 +21,13 @@ typedef NSInteger EnumBackingType;
 
 #include <simd/simd.h>
 
+
 //индексы буферов и аттрибутов
 typedef NS_ENUM(EnumBackingType, BufferIndex)
 {
     BufferIndexMeshPositions = 0, //pos
     BufferIndexMeshGenerics  = 1, //uv
-    BufferIndexUniforms      = 2, 
+    BufferIndexFrameData      = 2, 
     BufferIndexParams        = 3,
     BufferIndexMaterial      = 4,
     BufferIndexLights        = 5
@@ -38,8 +39,6 @@ typedef NS_ENUM(EnumBackingType, VertexAttribute)
     VertexAttributeTexcoord  = 1,
     VertexAttributeNormal    = 2,
     VertexAttributeTangent   = 3,
-   // VertexAttributeBitangent = 4,
-    //VertexAttributeColor     = 4,
 };
 
 typedef NS_ENUM(EnumBackingType, TextureIndex)
@@ -61,12 +60,11 @@ typedef NS_ENUM(EnumBackingType, RenderTargetIndex){
 
 //TODO: pack to float4
 typedef struct{
+    vector_float3 cameraPosition;
+    float scaleFactor;
     uint width;
     uint height;
     uint tiling;
-    uint lightCount;
-    vector_float3 cameraPosition;
-    float scaleFactor;
 } Params;
 
 typedef struct{
@@ -78,13 +76,13 @@ typedef struct{
     matrix_float4x4 shadowProjectionMatrix;
     matrix_float4x4 shadowViewMatrix;
     vector_float3 mainLighWorldPos;
-} Uniforms;
+} FrameData;
 
 typedef struct {
     vector_float3 baseColor;
+    vector_float3 emissionColor;
     float roughness;
     float metallic;
-    vector_float3 emissionColor;
 }MaterialProperties;
 
 typedef enum {
@@ -96,16 +94,20 @@ typedef enum {
 }LightType;
 
 typedef struct {
-    LightType type;
     vector_float3 position;
     vector_float3 color;
-    float radius;
     vector_float3 attenuation;
-    float coneangle;
     vector_float3 coneDirection;
+    float radius;
+    float coneangle;
     float coneAttenuation;
 }Light;
 
-
+typedef struct{
+    vector_float3 position;
+    vector_float3 color;
+    vector_float3 attenuation;
+    float radius;
+}PointLight;
 
 #endif //

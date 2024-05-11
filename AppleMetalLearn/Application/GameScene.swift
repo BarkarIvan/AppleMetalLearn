@@ -50,26 +50,27 @@ struct GameScene{
         platonic.rotation = [45, 45, 45]
         models = [testModel, platonic]
         
-        for _ in 1...35
+        for _ in 1...10
         {
-            let d: Float = Float(1)
+            let d: Float = Float(2)
             let position = simd_float3(
                 .random(in: -d...d),
                 .random(in: -d...d),
                 .random(in: -d...d)
             )
             let color = simd_float3(
-                .random(in: 0.1...1.0),
-                .random(in: 0.1...1.0),
-                .random(in: 0.1...1.0)
+                .random(in: 0.0...1.0),
+                .random(in: 0.0...1.0),
+                .random(in: 0.0...1.0)
             )
-            let attenuation = simd_float3(
-                .random(in: 0.5...1.0),
-                .random(in: 0.5...1.0),
-                .random(in: 0.5...1.0)
-            )
+            print(color)
             
-            lighting.addPointLight(position: testModel.position + position, color: color, radius: 0.5, attenuation: attenuation)
+            //let intensity = Float(.random(in: 0.5...1.0))
+            
+            let attenuation = simd_float3(0.5, 1, 8) //1 4 10
+            
+            
+            lighting.addPointLight(position: testModel.position + position, color: color, attenuation: attenuation)
         }
         
         do {
@@ -103,6 +104,7 @@ struct GameScene{
         updateInput()
         camera.update(deltaTime: deltaTime)
         models[0].transform.rotation.y += 1 * deltaTime;
+        models[0].transform.rotation.x += 0.5 * deltaTime;
         models[1].transform.rotation.x += 1 * deltaTime;
     
     }

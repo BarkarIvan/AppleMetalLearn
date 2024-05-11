@@ -10,9 +10,9 @@ import MetalKit
 import simd
 
 // выравнивание в 64 байт
-let alignedUniformsSize = (MemoryLayout<Uniforms>.size + 0x3F) & -0x40
+let alignedUniformsSize = (MemoryLayout<FrameData>.size + 0x3F) & -0x40
 
-let maxBuffersInFlight = 3
+let maxFramesInFlight = 3
 
 
 class Renderer: NSObject
@@ -21,7 +21,7 @@ class Renderer: NSObject
     static var commandQueue: MTLCommandQueue!
     static var library: MTLLibrary!
     
-    var uniforms = Uniforms()
+    var frameData = FrameData()
     var params = Params()
     
     var shadowRenderPass: DirectionalShadowRenderPass
@@ -51,7 +51,7 @@ class Renderer: NSObject
         
         
         //max frames in flight
-        inFlightSemaphore = DispatchSemaphore(value: 3)
+        inFlightSemaphore = DispatchSemaphore(value: maxFramesInFlight)
         self.didFrameStart = didFrameStart
         super.init()
         mtkView(metalView, drawableSizeWillChange: metalView.drawableSize)
@@ -102,10 +102,12 @@ extension Renderer {
     
     
     func updateUniforms(scene: GameScene){
-        uniforms.viewMatrix = scene.camera.viewMatrix
-        uniforms.projectionMatrix = scene.camera.projectionMatrix
-        uniforms.projectionMatrixInverse = scene.camera.projectionMatrix.inverse
-        params.lightCount = UInt32(scene.lighting.allLightsArray.count)
+        
+        
+        frameData.viewMatrix = scene.camera.viewMatrix
+        frameData.projectionMatrix = scene.camera.projectionMatrix
+        frameData.projectionMatrixInverse = scene.camera.projectionMatrix.inverse
+        //params.lightCount = UInt32(scene.lighting.allLightsArray.count)
         params.cameraPosition = scene.camera.position
         
 
@@ -113,9 +115,9 @@ extension Renderer {
         let directionalLight = scene.lighting.getMainLighht()
         shadowCamera = OrthographicCamera.createShadowCamera(using: scene.camera, lightPositionn: directionalLight.position)
         let shadowViewMatrix: float4x4 = float4x4(eye: shadowCamera.position, center: shadowCamera.center, up: [0,1,0])
-        uniforms.shadowProjectionMatrix = shadowCamera.projectionMatrix
-        uniforms.shadowViewMatrix = shadowViewMatrix
-        uniforms.mainLighWorldPos = directionalLight.position
+        frameData.shadowProjectionMatrix = shadowCamera.projectionMatrix
+        frameData.shadowViewMatrix = shadowViewMatrix
+        frameData.mainLighWorldPos = directionalLight.position
         
     }
     
@@ -128,11 +130,11 @@ extension Renderer {
         
         updateUniforms(scene: scene)
         //shadowpass
-        shadowRenderPass.draw(in: view, commandBuffer: commandBuffer, scene: scene, uniforms: uniforms, params: params)
+        shadowRenderPass.draw(in: view, commandBuffer: commandBuffer, scene: scene, frameData: frameData, params: params)
       
         //gbuffer pass
         gBufferRenderPass.shadowMap = shadowRenderPass.destinationTexture
-        gBufferRenderPass.draw(in: view, commandBuffer: commandBuffer, scene: scene, uniforms: uniforms, params: params)
+        gBufferRenderPass.draw(in: view, commandBuffer: commandBuffer, scene: scene, frameData: frameData, params: params)
         //run non non-drawable commads
         commandBuffer.commit()
         
@@ -153,7 +155,7 @@ extension Renderer {
             lightingRenderPass.descriptor?.colorAttachments[0].loadAction = .clear
             
             
-            lightingRenderPass.draw(in: view, commandBuffer: commandBuffer, scene: scene, uniforms: uniforms, params: params)
+            lightingRenderPass.draw(in: view, commandBuffer: commandBuffer, scene: scene, frameData: frameData, params: params)
         }
         //present and commit cmd
         frameEnd(commandBuffer, view: view)

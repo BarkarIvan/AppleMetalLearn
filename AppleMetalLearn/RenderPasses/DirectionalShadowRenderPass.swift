@@ -22,7 +22,7 @@ struct DirectionalShadowRenderPass: RenderPass
     
     mutating func resize(view: MTKView, size: CGSize) {}
     
-    func draw(in view: MTKView, commandBuffer: any MTLCommandBuffer, scene: GameScene, uniforms: Uniforms, params: Params)
+    func draw(in view: MTKView, commandBuffer: any MTLCommandBuffer, scene: GameScene, frameData: FrameData, params: Params)
     {
         guard let descriptor = descriptor else {return}
        
@@ -41,7 +41,7 @@ struct DirectionalShadowRenderPass: RenderPass
         for model in scene.models
         {
             renderEncoder.pushDebugGroup(model.name)
-            model.render(encoder: renderEncoder, uniforms: uniforms, params: params, needMaterial: false)
+            model.render(encoder: renderEncoder, frameData: frameData, params: params, needMaterial: false)
             renderEncoder.popDebugGroup()
         }
         renderEncoder.endEncoding()

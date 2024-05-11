@@ -13,7 +13,7 @@ class SceneLighting{
     
     var allLightsArray: [Light] = []
     var directionalLightsArray: [Light] = []
-    var pointLightsArray: [Light] = []
+    var pointLightsArray: [PointLight] = []
     var lightBuffer: MTLBuffer?
     var directionalLightsBuffer: MTLBuffer?
     var pointsLightsBuffer: MTLBuffer?
@@ -38,7 +38,7 @@ class SceneLighting{
         light.color  = [1,1,1]
         light.position = [3,3,-2]
         light.attenuation = [1,0,0]
-        light.type = directionalLightType
+        //light.type = directionalLightType
         return light
     }
     
@@ -47,20 +47,41 @@ class SceneLighting{
         return allLightsArray[0]
     }
     
-    func addPointLight(position: simd_float3, color: simd_float3, radius: simd_float1 = 1, attenuation: simd_float3){
+    func addPointLight(position: simd_float3, color: simd_float3, attenuation: simd_float3){
         
-        var light = buildDefaultLight()
+        var light = PointLight()
         light.position = position
         light.color = color
         light.attenuation = attenuation
-        light.radius = radius
-        light.type = pointLightType
-        
-        allLightsArray.append(light)
+        light.radius = calculatePointLightRadius(color: color, attenuation: attenuation)
         pointLightsArray.append(light)
         updateBuffers()
     }
-    
+    private func calculatePointLightRadius(color: simd_float3, attenuation: simd_float3) -> Float
+    {
+        var root1: Float = 0
+        let minLuminance: Float = 0.01
+        let luminaceCoeffs = simd_float3(0.2126, 0.7152, 0.0722)
+        let luminance = simd_dot(color, luminaceCoeffs)
+        let a = attenuation.z //quadr
+        let b = attenuation.y //linear
+        let c = attenuation.x - ( luminance / minLuminance)
+       
+        //TODO: to quadratic solver
+        let discriminant = b * b - 4 * a * c
+        if discriminant > 0 {
+             root1 = (-b + sqrt(discriminant)) / (2 * a)
+            let root2 = (-b + sqrt(discriminant)) / (2 * a)
+            print ("d>0 \(root1) and \(root2)")
+        }else if discriminant == 0{
+             root1 = -b / (2*a)
+            print ("root \(root1)")
+        }else{
+            root1 = 0
+        }
+        return root1
+        //return sqrt(percievedBrightnness/threshold)
+    }
     
     private func updateBuffers() {
 
@@ -78,13 +99,21 @@ class SceneLighting{
 
         if !pointLightsArray.isEmpty {
             pointsLightsBuffer = createBuffer(lightsArray: pointLightsArray)
+            pointsLightsBuffer?.label = "Point lights buffer"
         } else {
             pointsLightsBuffer = nil
         }
     }
 
-    
+    //refactor to buffer view
     private func createBuffer(lightsArray: [Light]) -> MTLBuffer{
+        
+        var lights = lightsArray
+        return Renderer.device.makeBuffer(bytes: &lights, length: MemoryLayout<Light>.stride * lights.count, options: [])!
+        
+    }
+    
+    private func createBuffer(lightsArray: [PointLight]) -> MTLBuffer{
         
         var lights = lightsArray
         return Renderer.device.makeBuffer(bytes: &lights, length: MemoryLayout<Light>.stride * lights.count, options: [])!

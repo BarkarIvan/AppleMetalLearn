@@ -28,7 +28,7 @@ struct GBufferOut{
 
 fragment GBufferOut fragment_GBuffer(
                     Varyings IN [[stage_in]],
-                    constant Uniforms &uniforms [[buffer(BufferIndexUniforms)]],
+                    constant FrameData &uniforms [[buffer(BufferIndexFrameData)]],
                     constant MaterialProperties &materialProperties [[buffer(BufferIndexMaterial)]],
                     texture2d<half> albedo[[texture(TextureIndexColor)]],
                     texture2d<half> normRoughMetallic[[texture(TextureIndexAdditional)]],

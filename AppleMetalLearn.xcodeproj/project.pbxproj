@@ -46,6 +46,7 @@
 		62C6312A2BC9DE2300F90378 /* Movement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62C631292BC9DE2300F90378 /* Movement.swift */; };
 		62CCE37E2BE0F34700FFD1E2 /* CGTools.metal in Sources */ = {isa = PBXBuildFile; fileRef = 62CCE37D2BE0F34700FFD1E2 /* CGTools.metal */; };
 		62CCE3802BE104F800FFD1E2 /* LightingRenderPass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62CCE37F2BE104F800FFD1E2 /* LightingRenderPass.swift */; };
+		62CE25A82BEF9A0E00AB4BC5 /* temp.metal in Sources */ = {isa = PBXBuildFile; fileRef = 62CE25A72BEF9A0E00AB4BC5 /* temp.metal */; };
 		62D0EFE62BC728D5004BFD58 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62D0EFE52BC728D5004BFD58 /* Model.swift */; };
 		62D0EFE82BC72925004BFD58 /* Mesh.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62D0EFE72BC72925004BFD58 /* Mesh.swift */; };
 		62D0EFEA2BC729AA004BFD58 /* Submesh.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62D0EFE92BC729AA004BFD58 /* Submesh.swift */; };
@@ -105,6 +106,7 @@
 		62CCE37D2BE0F34700FFD1E2 /* CGTools.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = CGTools.metal; sourceTree = "<group>"; };
 		62CCE37F2BE104F800FFD1E2 /* LightingRenderPass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightingRenderPass.swift; sourceTree = "<group>"; };
 		62CCE3812BE12B4E00FFD1E2 /* CGTools.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CGTools.h; sourceTree = "<group>"; };
+		62CE25A72BEF9A0E00AB4BC5 /* temp.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = temp.metal; sourceTree = "<group>"; };
 		62D0EFE52BC728D5004BFD58 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		62D0EFE72BC72925004BFD58 /* Mesh.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mesh.swift; sourceTree = "<group>"; };
 		62D0EFE92BC729AA004BFD58 /* Submesh.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Submesh.swift; sourceTree = "<group>"; };
@@ -283,6 +285,7 @@
 			children = (
 				62EA6E942BC5DD370017991A /* MathLibrary.swift */,
 				6280A9582BD9A645009901FD /* PixelFormats.swift */,
+				62CE25A72BEF9A0E00AB4BC5 /* temp.metal */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -403,6 +406,7 @@
 				62D9D6142BCA68E200EE9691 /* InputController.swift in Sources */,
 				628AE5B22BCBC2240094CAD7 /* SceneLighting.swift in Sources */,
 				62D0EFED2BC73236004BFD58 /* TextureController.swift in Sources */,
+				62CE25A82BEF9A0E00AB4BC5 /* temp.metal in Sources */,
 				62986BBD2BCC4D4600B7DF50 /* PipelineStates.swift in Sources */,
 				6258A67B2BE8100800CA2935 /* PointLight.metal in Sources */,
 				62C6312A2BC9DE2300F90378 /* Movement.swift in Sources */,

@@ -12,8 +12,8 @@ using namespace metal;
 
 
 half4 deffered_point_light_common(PointLightInOut IN,
-                                  device Light *lights,
-                                  constant Uniforms &uniforms,
+                                  device PointLight *lights,
+                                  constant FrameData &uniforms,
                                   half4 lighting,
                                   float depth,
                                   half4 normalRoughtness,
@@ -23,9 +23,12 @@ half4 deffered_point_light_common(PointLightInOut IN,
     //use eye-depth
     float3 positionVS = IN.positionVS * (depth/IN.positionVS.z);
     //
-    float3 lightPos = lights[IN.instanceID].position.xyz;
+    
+    PointLight light = lights[IN.instanceID];
+   
+    float3 lightPos = light.position.xyz;
     float lightDist = length(lightPos - positionVS);
-    float lightRadius = lights[IN.instanceID].radius;
+    float lightRadius = light.radius;
     
     if(lightDist < lightRadius)
     {
@@ -33,15 +36,17 @@ half4 deffered_point_light_common(PointLightInOut IN,
         float3 fragmentPosVSToLightPosVS = lightPosVS.xyz - positionVS;
         float3 lightDir = normalize(fragmentPosVSToLightPosVS);
         
-        half4 lightColor = half4(half3(lights[IN.instanceID].color), 1.0);
+        half4 lightColor = half4(half3(light.color), 1.0);
         //diffuse contrib
         half NdotL = max(dot(normalRoughtness.xyz, half3(lightDir)), 0.0h);
         
     half4 diffuseConntributio = NdotL * lightColor * half4(albedoShadow.xyz,1.0);//half4(albedoShadow * NdotL * lightColor, 1.0);
         //specularContrrib
        // half3 specularContributionn =
-        float attenuation = 1.0 - (lightDist / lightRadius);
-        //attenuation *= attenuation;
+        float attenuation = 1.0 / (light.attenuation.x + light.attenuation.y * lightDist + light.attenuation.z * lightDist * lightDist);
+        float a = 1.0 / (light.radius - 1.0);
+        float b = -a * 1.0;
+       // attenuation *= saturate(lightDist * a + b );// attenuation;
         
     lighting += ((diffuseConntributio) * attenuation);// * attenuation;
     }
@@ -51,8 +56,8 @@ half4 deffered_point_light_common(PointLightInOut IN,
 
 fragment half4 deffered_point_light_fragment(
                                              PointLightInOut IN [[stage_in]],
-                                             constant Uniforms &uniforms [[buffer(BufferIndexUniforms)]],
-                                             device Light *lights  [[buffer(BufferIndexLights)]],
+                                             constant FrameData &uniforms [[buffer(BufferIndexFrameData)]],
+                                             device PointLight *lights  [[buffer(BufferIndexLights)]],
                                              texture2d<half> albedoShadowTexture [[texture(TextureIndexColor)]],
                                              texture2d<half> normalRoughtnessTexture [[texture(TextureIndexAdditional)]],
                                              texture2d<half> emissionMettalicTexture [[texture(TextureIndexEmission)]],
@@ -66,7 +71,7 @@ fragment half4 deffered_point_light_fragment(
     half4 emissionMetallic = emissionMettalicTexture.read(position.xy);
     
     
-    Light l = lights[IN.instanceID];
+    PointLight l = lights[IN.instanceID];
     half3 color = (half3)l.color;
     
     return  deffered_point_light_common(IN, lights, uniforms, lighting, depth, normalRoughtness, emissionMetallic, albedoShadow);

@@ -15,7 +15,7 @@ using namespace metal;
 
 
 half4 calculate_deffered_directional_light(VaryingsSimpeQuad IN,
-                                           constant Uniforms &uniforms,
+                                           constant FrameData &uniforms,
                                            half4 albedo_shadow,
                                            half4 normalRouhMetallic)
 
@@ -36,7 +36,7 @@ half4 calculate_deffered_directional_light(VaryingsSimpeQuad IN,
 
 fragment half4 deffered_directional_light_traditional(
                     VaryingsSimpeQuad       IN            [[stage_in]],
-                    constant Uniforms       &uniforms     [[buffer(BufferIndexUniforms)]],
+                    constant FrameData       &uniforms     [[buffer(BufferIndexFrameData)]],
                     texture2d<half>         albedoShadow  [[texture(TextureIndexColor)]],
                     texture2d<half>         normal        [[texture(TextureIndexAdditional)]],
                      texture2d<half> emission [[texture(TextureIndexEmission)]],

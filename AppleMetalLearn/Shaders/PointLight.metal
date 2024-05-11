@@ -44,9 +44,9 @@ half4 deffered_point_light_common(PointLightInOut IN,
         //specularContrrib
        // half3 specularContributionn =
         float attenuation = 1.0 / (light.attenuation.x + light.attenuation.y * lightDist + light.attenuation.z * lightDist * lightDist);
-        float a = 1.0 / (light.radius - 1.0);
-        float b = -a * 1.0;
-       // attenuation *= saturate(lightDist * a + b );// attenuation;
+        //float a = 1.0 / (light.radius - 1.0);
+        //float b = -a * 1.0;
+        //attenuation *= saturate(lightDist * a + b );// attenuation;
         
     lighting += ((diffuseConntributio) * attenuation);// * attenuation;
     }

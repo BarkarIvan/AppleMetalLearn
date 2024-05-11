@@ -60,7 +60,7 @@ class SceneLighting{
     private func calculatePointLightRadius(color: simd_float3, attenuation: simd_float3) -> Float
     {
         var root1: Float = 0
-        let minLuminance: Float = 0.01
+        let minLuminance: Float = 0.005 //todo: to config
         let luminaceCoeffs = simd_float3(0.2126, 0.7152, 0.0722)
         let luminance = simd_dot(color, luminaceCoeffs)
         let a = attenuation.z //quadr
@@ -74,7 +74,7 @@ class SceneLighting{
             let root2 = (-b + sqrt(discriminant)) / (2 * a)
             print ("d>0 \(root1) and \(root2)")
         }else if discriminant == 0{
-             root1 = -b / (2*a)
+             root1 = -b / (2 * a)
             print ("root \(root1)")
         }else{
             root1 = 0

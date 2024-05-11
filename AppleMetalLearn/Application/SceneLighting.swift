@@ -54,15 +54,21 @@ class SceneLighting{
         light.color = color
         light.attenuation = attenuation
         light.radius = calculatePointLightRadius(color: color, attenuation: attenuation)
+        print("light r = \(light.radius)")
         pointLightsArray.append(light)
         updateBuffers()
     }
     private func calculatePointLightRadius(color: simd_float3, attenuation: simd_float3) -> Float
     {
+        
+        
+        
         var root1: Float = 0
-        let minLuminance: Float = 0.005 //todo: to config
+        let minLuminance: Float = 0.03 //todo: to config
         let luminaceCoeffs = simd_float3(0.2126, 0.7152, 0.0722)
         let luminance = simd_dot(color, luminaceCoeffs)
+        
+        return sqrt(luminance / minLuminance)
         let a = attenuation.z //quadr
         let b = attenuation.y //linear
         let c = attenuation.x - ( luminance / minLuminance)

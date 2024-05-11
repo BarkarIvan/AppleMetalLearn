@@ -50,18 +50,18 @@ struct GameScene{
         platonic.rotation = [45, 45, 45]
         models = [testModel, platonic]
         
-        for _ in 1...5
+        for _ in 1...4
         {
-            let d: Float = Float(0.5)
+            let d: Float = Float(1)
             let position = simd_float3(
                 .random(in: -d...d),
                 .random(in: -d...d),
                 .random(in: -d...d)
             )
             let color = simd_float3(
-                .random(in: 0.5...1.0),
-                .random(in: 0.5...1.0),
-                .random(in: 0.5...1.0)
+                .random(in: 0.1...1.0),
+                .random(in: 0.1...1.0),
+                .random(in: 0.1...1.0)
             )
                         
             let attenuation = simd_float3(1, 1, 20) //1 4 10

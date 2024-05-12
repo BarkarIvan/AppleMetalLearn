@@ -108,6 +108,7 @@ typedef struct{
     vector_float3 color;
     vector_float3 attenuation;
     float radius;
+    float constantOffset;
 }PointLight;
 
 #endif //

@@ -29,9 +29,10 @@ half4 deffered_point_light_common(PointLightInOut IN,
     float3 lightPos = light.position.xyz;
     float lightDist = length(lightPos - positionVS);
     float lightRadius = light.radius;
+    float lightOffset = light.constantOffset;
     
-   // if(lightDist < lightRadius)
-    //{
+    if(lightDist < lightRadius)
+    {
         float4 lightPosVS = float4(lightPos, 1.0);
         float3 fragmentPosVSToLightPosVS = lightPosVS.xyz - positionVS;
         float3 lightDir = normalize(fragmentPosVSToLightPosVS);
@@ -40,18 +41,14 @@ half4 deffered_point_light_common(PointLightInOut IN,
         //diffuse contrib
         half NdotL = max(dot(normalRoughtness.xyz, half3(lightDir)), 0.0h);
         
-    half4 diffuseConntributio = NdotL * lightColor * half4(albedoShadow.xyz,1.0);//half4(albedoShadow * NdotL * lightColor, 1.0);
-        //specularContrrib
-       // half3 specularContributionn =
-        float attenuation =  (1.0 / (0.5 + lightDist * lightDist)) * (1.0 - pow(lightDist / lightRadius, 4));
-        // 1.0 / (light.attenuation.x + light.attenuation.y * lightDist + light.attenuation.z * lightDist * lightDist);
-        //float a = 1.0 / (light.radius - 1.0);
-        //float b = -a * 1.0;
-        //attenuation *= saturate(lightDist * a + b );// attenuation;
+        half4 diffuseConntributio = NdotL * lightColor * half4(albedoShadow.xyz,1.0);
+        float p = lightDist / lightRadius;
+        float attenuation =  (1.0 / (lightOffset + lightDist * lightDist)) * (1.0 - p * p * p * p);
         
-    lighting += ((diffuseConntributio) * attenuation);// * attenuation;
-   // }
-    return lighting;//// lighting; //half4(diffuseConntributio);
+        
+        lighting += (diffuseConntributio * attenuation);
+    }
+    return lighting;
 }
 
 
@@ -73,7 +70,6 @@ fragment half4 deffered_point_light_fragment(
     
     
     PointLight l = lights[IN.instanceID];
-    half3 color = (half3)l.color;
-    
+
     return  deffered_point_light_common(IN, lights, uniforms, lighting, depth, normalRoughtness, emissionMetallic, albedoShadow);
 }

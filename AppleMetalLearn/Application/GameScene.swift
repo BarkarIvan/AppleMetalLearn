@@ -100,9 +100,10 @@ struct GameScene{
     mutating func update(deltaTime: Float){
         updateInput()
         camera.update(deltaTime: deltaTime)
-        models[0].transform.rotation.y += 1 * deltaTime;
-        models[0].transform.rotation.x += 0.5 * deltaTime;
-        models[1].transform.rotation.x += 1 * deltaTime;
+        models[0].transform.rotation.y += 1 * deltaTime
+        models[0].transform.rotation.x += 0.5 * deltaTime
+        models[0].transform.rotation.z += 0.5 * deltaTime
+        models[1].transform.rotation.x += 1 * deltaTime
     
     }
     

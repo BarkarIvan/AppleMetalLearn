@@ -18,8 +18,8 @@ struct GameScene{
     
     var defaultview: Transform{
         Transform(
-            position: [0, 0, 0],
-            rotation: [0.0,0.0,0.0])
+            position: [0, 2, -10],
+            rotation: [degrees_to_radians(20),0.0,0.0])
     }
     
     var lighting = SceneLighting()
@@ -27,47 +27,54 @@ struct GameScene{
     var icosahedron : Model?
     
     init(){
-        camera.far = 10
+        camera.far = 30
         camera.transform = defaultview
+        camera.rotation = [0.0, 0.0, 0.0]
         
         let testMaterial = MaterialController.createMaterial(materialName: "Default", albedoTextureName: "Albedo.png", additioanTextureNamee: "NRM.png", emissionTextureName: "Emission.tga", baseColor: [1,1,1], roughtness: 1.0, metallic: 1.0, emissionColor: [1,1,1])
         
-        var testModel: Model = {
-            Model(name: "toy.obj", materials: [testMaterial])
+        var toyModel: Model = {
+            Model(name: "sphere.obj", materials: [testMaterial])
         }()
         
         var platonic: Model = {
             Model(name: "platonic.obj", materials: [testMaterial])
         }()
         
-        lighting.allLightsArray[0].position = [0.1,4.0,0.1]
-        testModel.position = [0,0,5]
-        testModel.scale = [1,1,1]
-        testModel.rotation = [0,120,-45]
+        var plane: Model = { Model(name: "plane.obj", materials: [testMaterial])}()
         
-        platonic.position = testModel.position + [0,0.9,0]
+        lighting.allLightsArray[0].position = [0.1,4.0,0.1]
+        toyModel.position = [0,1,0]
+        toyModel.scale = [1,1,1]
+        toyModel.rotation = [0,120,-45]
+        
+        plane.position = [0,0,0]
+        plane.scale = [10,1,10]
+        plane.rotation = [0,0,0]
+        
+        platonic.position = toyModel.position + [0,0.9,0]
         platonic.scale = [0.3, 0.3, 0.3]
         platonic.rotation = [45, 45, 45]
-        models = [testModel, platonic]
+        models = [toyModel, platonic, plane]
         
         for _ in 1...8
         {
-            let d: Float = Float(2.5)
-            let position = simd_float3(
-                .random(in: -d...d),
-                .random(in: -d...d),
-                .random(in: -d...d)
-            )
+            let d: Float = Float(2)
+            var position = simd_float3(0.0,0.0,0.0)
+            let randomxz =  randomVectorInsideCircle(radius: 2)
+            position.x = randomxz.x
+            position.z = randomxz.y
+            
             let color = simd_float3(
                 .random(in: 1.0...1.0),
-                .random(in: 0.0...0.1),
-                .random(in: 0.0...0.1)
+                .random(in: 1.0...1.0),
+                .random(in: 1.0...1.0)
             )
                         
             let attenuation = simd_float3(1, 1, 20) //1 4 10
             
             
-            lighting.addPointLight(position: testModel.position + position, color: color, attenuation: attenuation)
+            lighting.addPointLight(position: position, color: color, attenuation: attenuation)
         }
         
         do {

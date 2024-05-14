@@ -22,7 +22,7 @@ struct GBufferOut{
     half4 albedo [[color(RenderTargetAlbedoShadow)]];
     half4 normal [[color(RenderTargetNormalRoughtness)]];
     half4 emission [[color(RenderTargetEmissionMetallic)]];
-    float depth [[color(RenderTargetDepth)]];
+    float depthVS [[color(RenderTargetDepth)]];
 };
 
 
@@ -63,7 +63,7 @@ fragment GBufferOut fragment_GBuffer(
     OUT.normal.a = normRoughMetSample.w;
     
     OUT.emission = emission.sample(linearSampler, IN.texCoord);
-    OUT.depth  = IN.positionVS.z;
+    OUT.depthVS  = IN.positionVS.z;
     return OUT;
 }
 

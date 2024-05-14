@@ -17,8 +17,8 @@ vertex Varyings vertex_main (
 {
     float4 modelPos = float4(IN.positionOS.xyz, 1.0);
     float4 positionWS = uniforms.modelMatrix * modelPos;
-    float4 positionVS = uniforms.modelMatrix * uniforms.viewMatrix * modelPos;
-    float4 positionCS = uniforms.projectionMatrix * uniforms.viewMatrix * positionWS;
+    float4 positionVS =  uniforms.viewMatrix * positionWS;
+    float4 positionCS = uniforms.projectionMatrix * positionVS;
     half3x3 normalMatrix = half3x3(uniforms.normalMatrix);
     half3 normalWS = normalMatrix * IN.normalOS.xyz;
     half3 tanWS = normalMatrix * IN.tangentOS.xyz;
@@ -74,8 +74,8 @@ vertex InOutLightMask vertex_light_mask (const device float4 * postions     [[bu
     InOutLightMask OUT;
     
     PointLight light = lights[instanceID];
-    float4 positioVS = float4(postions[vertexID].xyz * light.radius + light.position.xyz, 1.0);
-    OUT.postition = uniforms.projectionMatrix * uniforms.viewMatrix * positioVS;
+    float4 positioVS = uniforms.viewMatrix * float4(postions[vertexID].xyz * light.radius + light.position.xyz, 1.0);
+    OUT.postition = uniforms.projectionMatrix *  positioVS;
     
     return OUT;
 }
@@ -91,8 +91,8 @@ vertex PointLightInOut deferred_point_light_vertex(const device float4 *vertices
     PointLightInOut OUT;
     PointLight light = lights[ instance_ID];
     OUT.instanceID = instance_ID;
-    OUT.positionVS = vertices[vertex_ID].xyz * light.radius + light.position.xyz;
-    OUT.position = uniforms.projectionMatrix * uniforms.viewMatrix * float4(OUT.positionVS.xyz, 1.0);
+    OUT.positionVS = (uniforms.viewMatrix * float4(vertices[vertex_ID].xyz * light.radius + light.position.xyz, 1.0)).xyz;
+    OUT.position = uniforms.projectionMatrix *  float4(OUT.positionVS.xyz, 1.0);
    
     return OUT;
 }

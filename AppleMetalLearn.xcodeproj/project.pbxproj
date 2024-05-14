@@ -15,6 +15,7 @@
 		6258A67B2BE8100800CA2935 /* PointLight.metal in Sources */ = {isa = PBXBuildFile; fileRef = 6258A67A2BE8100800CA2935 /* PointLight.metal */; };
 		625E21802BD6FD3800263CCA /* platonic.obj in Resources */ = {isa = PBXBuildFile; fileRef = 625E217F2BD6FD3800263CCA /* platonic.obj */; };
 		625E218A2BD7124B00263CCA /* teapot.obj in Resources */ = {isa = PBXBuildFile; fileRef = 625E21892BD7124B00263CCA /* teapot.obj */; };
+		626A93052BF3B0C00016CF10 /* plane.obj in Resources */ = {isa = PBXBuildFile; fileRef = 626A93042BF3B0C00016CF10 /* plane.obj */; };
 		627014712BE3A83A006AF678 /* DepthStencilStates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 627014702BE3A83A006AF678 /* DepthStencilStates.swift */; };
 		627657A42BDA8B490088F551 /* Lighting.metal in Sources */ = {isa = PBXBuildFile; fileRef = 627657A32BDA8B490088F551 /* Lighting.metal */; };
 		6278D0962BD50D2F00A29602 /* Material.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6278D0952BD50D2F00A29602 /* Material.swift */; };
@@ -46,7 +47,6 @@
 		62C6312A2BC9DE2300F90378 /* Movement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62C631292BC9DE2300F90378 /* Movement.swift */; };
 		62CCE37E2BE0F34700FFD1E2 /* CGTools.metal in Sources */ = {isa = PBXBuildFile; fileRef = 62CCE37D2BE0F34700FFD1E2 /* CGTools.metal */; };
 		62CCE3802BE104F800FFD1E2 /* LightingRenderPass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62CCE37F2BE104F800FFD1E2 /* LightingRenderPass.swift */; };
-		62CE25A82BEF9A0E00AB4BC5 /* temp.metal in Sources */ = {isa = PBXBuildFile; fileRef = 62CE25A72BEF9A0E00AB4BC5 /* temp.metal */; };
 		62D0EFE62BC728D5004BFD58 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62D0EFE52BC728D5004BFD58 /* Model.swift */; };
 		62D0EFE82BC72925004BFD58 /* Mesh.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62D0EFE72BC72925004BFD58 /* Mesh.swift */; };
 		62D0EFEA2BC729AA004BFD58 /* Submesh.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62D0EFE92BC729AA004BFD58 /* Submesh.swift */; };
@@ -72,6 +72,7 @@
 		6258A67A2BE8100800CA2935 /* PointLight.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = PointLight.metal; sourceTree = "<group>"; };
 		625E217F2BD6FD3800263CCA /* platonic.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = platonic.obj; path = ../../../../../../../Users/barkar/Desktop/temp/platonic.obj; sourceTree = "<group>"; };
 		625E21892BD7124B00263CCA /* teapot.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = teapot.obj; path = ../../../../../../../Users/barkar/Desktop/temp/teapot.obj; sourceTree = "<group>"; };
+		626A93042BF3B0C00016CF10 /* plane.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = plane.obj; sourceTree = "<group>"; };
 		627014702BE3A83A006AF678 /* DepthStencilStates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DepthStencilStates.swift; sourceTree = "<group>"; };
 		627657A22BDA8ACA0088F551 /* Lighting.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Lighting.h; sourceTree = "<group>"; };
 		627657A32BDA8B490088F551 /* Lighting.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Lighting.metal; sourceTree = "<group>"; };
@@ -106,7 +107,6 @@
 		62CCE37D2BE0F34700FFD1E2 /* CGTools.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = CGTools.metal; sourceTree = "<group>"; };
 		62CCE37F2BE104F800FFD1E2 /* LightingRenderPass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightingRenderPass.swift; sourceTree = "<group>"; };
 		62CCE3812BE12B4E00FFD1E2 /* CGTools.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CGTools.h; sourceTree = "<group>"; };
-		62CE25A72BEF9A0E00AB4BC5 /* temp.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = temp.metal; sourceTree = "<group>"; };
 		62D0EFE52BC728D5004BFD58 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		62D0EFE72BC72925004BFD58 /* Mesh.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mesh.swift; sourceTree = "<group>"; };
 		62D0EFE92BC729AA004BFD58 /* Submesh.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Submesh.swift; sourceTree = "<group>"; };
@@ -200,6 +200,7 @@
 		62986BBF2BCC577400B7DF50 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				626A93042BF3B0C00016CF10 /* plane.obj */,
 				624E78362BDDB3FA00A32907 /* RubberToy.obj */,
 				627E06702BDD54F1005FF89D /* toy.obj */,
 				625E21892BD7124B00263CCA /* teapot.obj */,
@@ -285,7 +286,6 @@
 			children = (
 				62EA6E942BC5DD370017991A /* MathLibrary.swift */,
 				6280A9582BD9A645009901FD /* PixelFormats.swift */,
-				62CE25A72BEF9A0E00AB4BC5 /* temp.metal */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -370,6 +370,7 @@
 			files = (
 				629D84102BC1313F00677998 /* Preview Assets.xcassets in Resources */,
 				62986BC52BCC5A6500B7DF50 /* RubberToy.usdz in Resources */,
+				626A93052BF3B0C00016CF10 /* plane.obj in Resources */,
 				627E06712BDD54F1005FF89D /* toy.obj in Resources */,
 				624E78372BDDB3FA00A32907 /* RubberToy.obj in Resources */,
 				6278D09A2BD511D300A29602 /* testBaseColor.tga in Resources */,
@@ -406,7 +407,6 @@
 				62D9D6142BCA68E200EE9691 /* InputController.swift in Sources */,
 				628AE5B22BCBC2240094CAD7 /* SceneLighting.swift in Sources */,
 				62D0EFED2BC73236004BFD58 /* TextureController.swift in Sources */,
-				62CE25A82BEF9A0E00AB4BC5 /* temp.metal in Sources */,
 				62986BBD2BCC4D4600B7DF50 /* PipelineStates.swift in Sources */,
 				6258A67B2BE8100800CA2935 /* PointLight.metal in Sources */,
 				62C6312A2BC9DE2300F90378 /* Movement.swift in Sources */,

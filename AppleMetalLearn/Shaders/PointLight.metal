@@ -21,20 +21,20 @@ half4 deffered_point_light_common(PointLightInOut IN,
                                   half4 albedoShadow)
 {
     //use eye-depth
-    float3 positionVS = IN.positionVS * (depth/IN.positionVS.z);
+    float3 fragmentPositionVS = IN.positionVS * (depth/IN.positionVS.z); //FRAGMENT!!!!!!!
     //
     
     PointLight light = lights[IN.instanceID];
    
-    float3 lightPos = light.position.xyz;
-    float lightDist = length(lightPos - positionVS);
+    float4 lightPosVS = uniforms.viewMatrix * float4( light.position.xyz, 1.0);
+    float lightDist = length(lightPosVS.xyz - fragmentPositionVS);
     float lightRadius = light.radius;
     float lightOffset = light.constantOffset;
     
-    if(lightDist < lightRadius)
-    {
-        float4 lightPosVS = float4(lightPos, 1.0);
-        float3 fragmentPosVSToLightPosVS = lightPosVS.xyz - positionVS;
+   // if(lightDist < lightRadius)
+    //{
+        //float4 lightPosVS = float4(lightPosVS.xyz, 1.0);
+        float3 fragmentPosVSToLightPosVS = lightPosVS.xyz - fragmentPositionVS;
         float3 lightDir = normalize(fragmentPosVSToLightPosVS);
         
         half4 lightColor = half4(half3(light.color), 1.0);
@@ -47,7 +47,7 @@ half4 deffered_point_light_common(PointLightInOut IN,
         
         
         lighting += (diffuseConntributio * attenuation);
-    }
+   // }
     return lighting;
 }
 

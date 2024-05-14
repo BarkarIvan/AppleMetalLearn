@@ -3,7 +3,13 @@ import CoreGraphics
 
 
 
-
+func randomVectorInsideCircle(radius: Float) -> simd_float2 {
+    let angle = Float.random(in: 0..<2 * .pi)
+    let r = radius
+    let x = cos(angle) * r
+    let y = sin(angle) * r
+    return simd_float2(x, y)
+}
 
 func radians_to_degrees(_ radians: Float) -> Float {
       (radians / .pi) * 180
@@ -147,6 +153,8 @@ extension float4x4 {
         columns = (X, Y, Z, W)
     }
     
+    
+  
  
 }
 

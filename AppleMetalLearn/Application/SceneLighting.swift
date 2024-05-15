@@ -7,6 +7,8 @@
 
 import MetalKit
 
+
+
 class SceneLighting{
     
     static let shared  = SceneLighting()
@@ -14,9 +16,10 @@ class SceneLighting{
     var allLightsArray: [Light] = []
     var directionalLightsArray: [Light] = []
     var pointLightsArray: [PointLight] = []
-    var lightBuffer: MTLBuffer?
-    var directionalLightsBuffer: MTLBuffer?
-    var pointsLightsBuffer: MTLBuffer?
+    //var lightBuffer: MTLBuffer?
+    //var directionalLightsBuffer: MTLBuffer?
+    //var pointsLightsBuffer: MTLBuffer?
+   
     
     
     init()
@@ -29,7 +32,7 @@ class SceneLighting{
         let directionalLight = buildDefaultLight()
         directionalLightsArray.append(directionalLight)
         allLightsArray.append(directionalLight)
-        updateBuffers()
+       // updateBuffers()
     }
     
     private func buildDefaultLight() -> Light
@@ -47,19 +50,19 @@ class SceneLighting{
         return allLightsArray[0]
     }
     
-    func addPointLight(position: simd_float3, color: simd_float3, attenuation: simd_float3){
-        
+    func addPointLight(position: simd_float3, color: simd_float3)
+    {
         var light = PointLight()
         light.position = position
         light.color = color
-        light.attenuation = attenuation
-        light.radius = calculatePointLightRadius(color: color, attenuation: attenuation)
+       // light.attenuation = attenuation
+        light.radius = calculatePointLightRadius(color: color)
         light.constantOffset = 0.1
         print("light r = \(light.radius)")
         pointLightsArray.append(light)
-        updateBuffers()
     }
-    private func calculatePointLightRadius(color: simd_float3, attenuation: simd_float3) -> Float
+    
+    private func calculatePointLightRadius(color: simd_float3) -> Float
     {
         let minLuminance: Float = 0.03
         let luminaceCoeffs = simd_float3(0.2126, 0.7152, 0.0722)
@@ -68,42 +71,6 @@ class SceneLighting{
         return sqrt(luminance / minLuminance)
     }
     
-    private func updateBuffers() {
-
-        if !allLightsArray.isEmpty {
-            lightBuffer = createBuffer(lightsArray: allLightsArray)
-        } else {
-            lightBuffer = nil
-        }
-
-        if !directionalLightsArray.isEmpty {
-            directionalLightsBuffer = createBuffer(lightsArray: directionalLightsArray)
-        } else {
-            directionalLightsBuffer = nil
-        }
-
-        if !pointLightsArray.isEmpty {
-            pointsLightsBuffer = createBuffer(lightsArray: pointLightsArray)
-            pointsLightsBuffer?.label = "Point lights buffer"
-        } else {
-            pointsLightsBuffer = nil
-        }
-    }
-
-    //refactor to buffer view
-    private func createBuffer(lightsArray: [Light]) -> MTLBuffer{
-        
-        var lights = lightsArray
-        return Renderer.device.makeBuffer(bytes: &lights, length: MemoryLayout<Light>.stride * lights.count, options: [])!
-        
-    }
-    
-    private func createBuffer(lightsArray: [PointLight]) -> MTLBuffer{
-        
-        var lights = lightsArray
-        return Renderer.device.makeBuffer(bytes: &lights, length: MemoryLayout<Light>.stride * lights.count, options: [])!
-        
-    }
     
 }
 

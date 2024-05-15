@@ -57,6 +57,7 @@
 		62D9D6182BCB029700EE9691 /* PlayerCamera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62D9D6172BCB029700EE9691 /* PlayerCamera.swift */; };
 		62D9D61A2BCB07AE00EE9691 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62D9D6192BCB07AE00EE9691 /* GameScene.swift */; };
 		62E2A7B72BC2FF5700E6C97A /* Renderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62E2A7B62BC2FF5700E6C97A /* Renderer.swift */; };
+		62E342592BF511CB00FB8E7D /* BufferView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62E342582BF511CB00FB8E7D /* BufferView.swift */; };
 		62E3A62F2BD813560012E530 /* ShadowCamera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62E3A62E2BD813560012E530 /* ShadowCamera.swift */; };
 		62EA6E932BC5DC400017991A /* Transform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62EA6E922BC5DC400017991A /* Transform.swift */; };
 		62EA6E952BC5DD370017991A /* MathLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62EA6E942BC5DD370017991A /* MathLibrary.swift */; };
@@ -118,6 +119,7 @@
 		62D9D6192BCB07AE00EE9691 /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
 		62E2A7B62BC2FF5700E6C97A /* Renderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Renderer.swift; sourceTree = "<group>"; };
 		62E2A7B82BC302D800E6C97A /* ShaderTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShaderTypes.h; sourceTree = "<group>"; };
+		62E342582BF511CB00FB8E7D /* BufferView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BufferView.swift; sourceTree = "<group>"; };
 		62E3A62E2BD813560012E530 /* ShadowCamera.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShadowCamera.swift; sourceTree = "<group>"; };
 		62EA6E922BC5DC400017991A /* Transform.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transform.swift; sourceTree = "<group>"; };
 		62EA6E942BC5DD370017991A /* MathLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MathLibrary.swift; sourceTree = "<group>"; };
@@ -284,6 +286,7 @@
 		62D0EFE22BC72795004BFD58 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				62E342582BF511CB00FB8E7D /* BufferView.swift */,
 				62EA6E942BC5DD370017991A /* MathLibrary.swift */,
 				6280A9582BD9A645009901FD /* PixelFormats.swift */,
 			);
@@ -414,6 +417,7 @@
 				6280A9592BD9A645009901FD /* PixelFormats.swift in Sources */,
 				62EA6E932BC5DC400017991A /* Transform.swift in Sources */,
 				622167442BCDC57D0067269F /* GBuffer.metal in Sources */,
+				62E342592BF511CB00FB8E7D /* BufferView.swift in Sources */,
 				629D84092BC1313E00677998 /* AppleMetalLearnApp.swift in Sources */,
 				622167412BCDBF3F0067269F /* Vertex.metal in Sources */,
 				629CB1FC2BD8653600D1DA10 /* Shadows.metal in Sources */,

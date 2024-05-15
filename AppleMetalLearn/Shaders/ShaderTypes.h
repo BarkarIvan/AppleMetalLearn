@@ -30,7 +30,8 @@ typedef NS_ENUM(EnumBackingType, BufferIndex)
     BufferIndexFrameData      = 2, 
     BufferIndexParams        = 3,
     BufferIndexMaterial      = 4,
-    BufferIndexLights        = 5
+    BufferIndexLights        = 5,
+    BufferIndexPointLightsPositions = 6
 };
 
 typedef NS_ENUM(EnumBackingType, VertexAttribute)
@@ -106,7 +107,6 @@ typedef struct {
 typedef struct{
     vector_float3 position;
     vector_float3 color;
-    vector_float3 attenuation;
     float radius;
     float constantOffset;
 }PointLight;

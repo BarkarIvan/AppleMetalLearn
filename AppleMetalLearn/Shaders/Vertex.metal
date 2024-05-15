@@ -65,33 +65,38 @@ vertex VaryingsSimpeQuad vertex_quad(uint vertexID [[vertex_id]],
     return OUT;
 }
 
-vertex InOutLightMask vertex_light_mask (const device float4 * postions     [[buffer(BufferIndexMeshPositions)]],
-                                        const device PointLight   *lights        [[buffer(BufferIndexLights)]],
-                                        constant FrameData    &uniforms      [[buffer(BufferIndexFrameData)]],
-                                         uint                instanceID     [[instance_id]],
-                                         uint                vertexID       [[vertex_id]])
+vertex InOutLightMask vertex_light_mask (const device float4 *postions           [[buffer(BufferIndexMeshPositions)]],
+                                        const device PointLight   *lights         [[buffer(BufferIndexLights)]],
+                                         const device float3 *pointLightPositions [[buffer(BufferIndexPointLightsPositions)]],
+                                        constant FrameData    &uniforms           [[buffer(BufferIndexFrameData)]],
+                                         uint                instanceID           [[instance_id]],
+                                         uint                vertexID             [[vertex_id]])
 {
     InOutLightMask OUT;
     
     PointLight light = lights[instanceID];
-    float4 positioVS = uniforms.viewMatrix * float4(postions[vertexID].xyz * light.radius + light.position.xyz, 1.0);
+    float3 lightPosition = pointLightPositions[instanceID];
+    
+    float4 positioVS = uniforms.viewMatrix * float4(postions[vertexID].xyz * light.radius + lightPosition.xyz, 1.0);
     OUT.postition = uniforms.projectionMatrix *  positioVS;
     
     return OUT;
 }
 
 
-vertex PointLightInOut deferred_point_light_vertex(const device float4 *vertices [[buffer(BufferIndexMeshPositions)]],
-                                                   const device PointLight *lights [[buffer(BufferIndexLights)]],
-                                                   constant FrameData &uniforms [[buffer(BufferIndexFrameData)]],
-                                                   uint instance_ID [[instance_id]],
-                                                   uint vertex_ID [[vertex_id]]
+vertex PointLightInOut deferred_point_light_vertex(const device float4 *vertices    [[buffer(BufferIndexMeshPositions)]],
+                                                   const device PointLight *lights  [[buffer(BufferIndexLights)]],
+                                                   const device float3 *pointLightsPositions [[buffer(BufferIndexPointLightsPositions)]],
+                                                   constant FrameData &uniforms     [[buffer(BufferIndexFrameData)]],
+                                                   uint instance_ID                 [[instance_id]],
+                                                   uint vertex_ID                   [[vertex_id]]
                                                    )
 {
     PointLightInOut OUT;
     PointLight light = lights[ instance_ID];
+    float3 pointLightPosition = pointLightsPositions[instance_ID];
     OUT.instanceID = instance_ID;
-    OUT.positionVS = (uniforms.viewMatrix * float4(vertices[vertex_ID].xyz * light.radius + light.position.xyz, 1.0)).xyz;
+    OUT.positionVS = (uniforms.viewMatrix * float4(vertices[vertex_ID].xyz * light.radius + pointLightPosition.xyz, 1.0)).xyz;
     OUT.position = uniforms.projectionMatrix *  float4(OUT.positionVS.xyz, 1.0);
    
     return OUT;

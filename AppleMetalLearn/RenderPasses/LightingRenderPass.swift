@@ -80,7 +80,9 @@ struct LightingRenderPass: RenderPass
         renderEncoder.setStencilReferenceValue(128)
         renderEncoder.setCullMode(.front)
         
-        renderEncoder.setVertexBuffer(scene.lighting.pointsLightsBuffer, offset: 0, index: BufferIndex.lights.rawValue)
+        renderEncoder.setVertexBuffer(scene.pointLightBuffer.buffer, offset: 0, index: BufferIndex.lights.rawValue)
+        renderEncoder.setVertexBuffer(scene.currentPointLightPositionsBuffer.buffer, offset: 0, index: BufferIndex.pointLightsPositions.rawValue)
+        renderEncoder.setFragmentBuffer(scene.currentPointLightPositionsBuffer.buffer, offset: 0, index: BufferIndex.pointLightsPositions.rawValue)
         
         renderEncoder.pushDebugGroup("Light Mask Pass")
         
@@ -102,7 +104,7 @@ struct LightingRenderPass: RenderPass
         renderEncoder.setStencilReferenceValue(128)
         renderEncoder.setCullMode(.back)
         
-        renderEncoder.setFragmentBuffer(scene.lighting.pointsLightsBuffer, offset: 0, index: BufferIndex.lights.rawValue)
+        renderEncoder.setFragmentBuffer(scene.pointLightBuffer.buffer, offset: 0, index: BufferIndex.lights.rawValue)
 
       
         renderEncoder.pushDebugGroup("Point lights Pass")

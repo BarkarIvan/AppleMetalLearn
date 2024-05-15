@@ -9,9 +9,16 @@ import MetalKit
 
 struct GameScene{
     
-    //lazy var testModel: Model = {
-    //  Model(name: "RubberToy.usdz")
-    // }()
+    let numberOfPointLights: Int = 4
+    var currentBufferIndex = 0
+    var frameNumber = 0
+    var pointLightPositiosBuffers = [BufferView<simd_float3>]()
+    var currentPointLightPositionsBuffer: BufferView<simd_float3>{
+        pointLightPositiosBuffers[currentBufferIndex]
+    }
+    var pointLightBuffer: BufferView<PointLight>
+    var originalPoitPositions = [simd_float3]()
+    
     
     var models: [Model] = []
     var camera = FPCamera()
@@ -27,10 +34,6 @@ struct GameScene{
     var icosahedron : Model?
     
     init(){
-        camera.far = 30
-        camera.transform = defaultview
-        camera.rotation = [0.0, 0.0, 0.0]
-        
         let testMaterial = MaterialController.createMaterial(materialName: "Default", albedoTextureName: "Albedo.png", additioanTextureNamee: "NRM.png", emissionTextureName: "Emission.tga", baseColor: [1,1,1], roughtness: 1.0, metallic: 1.0, emissionColor: [1,1,1])
         
         var toyModel: Model = {
@@ -57,10 +60,11 @@ struct GameScene{
         platonic.rotation = [45, 45, 45]
         models = [toyModel, platonic, plane]
         
-        for _ in 1...8
+        //to populate point lights
+        for _ in 1...numberOfPointLights
         {
             let d: Float = Float(2)
-            var position = simd_float3(0.0,0.0,0.0)
+            var position = simd_float3(0.0,0.4,0.0)
             let randomxz =  randomVectorInsideCircle(radius: 2)
             position.x = randomxz.x
             position.z = randomxz.y
@@ -70,11 +74,20 @@ struct GameScene{
                 .random(in: 1.0...1.0),
                 .random(in: 1.0...1.0)
             )
-                        
-            let attenuation = simd_float3(1, 1, 20) //1 4 10
+                                    
+            originalPoitPositions.append(position)
             
-            
-            lighting.addPointLight(position: position, color: color, attenuation: attenuation)
+            lighting.addPointLight(position: position, color: color)//, attenuation: attenuation)
+        }
+        
+        
+        pointLightBuffer = .init(device: Renderer.device, array: lighting.pointLightsArray, options: MTLResourceOptions.storageModeShared)
+        
+        for index in 0...maxFramesInFlight
+        {
+            let pointLightPositionBuffer = BufferView<simd_float3>(device: Renderer.device, count:numberOfPointLights, label: "Point Light Positions Buffer \(index)", oprions: MTLResourceOptions.storageModeShared)
+          
+            pointLightPositiosBuffers.append( pointLightPositionBuffer)
         }
         
         do {
@@ -98,6 +111,10 @@ struct GameScene{
                 fatalError("Failed to create icosahedron MTKMesh: \(error.localizedDescription)")
             }
         }
+        
+        camera.far = 30
+        camera.transform = defaultview
+        camera.rotation = [0.0, 0.0, 0.0]
     }
     
     mutating func update(size: CGSize){
@@ -105,13 +122,28 @@ struct GameScene{
     }
     
     mutating func update(deltaTime: Float){
+        frameNumber += 1
+        currentBufferIndex = (currentBufferIndex + 1) % maxFramesInFlight
+     
         updateInput()
         camera.update(deltaTime: deltaTime)
         models[0].transform.rotation.y += 1 * deltaTime
         models[0].transform.rotation.x += 0.5 * deltaTime
         models[0].transform.rotation.z += 0.5 * deltaTime
         models[1].transform.rotation.x += 1 * deltaTime
+        
+        updateLight(deltaTime: deltaTime)
     
+    }
+    
+    func updateLight(deltaTime: Float)
+    {
+        for index in 0..<numberOfPointLights
+        {
+        var pos = originalPoitPositions[index]
+            pointLightPositiosBuffers[currentBufferIndex].assign(pos, at: index)
+        
+            }
     }
     
     mutating func updateInput(){
